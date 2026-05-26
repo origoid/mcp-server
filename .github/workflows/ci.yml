@@ -1,0 +1,56 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm install
+
+      - run: npm run build
+
+      - name: Smoke test (server boots and lists 26 tools)
+        run: |
+          # Server prints connection line to stderr then waits for stdin —
+          # close stdin so it exits cleanly. Verify the expected banner.
+          output=$(ORIGOID_API_KEY=dummy node dist/index.js </dev/null 2>&1 || true)
+          echo "$output"
+          echo "$output" | grep -q "19 API tools + 7 docs tools" \
+            || { echo "Boot banner missing"; exit 1; }
+
+  publish:
+    needs: [build]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm install
+
+      - run: npm run build
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
