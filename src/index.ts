@@ -71,6 +71,23 @@ function wrap<T>(fn: () => Promise<T>) {
   };
 }
 
+/**
+ * Drop keys whose value is `undefined`. The MCP host always destructures
+ * every property of the input schema, so optional args show up as
+ * `undefined` even when the user did not provide them. The SDK forwards
+ * `undefined` as `null` over the wire, which the API rejects with
+ * `INVALID_TYPE`. Strip undefineds before handing the body to the SDK.
+ */
+function clean<T extends Record<string, unknown>>(obj: T): T {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v !== undefined) out[k] = v;
+  }
+  // Required fields are guaranteed present by the Zod input schema, so the
+  // wider `T` cast is safe — we only strip optional/undefined keys here.
+  return out as T;
+}
+
 // =====================================================================
 // Tool registrations — one per OrigoID endpoint.
 // =====================================================================
@@ -92,7 +109,7 @@ server.registerTool(
     },
   },
   ({expireAfter}) =>
-    wrap(() => client.authentication.issueToken({expireAfter}))(),
+    wrap(() => client.authentication.issueToken(clean({expireAfter})))(),
 );
 
 server.registerTool(
@@ -110,7 +127,7 @@ server.registerTool(
     },
   },
   ({curp, generateRfc}) =>
-    wrap(() => client.renapo.validateCurp({curp, generateRfc}))(),
+    wrap(() => client.renapo.validateCurp(clean({curp, generateRfc})))(),
 );
 
 server.registerTool(
@@ -128,7 +145,7 @@ server.registerTool(
       secondSurname: z.string().optional(),
     },
   },
-  (args) => wrap(() => client.renapo.lookupCurp(args))(),
+  (args) => wrap(() => client.renapo.lookupCurp(clean(args)))(),
 );
 
 server.registerTool(
@@ -141,7 +158,7 @@ server.registerTool(
       rfc: z.string().describe("12 or 13-char RFC, e.g. PEZJ811011KI1"),
     },
   },
-  ({rfc}) => wrap(() => client.sat.validateRfc({rfc}))(),
+  ({rfc}) => wrap(() => client.sat.validateRfc(clean({rfc})))(),
 );
 
 server.registerTool(
@@ -159,7 +176,7 @@ server.registerTool(
         .describe("Base64-encoded CSF PDF. Use INSTEAD OF rfc+cif."),
     },
   },
-  (args) => wrap(() => client.sat.extractCsf(args))(),
+  (args) => wrap(() => client.sat.extractCsf(clean(args)))(),
 );
 
 server.registerTool(
@@ -179,7 +196,7 @@ server.registerTool(
       document: z.string().optional(),
     },
   },
-  (args) => wrap(() => client.sat.validateCfdi(args))(),
+  (args) => wrap(() => client.sat.validateCfdi(clean(args)))(),
 );
 
 server.registerTool(
@@ -192,7 +209,7 @@ server.registerTool(
       curp: z.string(),
     },
   },
-  ({curp}) => wrap(() => client.imss.lookupNss({curp}))(),
+  ({curp}) => wrap(() => client.imss.lookupNss(clean({curp})))(),
 );
 
 server.registerTool(
@@ -206,7 +223,7 @@ server.registerTool(
       nss: z.string().describe("11-digit NSS."),
     },
   },
-  (args) => wrap(() => client.imss.getEmploymentStatus(args))(),
+  (args) => wrap(() => client.imss.getEmploymentStatus(clean(args)))(),
 );
 
 server.registerTool(
@@ -222,7 +239,11 @@ server.registerTool(
       electorKey: z.string().optional(),
     },
   },
-  (args) => wrap(() => client.ine.validateVoterList(args))(),
+  // INE list backend can take 60-90s on cold start — bump per-call SDK timeout.
+  (args) =>
+    wrap(() =>
+      client.ine.validateVoterList(clean(args), {timeoutInSeconds: 120}),
+    )(),
 );
 
 server.registerTool(
@@ -236,7 +257,7 @@ server.registerTool(
       back: z.string().optional().describe("Base64 image of the credential back (recommended)."),
     },
   },
-  (args) => wrap(() => client.ine.extractVoterIdData(args))(),
+  (args) => wrap(() => client.ine.extractVoterIdData(clean(args)))(),
 );
 
 server.registerTool(
@@ -249,7 +270,7 @@ server.registerTool(
       back: z.string().describe("Base64 image of the credential back."),
     },
   },
-  ({back}) => wrap(() => client.ine.extractQrData({back}))(),
+  ({back}) => wrap(() => client.ine.extractQrData(clean({back})))(),
 );
 
 server.registerTool(
@@ -263,7 +284,7 @@ server.registerTool(
       rfc: z.string().optional(),
     },
   },
-  (args) => wrap(() => client.compliance.searchSat69(args))(),
+  (args) => wrap(() => client.compliance.searchSat69(clean(args)))(),
 );
 
 server.registerTool(
@@ -277,7 +298,7 @@ server.registerTool(
       rfc: z.string().optional(),
     },
   },
-  (args) => wrap(() => client.compliance.searchSat69B(args))(),
+  (args) => wrap(() => client.compliance.searchSat69B(clean(args)))(),
 );
 
 server.registerTool(
@@ -297,7 +318,7 @@ server.registerTool(
         .describe("1-100. Higher = stricter. Default 85."),
     },
   },
-  (args) => wrap(() => client.compliance.searchOfac(args))(),
+  (args) => wrap(() => client.compliance.searchOfac(clean(args)))(),
 );
 
 server.registerTool(
@@ -315,7 +336,7 @@ server.registerTool(
       minSimilarityScore: z.number().int().min(1).max(100).optional(),
     },
   },
-  (args) => wrap(() => client.compliance.searchPeps(args))(),
+  (args) => wrap(() => client.compliance.searchPeps(clean(args)))(),
 );
 
 server.registerTool(
@@ -339,7 +360,7 @@ server.registerTool(
         .optional(),
     },
   },
-  (args) => wrap(() => client.biometrics.matchFaces(args))(),
+  (args) => wrap(() => client.biometrics.matchFaces(clean(args)))(),
 );
 
 server.registerTool(
@@ -352,7 +373,7 @@ server.registerTool(
       selfie: z.string().describe("Base64 selfie image (PNG or JPG)."),
     },
   },
-  ({selfie}) => wrap(() => client.biometrics.checkLiveness({selfie}))(),
+  ({selfie}) => wrap(() => client.biometrics.checkLiveness(clean({selfie})))(),
 );
 
 server.registerTool(
@@ -365,7 +386,7 @@ server.registerTool(
       email: z.string(),
     },
   },
-  ({email}) => wrap(() => client.email.validateEmail({email}))(),
+  ({email}) => wrap(() => client.email.validateEmail(clean({email})))(),
 );
 
 server.registerTool(
@@ -378,7 +399,7 @@ server.registerTool(
       file: z.string().describe("Base64-encoded image or PDF of the bill."),
     },
   },
-  ({file}) => wrap(() => client.proofOfAddress.extractProofOfAddress({file}))(),
+  ({file}) => wrap(() => client.proofOfAddress.extractProofOfAddress(clean({file})))(),
 );
 
 // =====================================================================
