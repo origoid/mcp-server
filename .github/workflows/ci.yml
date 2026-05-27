@@ -22,14 +22,16 @@ jobs:
 
       - run: npm run build
 
-      - name: Smoke test (server boots and lists 26 tools)
+      - name: Smoke test (server boots and reports tool counts)
         run: |
           # Server prints connection line to stderr then waits for stdin —
           # close stdin so it exits cleanly. Verify the expected banner.
           output=$(ORIGOID_API_KEY=dummy node dist/index.js </dev/null 2>&1 || true)
           echo "$output"
-          echo "$output" | grep -q "19 API tools + 7 docs tools" \
-            || { echo "Boot banner missing"; exit 1; }
+          # Just check the server connected and reported some tool counts;
+          # don't pin the exact numbers (they change per release).
+          echo "$output" | grep -qE "\[origoid-mcp\] connected — [0-9]+ API tools \+ [0-9]+ docs tools" \
+            || { echo "Boot banner missing or malformed"; exit 1; }
 
   publish:
     needs: [build]
