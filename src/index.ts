@@ -27,6 +27,9 @@ import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import pkg from "@origoid/sdk";
 import {z} from "zod";
 import openapi from "./spec/openapi.json" with {type: "json"};
+import {generateTypescriptTypes} from "./codegen/typescript.js";
+import {generatePydanticModel} from "./codegen/python.js";
+import {getStarter, listStarters, STARTER_KEYS, type StarterKey} from "./codegen/starters.js";
 
 const {OrigoidApiClient} = pkg;
 
@@ -51,7 +54,7 @@ function client() {
 
 const server = new McpServer({
   name: "@origoid/mcp-server",
-  version: "0.2.0",
+  version: "0.3.0",
 });
 
 /**
@@ -704,6 +707,92 @@ server.registerTool(
 );
 
 server.registerTool(
+  "get_typescript_types",
+  {
+    title: "Generate self-contained TypeScript types for an endpoint",
+    description:
+      "Produce a single .ts file with `Request`, `Type` (union of every possible result code), `Data` (shape of envelope.data on SUCCESS, inferred from the OpenAPI example), and `Envelope` interfaces. Self-contained — no SDK import required. Paste into your project and import.",
+    inputSchema: {
+      operationId: z
+        .string()
+        .describe(`One of: ${ALL_OPERATION_IDS.join(", ")}`),
+    },
+  },
+  async ({operationId}) => {
+    const entry = OPS.get(operationId);
+    if (!entry) {
+      return textTool({error: `Unknown operationId: ${operationId}`});
+    }
+    const code = generateTypescriptTypes(operationId, entry.op as Parameters<typeof generateTypescriptTypes>[1]);
+    return textTool({
+      operationId,
+      language: "typescript",
+      filename: `${operationId}.types.ts`,
+      source: code,
+    });
+  },
+);
+
+server.registerTool(
+  "get_pydantic_model",
+  {
+    title: "Generate self-contained Pydantic v2 models for an endpoint",
+    description:
+      "Produce a single .py file with `Request`, `Type` (Literal of every possible result code), `Data` (shape of envelope.data on SUCCESS), `ErrorDetail`, and `Envelope` Pydantic v2 classes. Only runtime dep is `pydantic>=2`.",
+    inputSchema: {
+      operationId: z
+        .string()
+        .describe(`One of: ${ALL_OPERATION_IDS.join(", ")}`),
+    },
+  },
+  async ({operationId}) => {
+    const entry = OPS.get(operationId);
+    if (!entry) {
+      return textTool({error: `Unknown operationId: ${operationId}`});
+    }
+    const code = generatePydanticModel(operationId, entry.op as Parameters<typeof generatePydanticModel>[1]);
+    return textTool({
+      operationId,
+      language: "python",
+      filename: `${operationId}_models.py`,
+      source: code,
+    });
+  },
+);
+
+server.registerTool(
+  "get_full_integration_starter",
+  {
+    title: "Get a complete runnable integration starter project",
+    description:
+      "Return a full multi-file project the user can drop into a folder and run. Each file comes with `path` + `contents`. Includes setup commands and the run command. Available scenarios: " +
+      STARTER_KEYS.join(", ") +
+      ". Use this when the user asks for a working integration, not just a snippet.",
+    inputSchema: {
+      scenario: z
+        .string()
+        .describe(`One of: ${STARTER_KEYS.join(", ")}.`),
+    },
+  },
+  async ({scenario}) => {
+    const starter = getStarter(scenario as StarterKey);
+    if (!starter) {
+      return textTool({
+        error: `Unknown scenario: ${scenario}`,
+        available: listStarters(),
+      });
+    }
+    return textTool({
+      scenario: starter.id,
+      description: starter.description,
+      setupCommands: starter.setupCommands,
+      runCommand: starter.runCommand,
+      files: starter.files,
+    });
+  },
+);
+
+server.registerTool(
   "validate_envelope_shape",
   {
     title: "Offline check whether a JSON value matches the OrigoID envelope contract",
@@ -782,7 +871,7 @@ server.registerTool(
 const transport = new StdioServerTransport();
 await server.connect(transport);
 process.stderr.write(
-  `[origoid-mcp] connected — ${OPS.size} API tools + 7 docs tools` +
+  `[origoid-mcp] connected — ${OPS.size} API tools + 10 docs tools` +
     (sdkClient ? "" : " (API tools disabled: ORIGOID_API_KEY missing)") +
     "\n",
 );
