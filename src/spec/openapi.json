@@ -2150,7 +2150,7 @@
           "INE"
         ],
         "summary": "ID Data Extraction (OCR & Geocoding)",
-        "description": "**Credits:** 1 per call.\n\nPerforms OCR on the front and back of a Mexican voter ID (INE / IFE) and returns the structured data printed on the credential: full name, CURP, voter key (CIC / OCR), address, photograph metadata, the document model variant (E, G, H), and the MRZ read from the back when present.\n\nWhat sets this endpoint apart is **integrated address normalization + geocoding**: the address printed on the INE is rarely clean — abbreviations, missing colonia, inconsistent casing. We normalize and enrich it automatically. You get back not only the raw address text, but also:\n\n- **`addressNormalized`**: corrected casing, expanded abbreviations (`AV.` → `AVENIDA`, `CALZ.` → `CALZADA`), validated postal code against the SEPOMEX directory, matched neighborhood / municipality / state from the official catalog, and `latitude` / `longitude` when the address resolves with confidence.\n- **`electoralGeography`**: derived electoral district, federal entity, and polling section — useful for cross-checking with `validateVoterList`.\n- **Document model detection** (E, G, H) and per-model security feature validation.\n- **MRZ + QR cross-validation**: when the back contains MRZ and QR, we read both and confirm they agree with the printed fields. Mismatches are flagged.\n\nUse this endpoint to digitize voter ID capture without manual transcription, and to obtain a geo-enriched address record in a single call — eliminating a separate geocoding step in your KYC flow.",
+        "description": "**Credits:** 1 per call.\n\nPerforms OCR on the front and back of a Mexican voter ID (INE / IFE) and returns the structured data printed on the credential: full name, CURP, voter key (CIC / OCR), address, photograph metadata, the document model variant (D, E, F, G, H — current and recent INE designs), and the MRZ read from the back when present.\n\nWhat sets this endpoint apart is **integrated address normalization + geocoding**: the address printed on the INE is rarely clean — abbreviations, missing colonia, inconsistent casing. We normalize and enrich it automatically. You get back not only the raw address text, but also:\n\n- **`addressNormalized`**: corrected casing, expanded abbreviations (`AV.` → `AVENIDA`, `CALZ.` → `CALZADA`), validated postal code against the SEPOMEX directory, matched neighborhood / municipality / state from the official catalog, and `latitude` / `longitude` when the address resolves with confidence.\n- **`electoralGeography`**: derived electoral district, federal entity, and polling section — useful for cross-checking with `validateVoterList`.\n- **Document model detection** (E, G, H) and per-model security feature validation.\n- **MRZ + QR cross-validation**: when the back contains MRZ and QR, we read both and confirm they agree with the printed fields. Mismatches are flagged.\n\nUse this endpoint to digitize voter ID capture without manual transcription, and to obtain a geo-enriched address record in a single call — eliminating a separate geocoding step in your KYC flow.",
         "requestBody": {
           "required": true,
           "content": {
@@ -2180,8 +2180,138 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Success g": {
-                    "summary": "Success: INE Type G (QR)",
+                  "Success D": {
+                    "summary": "Success: IFE Type D (pre-2014)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "Document processed successfully",
+                      "data": {
+                        "documentType": "IFE",
+                        "model": "D",
+                        "personalInfo": {
+                          "givenNames": "RAQUEL",
+                          "firstSurname": "MIRANDA",
+                          "secondSurname": "ARAUJO",
+                          "dateOfBirth": "1979-02-19",
+                          "gender": "M",
+                          "curp": "MXAR790219MSLRRQ00",
+                          "electorKey": "MRARRQ79021925M800"
+                        },
+                        "address": {
+                          "addressLine1": "C EL CAPULE 392",
+                          "addressLine2": "FRACC JARDINES DE LA SIERRA 80019",
+                          "addressLine3": "CULIACAN, SIN."
+                        },
+                        "addressNormalized": null,
+                        "electoralGeography": {
+                          "state": "25",
+                          "municipality": "006",
+                          "section": "1218",
+                          "locality": "0001"
+                        },
+                        "validity": {
+                          "registrationYear": "1999",
+                          "emissionNumber": "03",
+                          "emissionYear": "2014",
+                          "validUntilYear": "2024"
+                        },
+                        "security": {
+                          "cic": "119195412",
+                          "ocr": "1218079288742",
+                          "citizenIdentifier": "079288742",
+                          "barCode": "119195412",
+                          "qr": "http://qr.ife.org.mx/121807928874203119195412/20140626/S/006176",
+                          "validationCode": "gd1778785548.941661",
+                          "mrz": "IDMEX1191954121<<12180792887427902192M2412311MEX<03<<10110<1MIRANDAARAUJO<<RAQUEL27demarz"
+                        },
+                        "mrzValidation": {
+                          "dateOfBirth": true,
+                          "gender": true,
+                          "validity": true,
+                          "emission": true,
+                          "cic": true,
+                          "name": false
+                        },
+                        "qrValidation": {
+                          "cic": true,
+                          "ocr": true,
+                          "citizenIdentifier": true
+                        },
+                        "extractedImages": {
+                          "face": null
+                        }
+                      },
+                      "billable": true,
+                      "transactionId": "550e8400-e29b-41d4-a716-446655440000",
+                      "processedAt": "2026-03-15T19:23:00-06:00"
+                    }
+                  },
+                  "Success E": {
+                    "summary": "Success: INE Type E (2014)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "Document processed successfully",
+                      "data": {
+                        "documentType": "INE",
+                        "model": "E",
+                        "personalInfo": {
+                          "givenNames": "ANA SOFIA",
+                          "firstSurname": "GONZALEZ",
+                          "secondSurname": "SILVA",
+                          "dateOfBirth": "1988-07-18",
+                          "gender": "M",
+                          "curp": "GOSA880718MNLNLN07",
+                          "electorKey": "GNSLAN88071819M500"
+                        },
+                        "address": {
+                          "addressLine1": "AV LAGO ALBERTO 320 TORRE CENTRAL 503",
+                          "addressLine2": "COL ANAHUAC 11320",
+                          "addressLine3": "MIGUEL HIDALGO, CDMX"
+                        },
+                        "addressNormalized": null,
+                        "electoralGeography": {
+                          "state": "09",
+                          "municipality": "016",
+                          "section": "5156",
+                          "locality": "0001"
+                        },
+                        "validity": {
+                          "registrationYear": "2006",
+                          "emissionNumber": "02",
+                          "emissionYear": "2019",
+                          "validUntilYear": "2029"
+                        },
+                        "security": {
+                          "cic": "190272757",
+                          "ocr": "5156075473604",
+                          "citizenIdentifier": "075473604",
+                          "barCode": null,
+                          "qr": null,
+                          "validationCode": "gd1778785549.404892",
+                          "mrz": "IDMEX1902727572<<51560754736048807180M2912316MEX<02<<17573<4GONZALEZ<SILVA<<ANA<SOFIA"
+                        },
+                        "mrzValidation": {
+                          "dateOfBirth": true,
+                          "gender": true,
+                          "validity": true,
+                          "emission": true,
+                          "cic": false,
+                          "name": true
+                        },
+                        "qrValidation": null,
+                        "extractedImages": {
+                          "face": null
+                        }
+                      },
+                      "billable": true,
+                      "transactionId": "550e8400-e29b-41d4-a716-446655440000",
+                      "processedAt": "2026-03-15T19:23:00-06:00"
+                    }
+                  },
+                  "Success G": {
+                    "summary": "Success: INE Type G (2019+)",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -2190,57 +2320,47 @@
                         "documentType": "INE",
                         "model": "G",
                         "personalInfo": {
-                          "givenNames": "CARLOS ARTURO",
-                          "firstSurname": "MENDOZA",
-                          "secondSurname": "RUIZ",
-                          "dateOfBirth": "1990-08-05",
+                          "givenNames": "ANGEL LUIS",
+                          "firstSurname": "ORTEGA",
+                          "secondSurname": "OSORIO",
+                          "dateOfBirth": "1983-09-06",
                           "gender": "H",
-                          "curp": "MERC900805HDFRZA09",
-                          "electorKey": "MZRCAR90080514H500"
+                          "curp": "OEOA830906HVZRSN07",
+                          "electorKey": "OROSAN83090630H100"
                         },
                         "address": {
-                          "addressLine1": "CALLE HIDALGO 45 INT 2",
-                          "addressLine2": "COL CENTRO 06000",
-                          "addressLine3": "CUAUHTEMOC, CDMX"
+                          "addressLine1": "CZARAGOZA 3",
+                          "addressLine2": "LOC NAOLINCO 91400",
+                          "addressLine3": "NAOLINCO, VER"
                         },
-                        "addressNormalized": {
-                          "geocodingStatus": "VERIFIED",
-                          "street": "Calle Hidalgo",
-                          "exteriorNumber": "45",
-                          "interiorNumber": "2",
-                          "neighborhood": "Centro",
-                          "zipCode": "06000",
-                          "municipality": "Cuauhtémoc",
-                          "state": "Ciudad de México",
-                          "country": "Mexico"
-                        },
+                        "addressNormalized": null,
                         "electoralGeography": {
                           "state": null,
                           "municipality": null,
-                          "section": "1234",
+                          "section": "2596",
                           "locality": null
                         },
                         "validity": {
-                          "registrationYear": "2015",
+                          "registrationYear": "2002",
                           "emissionNumber": "02",
-                          "emissionYear": "2022",
-                          "validUntilYear": "2032"
+                          "emissionYear": "2023",
+                          "validUntilYear": "2033"
                         },
                         "security": {
-                          "cic": "123456789",
-                          "ocr": "1234123456789",
-                          "citizenIdentifier": "123456789",
-                          "barCode": "123456789",
-                          "qr": "http://qr.ine.mx/123412345678901123456789/20220204/P/001234",
-                          "validationCode": "ab1234567890.123456",
-                          "mrz": "IDMEX1234567891<<12341234567899008059H3212316MEX<02<<12345<4MENDOZA<RUIZ<<CARLOS<ARTURO<"
+                          "cic": "256434491",
+                          "ocr": "2596017401625",
+                          "citizenIdentifier": "017401625",
+                          "barCode": null,
+                          "qr": "http://qr.ine.mx/259601740162502256434491/20231205/P/003977",
+                          "validationCode": "gd1778785546.310869",
+                          "mrz": "IDMEX2564344912<<25960174016258309064H3312315MEX<02<<08317<3ORTEGAKOSORIO<<ANGEL<LUIS"
                         },
                         "mrzValidation": {
                           "dateOfBirth": true,
                           "gender": true,
                           "validity": true,
                           "emission": true,
-                          "cic": true,
+                          "cic": false,
                           "name": true
                         },
                         "qrValidation": {
@@ -2249,89 +2369,12 @@
                           "citizenIdentifier": true
                         },
                         "extractedImages": {
-                          "face": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhUTEhIVFRUVFxUVFRU..."
+                          "face": null
                         }
                       },
-                      "transactionId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-                      "processedAt": "2026-03-15T21:23:00-06:00",
-                      "billable": true
-                    }
-                  },
-                  "Success d e": {
-                    "summary": "Success: INE Type D/E",
-                    "value": {
-                      "status": "OK",
-                      "type": "SUCCESS",
-                      "message": "Document processed successfully",
-                      "data": {
-                        "documentType": "INE",
-                        "model": "D",
-                        "personalInfo": {
-                          "givenNames": "LAURA ELENA",
-                          "firstSurname": "GOMEZ",
-                          "secondSurname": "CASTILLO",
-                          "dateOfBirth": "1988-11-22",
-                          "gender": "M",
-                          "curp": "GOCL881122MDFRZS04",
-                          "electorKey": "GMCSLA88112209M200"
-                        },
-                        "address": {
-                          "addressLine1": "AV REFORMA 400",
-                          "addressLine2": "COL LOMAS 11000",
-                          "addressLine3": "MIGUEL HIDALGO, CDMX"
-                        },
-                        "addressNormalized": {
-                          "geocodingStatus": "VERIFIED",
-                          "street": "Avenida Paseo de la Reforma",
-                          "exteriorNumber": "400",
-                          "interiorNumber": null,
-                          "neighborhood": "Lomas de Chapultepec",
-                          "zipCode": "11000",
-                          "municipality": "Miguel Hidalgo",
-                          "state": "Ciudad de México",
-                          "country": "Mexico"
-                        },
-                        "electoralGeography": {
-                          "state": "09",
-                          "municipality": "016",
-                          "section": "5678",
-                          "locality": "0001"
-                        },
-                        "validity": {
-                          "registrationYear": "2010",
-                          "emissionNumber": "01",
-                          "emissionYear": "2018",
-                          "validUntilYear": "2028"
-                        },
-                        "security": {
-                          "cic": "987654321",
-                          "ocr": "5678987654321",
-                          "citizenIdentifier": "987654321",
-                          "barCode": "987654321",
-                          "qr": "http://qr.ine.mx/56789876543210/20180515/D/000001",
-                          "validationCode": "cd0987654321.654321",
-                          "mrz": "IDMEX9876543210<<56789876543218811221M2812313MEX<01<<54321<8GOMEZ<CASTILLO<<LAURA<ELENA<"
-                        },
-                        "mrzValidation": {
-                          "dateOfBirth": true,
-                          "gender": true,
-                          "validity": true,
-                          "emission": true,
-                          "cic": true,
-                          "name": true
-                        },
-                        "qrValidation": {
-                          "cic": true,
-                          "ocr": true,
-                          "citizenIdentifier": true
-                        },
-                        "extractedImages": {
-                          "face": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhUTEhIVFRUVFxUVFRU..."
-                        }
-                      },
-                      "transactionId": "f47ac10b-58cc-4372-a567-0e02b2c3d480",
-                      "processedAt": "2026-03-15T21:24:00-06:00",
-                      "billable": true
+                      "billable": true,
+                      "transactionId": "550e8400-e29b-41d4-a716-446655440000",
+                      "processedAt": "2026-03-15T19:23:00-06:00"
                     }
                   },
                   "Unreadable": {
@@ -2372,12 +2415,32 @@
                         {
                           "field": "front",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "The 'front' parameter is required with a valid base64 image"
+                          "message": "must have required property 'front'"
+                        },
+                        {
+                          "field": "front",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "front exceeds 12 MB base64 length"
+                        },
+                        {
+                          "field": "back",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "back exceeds 12 MB base64 length"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "Request body exceeds 28 MB"
+                        },
+                        {
+                          "field": "front",
+                          "code": "INVALID_FORMAT",
+                          "message": "front must be a valid base64-encoded image"
                         },
                         {
                           "field": "back",
                           "code": "INVALID_FORMAT",
-                          "message": "The 'back' parameter must be a valid base64 encoded string"
+                          "message": "back must be a valid base64-encoded image"
                         }
                       ]
                     }
@@ -2391,18 +2454,6 @@
                       "data": null,
                       "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-123456789015",
                       "processedAt": "2026-03-15T21:28:00-06:00",
-                      "billable": false
-                    }
-                  },
-                  "Service unavailable": {
-                    "summary": "Service Unavailable",
-                    "value": {
-                      "status": "ERROR",
-                      "type": "SERVICE_UNAVAILABLE",
-                      "message": "The voter-ID OCR service is currently unavailable",
-                      "data": null,
-                      "transactionId": "9a7d203e-ff85-4251-9d2a-c3eaa365d11b",
-                      "processedAt": "2026-05-21T10:00:00-06:00",
                       "billable": false
                     }
                   }
