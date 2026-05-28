@@ -1961,18 +1961,6 @@
                       "billable": true
                     }
                   },
-                  "Not supported": {
-                    "summary": "Not Supported",
-                    "value": {
-                      "status": "OK",
-                      "type": "INE_NOT_SUPPORTED",
-                      "message": "This INE credential model is not supported for validation",
-                      "data": null,
-                      "transactionId": "f1a2b3c4-d5e6-7f8a-9b0c-123456789009",
-                      "processedAt": "2026-03-15T12:35:00-06:00",
-                      "billable": true
-                    }
-                  },
                   "Validation error": {
                     "summary": "Validation Error",
                     "value": {
@@ -1984,12 +1972,37 @@
                         {
                           "field": "cic",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "CIC parameter is required"
+                          "message": "must have required property 'cic'"
+                        },
+                        {
+                          "field": "citizenIdentifier",
+                          "code": "MISSING_REQUIRED_FIELD",
+                          "message": "must have required property 'citizenIdentifier'"
+                        },
+                        {
+                          "field": "ocr",
+                          "code": "MISSING_REQUIRED_FIELD",
+                          "message": "must have required property 'ocr'"
+                        },
+                        {
+                          "field": "_root",
+                          "code": "SCHEMA_MISMATCH",
+                          "message": "must match exactly one schema in oneOf"
+                        },
+                        {
+                          "field": "cic",
+                          "code": "INVALID_FORMAT",
+                          "message": "CIC must be exactly 9 digits"
+                        },
+                        {
+                          "field": "citizenIdentifier",
+                          "code": "INVALID_FORMAT",
+                          "message": "citizenIdentifier must be exactly 9 digits"
                         },
                         {
                           "field": "ocr",
                           "code": "INVALID_FORMAT",
-                          "message": "Invalid OCR format"
+                          "message": "OCR must be exactly 13 digits"
                         }
                       ],
                       "transactionId": "f1a2b3c4-d5e6-7f8a-9b0c-123456789010",
