@@ -4653,7 +4653,7 @@
           "Email"
         ],
         "summary": "Email Deliverability & Fraud Validation",
-        "description": "**Credits:** 1 per call.\n\nValidates an email address for deliverability and risk. Returns the normalized address, deliverability verdict (`deliverable`, `risky`, `undeliverable`), a quality score (0–100), a toxicity score, and a set of boolean verdicts (is_free, is_disposable, is_role_account, is_full_mailbox, is_catch_all, is_toxic) plus DNS/SMTP infrastructure metadata.\n\nUse this endpoint at signup time to reject typos and disposable addresses before they enter your database, reducing bounce rates on transactional email and fraud signals from throwaway accounts.",
+        "description": "**Credits:** 1 per call.\n\nValidates an email address for deliverability and risk. Returns the normalized address, deliverability verdict (`deliverable`, `risky`, `undeliverable`), a quality score (0–100), a toxicity score, and a set of boolean verdicts (`isFree`, `isDisposable`, `isRoleAccount`, `isFull`, `isCatchAll`, `isToxic`).\n\nUse this endpoint at signup time to reject typos and disposable addresses before they enter your database, reducing bounce rates on transactional email and fraud signals from throwaway accounts.\n\n**`riskLevel` reference** — standardized scoring you can branch on:\n\n| Level | When |\n|---|---|\n| `NONE` | Mailbox is deliverable and not flagged as disposable or toxic. |\n| `MEDIUM` | Domain is catch-all — accepts every address, so the specific mailbox cannot be confirmed to exist. |\n| `HIGH` | Deliverability is `risky` or `unknown` (e.g. mail server rejects probes), OR the domain belongs to a disposable / temporary email provider (Mailinator, 10minutemail, Guerrillamail, etc.). |\n| `CRITICAL` | Mailbox is `undeliverable` (does not exist or is full), OR the address scores above 40 on the toxicity index (associated with spam / abuse). |\n\nThe `verdicts` object always carries the underlying signals (`isFree`, `isDisposable`, `isRoleAccount`, `isFull`, `isCatchAll`, `isToxic`) so you can apply your own scoring on top if you need finer granularity.",
         "requestBody": {
           "required": true,
           "content": {
@@ -4715,15 +4715,15 @@
                     }
                   },
                   "Risky": {
-                    "summary": "Risky (Catch-all)",
+                    "summary": "Catch-all (MEDIUM)",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
-                      "message": "Potential deliverability issues detected",
+                      "message": "Mailbox cannot be confirmed",
                       "data": {
                         "email": "contacto@empresa.com",
                         "deliverability": "risky",
-                        "riskLevel": "HIGH",
+                        "riskLevel": "MEDIUM",
                         "score": 75,
                         "toxicityScore": 10,
                         "verdicts": {
@@ -4817,7 +4817,7 @@
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
-                      "message": "The email validation provider is currently unavailable",
+                      "message": "Email validation service is currently unavailable. Please retry.",
                       "data": null,
                       "transactionId": "3b992ac1-21df-4235-bfce-70bd3d1c8e6f",
                       "processedAt": "2026-05-21T10:00:00-06:00",
