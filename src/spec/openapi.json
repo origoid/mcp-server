@@ -1117,7 +1117,7 @@
           "IMSS"
         ],
         "summary": "Get NSS",
-        "description": "**Credits:** 1 per call.\n\nRetrieves a worker's NSS (Número de Seguridad Social) from IMSS based on CURP. Returns the 11-digit NSS plus metadata.\n\nUse this endpoint when onboarding employees for payroll or social-security registration: a CURP is far easier to collect than asking the candidate for their NSS card, which is frequently misplaced.",
+        "description": "**Credits:** 1 per call.\n\nRetrieves a worker's NSS (Número de Seguridad Social) from IMSS based on CURP. Returns the 11-digit NSS.\n\nUse this endpoint when onboarding employees for payroll or social-security registration: a CURP is far easier to collect than asking the candidate for their NSS card, which is frequently misplaced.",
         "requestBody": {
           "required": true,
           "content": {
