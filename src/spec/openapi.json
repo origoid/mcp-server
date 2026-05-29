@@ -5208,7 +5208,7 @@
               "application/json": {
                 "examples": {
                   "Success CFE": {
-                    "summary": "Success (CFE)",
+                    "summary": "Success CFE",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -5248,8 +5248,8 @@
                       "billable": true
                     }
                   },
-                  "Success telmex": {
-                    "summary": "Success (Telmex)",
+                  "Success Telmex": {
+                    "summary": "Success Telmex",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -5289,8 +5289,8 @@
                       "billable": true
                     }
                   },
-                  "Success telcel": {
-                    "summary": "Success (Telcel)",
+                  "Success Telcel": {
+                    "summary": "Success Telcel",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -5330,8 +5330,8 @@
                       "billable": true
                     }
                   },
-                  "Success megacable": {
-                    "summary": "Success (Megacable)",
+                  "Success Megacable": {
+                    "summary": "Success Megacable",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -5371,8 +5371,8 @@
                       "billable": true
                     }
                   },
-                  "Success izzi": {
-                    "summary": "Success (Izzi)",
+                  "Success Izzi": {
+                    "summary": "Success Izzi",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -5412,8 +5412,8 @@
                       "billable": true
                     }
                   },
-                  "Success totalplay": {
-                    "summary": "Success (Totalplay)",
+                  "Success Totalplay": {
+                    "summary": "Success Totalplay",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -5515,18 +5515,6 @@
                       "data": null,
                       "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-123456789015",
                       "processedAt": "2026-03-15T12:30:00-06:00",
-                      "billable": false
-                    }
-                  },
-                  "Service unavailable": {
-                    "summary": "Service unavailable",
-                    "value": {
-                      "status": "ERROR",
-                      "type": "SERVICE_UNAVAILABLE",
-                      "message": "The proof-of-address extraction service is currently unavailable",
-                      "data": null,
-                      "transactionId": "fe0751d2-475b-4be5-903c-4217e6b1a030",
-                      "processedAt": "2026-05-21T10:00:00-06:00",
                       "billable": false
                     }
                   }
