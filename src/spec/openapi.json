@@ -949,17 +949,17 @@
                         {
                           "field": "givenNames",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "givenNames parameter is required"
+                          "message": "must have required property 'givenNames'"
                         },
                         {
                           "field": "firstSurname",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "firstSurname parameter is required"
+                          "message": "must have required property 'firstSurname'"
                         },
                         {
-                          "field": "dateOfBirth",
-                          "code": "INVALID_FORMAT",
-                          "message": "Invalid date format, expected YYYY-MM-DD"
+                          "field": "gender",
+                          "code": "MISSING_REQUIRED_FIELD",
+                          "message": "must have required property 'gender'"
                         },
                         {
                           "field": "gender",
@@ -967,9 +967,29 @@
                           "message": "gender must be one of: H, M, X"
                         },
                         {
+                          "field": "dateOfBirth",
+                          "code": "MISSING_REQUIRED_FIELD",
+                          "message": "must have required property 'dateOfBirth'"
+                        },
+                        {
+                          "field": "dateOfBirth",
+                          "code": "INVALID_FORMAT",
+                          "message": "dateOfBirth must be in YYYY-MM-DD format"
+                        },
+                        {
                           "field": "birthStateCode",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "birthStateCode parameter is required"
+                          "message": "must have required property 'birthStateCode'"
+                        },
+                        {
+                          "field": "birthStateCode",
+                          "code": "INVALID_ENUM_VALUE",
+                          "message": "birthStateCode is not a valid Mexican state code"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
                       ],
                       "transactionId": "550e8400-e29b-41d4-a716-446655440022",
@@ -982,7 +1002,7 @@
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
-                      "message": "RENAPO service is currently unavailable",
+                      "message": "The RENAPO service is currently unavailable. Please retry.",
                       "data": null,
                       "transactionId": "550e8400-e29b-41d4-a716-446655440035",
                       "processedAt": "2026-03-15T12:35:00-06:00",
