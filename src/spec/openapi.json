@@ -2222,7 +2222,6 @@
                           "citizenIdentifier": "079288742",
                           "barCode": "119195412",
                           "qr": "http://qr.ife.org.mx/121807928874203119195412/20140626/S/006176",
-                          "validationCode": "gd1778785548.941661",
                           "mrz": "IDMEX1191954121<<12180792887427902192M2412311MEX<03<<10110<1MIRANDAARAUJO<<RAQUEL27demarz"
                         },
                         "mrzValidation": {
@@ -2289,7 +2288,6 @@
                           "citizenIdentifier": "075473604",
                           "barCode": null,
                           "qr": null,
-                          "validationCode": "gd1778785549.404892",
                           "mrz": "IDMEX1902727572<<51560754736048807180M2912316MEX<02<<17573<4GONZALEZ<SILVA<<ANA<SOFIA"
                         },
                         "mrzValidation": {
@@ -2352,7 +2350,6 @@
                           "citizenIdentifier": "017401625",
                           "barCode": null,
                           "qr": "http://qr.ine.mx/259601740162502256434491/20231205/P/003977",
-                          "validationCode": "gd1778785546.310869",
                           "mrz": "IDMEX2564344912<<25960174016258309064H3312315MEX<02<<08317<3ORTEGAKOSORIO<<ANGEL<LUIS"
                         },
                         "mrzValidation": {
