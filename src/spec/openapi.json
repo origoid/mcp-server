@@ -2601,7 +2601,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Success g": {
+                  "Success G": {
                     "summary": "Success: INE Model G",
                     "value": {
                       "status": "OK",
@@ -2643,8 +2643,9 @@
                       "billable": true
                     }
                   },
-                  "Success h": {
-                    "summary": "Success: INE Model H",
+                  "Success H": {
+                    "summary": "Success: INE Type H (2024+, real sample, PII sanitized)",
+                    "description": "Real production payload from a Mexican INE Type H card with all personal identifiers (names, CURP, voter key) replaced with placeholders. The base64 face image is collapsed to `<base64-image>` for readability.",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -2654,35 +2655,35 @@
                         "model": "H",
                         "personalInfo": {
                           "givenNames": "JUAN CARLOS",
-                          "firstSurname": "MARTINEZ",
-                          "secondSurname": "RODRIGUEZ",
+                          "firstSurname": "PEREZ",
+                          "secondSurname": "LOPEZ",
                           "gender": "H",
-                          "curp": "MARJ880421HDFRDR05"
+                          "curp": "PELJ900101HDFRPN09"
                         },
                         "electoralGeography": {
-                          "stateCode": "15",
-                          "stateName": "ESTADO DE MÉXICO",
-                          "municipalityCode": "057",
-                          "municipalityName": "NAUCALPAN DE JUÁREZ",
-                          "section": "0623"
+                          "stateCode": "09",
+                          "stateName": "CIUDAD DE MÉXICO",
+                          "municipalityCode": null,
+                          "municipalityName": null,
+                          "section": null
                         },
                         "validity": {
-                          "issuedYear": "2023",
-                          "validUntilYear": "2033",
-                          "emissionDate": "2023-04-12",
-                          "emissionNumber": "2"
+                          "issuedYear": "2024",
+                          "validUntilYear": "2034",
+                          "emissionDate": "2024-02-11",
+                          "emissionNumber": "1"
                         },
                         "security": {
-                          "cic": "987654321",
-                          "ocr": "0623187654329"
+                          "cic": "123456789",
+                          "ocr": "1234567890123"
                         },
                         "extractedImages": {
-                          "face": "iVBORw0KGgoAAAANSUhEUgAAAGAAAACACAIAAAB7vvvt..."
+                          "face": "<base64-image>"
                         }
                       },
-                      "transactionId": "2a1b9dc3-c825-4805-b46a-bee8e7b333f3",
-                      "processedAt": "2026-04-26T10:01:00-06:00",
-                      "billable": true
+                      "billable": true,
+                      "transactionId": "550e8400-e29b-41d4-a716-446655440000",
+                      "processedAt": "2026-03-15T19:23:00-06:00"
                     }
                   },
                   "Unreadable": {
@@ -2723,7 +2724,27 @@
                         {
                           "field": "back",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "The 'back' parameter is required with a valid base64 image"
+                          "message": "must have required property 'back'"
+                        },
+                        {
+                          "field": "back",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "back exceeds 12 MB base64 length"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "Request body exceeds 28 MB"
+                        },
+                        {
+                          "field": "back",
+                          "code": "INVALID_FORMAT",
+                          "message": "back must be a valid base64-encoded image"
+                        },
+                        {
+                          "field": "back",
+                          "code": "UNSUPPORTED_FORMAT",
+                          "message": "Only JPEG and PNG images are supported"
                         }
                       ]
                     }
@@ -2737,18 +2758,6 @@
                       "data": null,
                       "transactionId": "bf22e9d0-9d0c-44a0-b310-e2b47bd9d35c",
                       "processedAt": "2026-04-26T10:05:00-06:00",
-                      "billable": false
-                    }
-                  },
-                  "Service unavailable": {
-                    "summary": "Service Unavailable",
-                    "value": {
-                      "status": "ERROR",
-                      "type": "SERVICE_UNAVAILABLE",
-                      "message": "The QR extraction service is currently unavailable",
-                      "data": null,
-                      "transactionId": "3db34a29-a585-45cd-a896-ace59d187362",
-                      "processedAt": "2026-05-21T10:00:00-06:00",
                       "billable": false
                     }
                   }
