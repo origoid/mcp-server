@@ -4017,7 +4017,7 @@
                     }
                   },
                   "Validation error": {
-                    "summary": "Validation Error (Missing Parameters)",
+                    "summary": "Validation error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -4028,6 +4028,26 @@
                           "field": "body",
                           "code": "MISSING_SEARCH_CRITERIA",
                           "message": "You must provide either a valid identifier (rfc) or a name/razonSocial."
+                        },
+                        {
+                          "field": "rfc",
+                          "code": "INVALID_RFC_FORMAT",
+                          "message": "The provided value does not match a valid RFC pattern"
+                        },
+                        {
+                          "field": "name",
+                          "code": "NAME_TOO_SHORT",
+                          "message": "Name too short after removing corporate suffixes (need at least 3 chars)"
+                        },
+                        {
+                          "field": "name",
+                          "code": "NAME_ONLY_STOPWORDS",
+                          "message": "Name contains only corporate stopwords (SA, DE, CV, etc.); add an identifying token"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
                       ],
                       "transactionId": "d6c4cb45-d21e-4070-a998-029968c425b8",
@@ -4036,7 +4056,7 @@
                     }
                   },
                   "Internal error": {
-                    "summary": "Internal Error",
+                    "summary": "Internal error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -4048,7 +4068,7 @@
                     }
                   },
                   "Service unavailable": {
-                    "summary": "Service Unavailable",
+                    "summary": "Service unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
