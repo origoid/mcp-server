@@ -4421,7 +4421,7 @@
           "Compliance"
         ],
         "summary": "OFAC Sanctions List Check",
-        "description": "**Credits:** 1 per call.\n\nSearches the official OFAC sanctions lists (SDN, Non-SDN, FSE, NS-ISA, SSI, CAPTA, NS-PLC) for the provided name or identifier. Returns matches with the originating list, sanction programs (CUBA, IRAN, RUSSIA, etc.), entity type (individual, entity, vessel, aircraft), and risk level.\n\nUse this endpoint as part of mandatory AML compliance to detect counterparties subject to United States sanctions before extending financial services. Required by CNBV for regulated financial institutions and recommended for any cross-border activity.",
+        "description": "**Credits:** 1 per call.\n\nSearches the consolidated OFAC sanctions lists for the provided name. Coverage includes:\n\n- **SDN consolidated** — Specially Designated Nationals (general SDN, plus sub-programs `SDGT` Specially Designated Global Terrorists and `SDNTK` Specially Designated Narcotics Traffickers / Kingpin Act).\n- **Non-SDN consolidated** — Foreign Sanctions Evaders (`FSE`), Sectoral Sanctions Identifications (`SSI`), Correspondent Account / Payable-Through Account restrictions (`CAPTA`), Menu-Based Sanctions (`NS-MBS`), Iran Sanctions Act non-SDN (`NS-ISA`), Palestinian Legislative Council (`NS-PLC`).\n- **UN consolidated sanctions** — surfaced as `OFAC_UN` for clients who want a single endpoint covering both US and UN screening.\n\nEach match carries the originating list (`listType`), the sanction programs that apply, entity type (individual, entity, vessel, aircraft), full aliases and any compliance remarks published with the record.\n\n**Risk Level Matrix (`riskLevel`):**\n- `NONE` (envelope `type: SUCCESS`): no matches at or above `minSimilarityScore`. Safe for automated approval from an OFAC perspective.\n- `CRITICAL` (envelope `type: SUCCESS`): one or more matches found in **any** OFAC or UN sanctions list. Treat as a hard block, reject the relationship, and file the SAR (Suspicious Activity Report) required by your jurisdiction.\n\nThere are intentionally only two levels. AML best practice treats any sanctions list hit — SDN, sectoral, informational, anywhere — as a binding stop. Surfacing intermediate gradations (HIGH / MEDIUM / LOW) misleads the client into believing some hits are merely advisory and is the most common cause of regulatory findings against KYC systems. The `listType` and `complianceDetails.programs` of every match are still surfaced so your compliance team can apply finer policy on top of the binary verdict.\n\n**Multi-match handling:** common names can produce dozens of fuzzy hits. To keep responses bounded:\n- `data.matches[]` is **capped at the top 10 records**, sorted by `similarityScore` descending.\n- `data.totalMatchesFound` reports the **uncapped count** so the client can tell when the cap was hit and decide whether to tighten `minSimilarityScore`.\n\n**Data freshness:** the underlying OFAC and UN consolidated files are refreshed daily by a publisher job and served from a region-replicated cache, so search latency stays sub-second and there is no live dependency on `sanctionssearch.ofac.treas.gov` at request time. The freshness window is up to 24 hours.\n\nUse this endpoint as part of mandatory AML compliance to detect counterparties subject to United States or United Nations sanctions before extending financial services. Required by CNBV for regulated financial institutions and recommended for any cross-border activity.",
         "requestBody": {
           "required": true,
           "content": {
@@ -4441,8 +4441,8 @@
                     "type": "integer",
                     "minimum": 50,
                     "maximum": 100,
-                    "default": 85,
-                    "description": "Minimum similarity score (50-100) required to return a fuzzy match. Defaults to 85."
+                    "default": 90,
+                    "description": "Minimum similarity score (50-100) required to return a fuzzy match. Defaults to 90, a conservative threshold tuned to suppress common-name false positives. Lower it for broader recall when manual review is in place."
                   }
                 }
               }
@@ -4455,8 +4455,25 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Match Critical": {
-                    "summary": "Match: CRITICAL Risk (OFAC SDN)",
+                  "Risk: NONE": {
+                    "summary": "Risk: NONE — no OFAC or UN sanctions match",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "No OFAC matches found",
+                      "data": {
+                        "matchFound": false,
+                        "riskLevel": "NONE",
+                        "totalMatchesFound": 0,
+                        "matches": []
+                      },
+                      "transactionId": "9041aa05-782b-461e-9033-5e07b2ad55fc",
+                      "processedAt": "2026-03-19T10:00:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: CRITICAL": {
+                    "summary": "Risk: CRITICAL — match in OFAC SDN list",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -4464,12 +4481,14 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "CRITICAL",
+                        "totalMatchesFound": 1,
                         "matches": [
                           {
                             "listType": "OFAC_SDN",
                             "entityName": "GUZMAN LOERA, Joaquin Archivaldo",
                             "recordType": "INDIVIDUAL",
                             "similarityScore": 95,
+                            "registeredAddress": "Mexico",
                             "complianceDetails": {
                               "programs": [
                                 "SDNTK"
@@ -4480,29 +4499,82 @@
                                 "SHORTY"
                               ],
                               "nationality": "MEX",
+                              "dateOfBirth": "1954-12-25",
                               "remarks": "Confirmed senior leader of the Sinaloa Cartel."
                             }
                           }
                         ]
                       },
                       "transactionId": "3d272616-b391-4930-9391-dc4557e77e01",
-                      "processedAt": "2026-03-19T10:00:00-06:00",
+                      "processedAt": "2026-03-19T10:01:00-06:00",
                       "billable": true
                     }
                   },
-                  "No Match": {
-                    "summary": "Clean: No OFAC Match",
+                  "Risk: CRITICAL (multiple records)": {
+                    "summary": "Risk: CRITICAL — common name, matches[] capped at 10 of 28",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
-                      "message": "No OFAC matches found",
+                      "message": "OFAC match found",
                       "data": {
-                        "matchFound": false,
-                        "riskLevel": "NONE",
-                        "matches": []
+                        "matchFound": true,
+                        "riskLevel": "CRITICAL",
+                        "totalMatchesFound": 28,
+                        "matches": [
+                          {
+                            "listType": "OFAC_SDN",
+                            "entityName": "GARCIA HERNANDEZ, Jose",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 100,
+                            "registeredAddress": "Sinaloa, Mexico",
+                            "complianceDetails": {
+                              "programs": [
+                                "SDNTK"
+                              ],
+                              "aliases": [
+                                "EL JEFE"
+                              ],
+                              "nationality": "MEX",
+                              "dateOfBirth": "1972-06-14",
+                              "remarks": "DOJ-indicted trafficker, multiple seizures linked to Pacific corridor."
+                            }
+                          },
+                          {
+                            "listType": "OFAC_SSI",
+                            "entityName": "GARCIA, Jose Manuel",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 96,
+                            "registeredAddress": "Moscow, Russian Federation",
+                            "complianceDetails": {
+                              "programs": [
+                                "UKRAINE-EO13662"
+                              ],
+                              "aliases": [],
+                              "nationality": "RUS",
+                              "dateOfBirth": null,
+                              "remarks": "Listed as sectoral; restrictions on equity / new debt transactions per Directive 1."
+                            }
+                          },
+                          {
+                            "listType": "OFAC_UN",
+                            "entityName": "JOSE GARCIA RAMIREZ",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 93,
+                            "registeredAddress": "Caracas, Venezuela",
+                            "complianceDetails": {
+                              "programs": [
+                                "UN-1267"
+                              ],
+                              "aliases": [],
+                              "nationality": "VEN",
+                              "dateOfBirth": "1968-03-02",
+                              "remarks": "UN consolidated list, ISIL/Da'esh and Al-Qaida sanctions list."
+                            }
+                          }
+                        ]
                       },
-                      "transactionId": "9041aa05-782b-461e-9033-5e07b2ad55fc",
-                      "processedAt": "2026-03-19T10:05:00-06:00",
+                      "transactionId": "f9b1cad3-5a98-4d62-bef0-c9d0e5b7c1aa",
+                      "processedAt": "2026-03-19T10:02:00-06:00",
                       "billable": true
                     }
                   },
@@ -4517,7 +4589,17 @@
                         {
                           "field": "name",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "The 'name' parameter is required"
+                          "message": "must have required property 'name'"
+                        },
+                        {
+                          "field": "minSimilarityScore",
+                          "code": "OUT_OF_RANGE",
+                          "message": "minSimilarityScore must be between 50 and 100"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
                       ],
                       "transactionId": "fdfdaa1f-d61d-4910-b161-87c976fc85d0",
@@ -4542,7 +4624,7 @@
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
-                      "message": "The OFAC sanctions list service is currently unavailable",
+                      "message": "The OFAC sanctions list service is currently unavailable. Please retry.",
                       "data": null,
                       "transactionId": "8718e5d5-0691-4b2a-9bab-2baa1d539c5e",
                       "processedAt": "2026-05-21T10:00:00-06:00",
