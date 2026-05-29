@@ -463,6 +463,42 @@
                       "billable": true
                     }
                   },
+                  "Inactive": {
+                    "summary": "Inactive (Baja Sin Uso)",
+                    "value": {
+                      "status": "OK",
+                      "type": "CURP_INACTIVE",
+                      "message": "CURP exists in RENAPO but was never activated",
+                      "data": {
+                        "personalInfo": {
+                          "curp": "TEST900101HDFRRN09",
+                          "givenNames": "JUAN",
+                          "firstSurname": "PEREZ",
+                          "secondSurname": "LOPEZ",
+                          "gender": "H",
+                          "dateOfBirth": "1990-01-01",
+                          "birthState": "DISTRITO FEDERAL",
+                          "birthStateCode": "DF",
+                          "nationality": "MEXICO"
+                        },
+                        "documentDetails": {
+                          "curpStatus": "BSU",
+                          "probatoryDocumentCode": 1
+                        },
+                        "registrationDetails": {
+                          "state": "DISTRITO FEDERAL",
+                          "stateCode": "09",
+                          "municipality": "CUAUHTEMOC",
+                          "municipalityCode": "015",
+                          "year": "1990",
+                          "foreignNumber": ""
+                        }
+                      },
+                      "transactionId": "550e8400-e29b-41d4-a716-446655440037",
+                      "processedAt": "2026-03-15T12:35:00-06:00",
+                      "billable": true
+                    }
+                  },
                   "Not Found": {
                     "summary": "Not Found",
                     "value": {
@@ -922,6 +958,42 @@
                         }
                       },
                       "transactionId": "550e8400-e29b-41d4-a716-446655440033",
+                      "processedAt": "2026-03-15T12:35:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Inactive": {
+                    "summary": "Inactive (Baja Sin Uso)",
+                    "value": {
+                      "status": "OK",
+                      "type": "CURP_INACTIVE",
+                      "message": "CURP exists in RENAPO but was never activated",
+                      "data": {
+                        "personalInfo": {
+                          "curp": "TEST900101HDFRRN09",
+                          "givenNames": "JUAN",
+                          "firstSurname": "PEREZ",
+                          "secondSurname": "LOPEZ",
+                          "gender": "H",
+                          "dateOfBirth": "1990-01-01",
+                          "birthState": "DISTRITO FEDERAL",
+                          "birthStateCode": "DF",
+                          "nationality": "MEXICO"
+                        },
+                        "documentDetails": {
+                          "curpStatus": "BSU",
+                          "probatoryDocumentCode": 1
+                        },
+                        "registrationDetails": {
+                          "state": "DISTRITO FEDERAL",
+                          "stateCode": "09",
+                          "municipality": "CUAUHTEMOC",
+                          "municipalityCode": "015",
+                          "year": "1990",
+                          "foreignNumber": ""
+                        }
+                      },
+                      "transactionId": "550e8400-e29b-41d4-a716-446655440037",
                       "processedAt": "2026-03-15T12:35:00-06:00",
                       "billable": true
                     }
