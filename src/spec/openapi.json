@@ -59,9 +59,9 @@
           "Authentication"
         ],
         "summary": "Generate Bearer Token",
-        "description": "**Credits:** Free — authentication endpoint.\n\nIssues a short-lived Bearer JWT token from valid API Key or Basic credentials. The token can then be used as `Authorization: Bearer <token>` on subsequent requests instead of resending your long-lived API Key. Useful when you need to delegate access to a downstream client without sharing your primary credentials.\n\nThe token's lifetime is returned in the `expires_in` field (seconds). Tokens are stateless — there is no revocation endpoint; if compromised, rotate the underlying API Key instead.",
+        "description": "**Credits:** Free — authentication endpoint.\n\nIssues a short-lived Bearer JWT from valid API Key or Basic credentials. The token can then be sent as `Authorization: Bearer <access_token>` on subsequent requests instead of resending your long-lived API Key. Useful for handing access to a downstream client without sharing your primary credentials.\n\n**Auth:** API Key (`x-api-key`) or HTTP Basic. Bearer tokens cannot issue new tokens (no token chaining).\n\n**Body:** entirely optional. Send `{}` to get a token with default lifetime.\n\n**Lifetime:** controlled by `expireAfter` (seconds). When omitted, the gateway uses its configured default (currently 3600). When present, it must be between 1 and the configured maximum (currently 3600). Values outside that range are rejected with `OUT_OF_RANGE`.\n\n**Revocation:** tokens are stateless and self-expiring. There is no revocation endpoint — if a token is compromised, rotate the underlying API Key. The next snapshot reload propagates the rotation across all gateway instances within ~5 minutes.",
         "requestBody": {
-          "required": true,
+          "required": false,
           "content": {
             "application/json": {
               "schema": {
@@ -69,8 +69,22 @@
                 "properties": {
                   "expireAfter": {
                     "type": "integer",
-                    "example": 1800,
-                    "description": "Seconds of validity (Default: 1800)."
+                    "example": 3600,
+                    "minimum": 1,
+                    "maximum": 3600,
+                    "description": "Token lifetime in seconds. Optional. When omitted the gateway uses its configured default (currently 3600). Values outside [1, 3600] are rejected with `OUT_OF_RANGE`."
+                  }
+                }
+              },
+              "examples": {
+                "Default lifetime": {
+                  "summary": "Default lifetime",
+                  "value": {}
+                },
+                "Custom lifetime": {
+                  "summary": "Custom lifetime",
+                  "value": {
+                    "expireAfter": 60
                   }
                 }
               }
@@ -88,12 +102,12 @@
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
-                      "message": "Authentication token generated",
+                      "message": "Token issued",
                       "data": {
-                        "tokenType": "Bearer",
-                        "expiresIn": 1800,
-                        "token": "eyJhbGciOiJIUzI1NiIsIn...",
-                        "checksum": "a1b2c3d4..."
+                        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfaWQiOiI...",
+                        "token_type": "Bearer",
+                        "expires_in": 3600,
+                        "scope": "*"
                       },
                       "transactionId": "3eb33303-3466-4071-872e-067584149666",
                       "processedAt": "2026-03-19T10:00:00-06:00",
@@ -117,18 +131,28 @@
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
-                      "message": "Validation failed",
+                      "message": "expireAfter exceeds maximum allowed (3600)",
                       "data": null,
-                      "transactionId": "e5a8833d-2b8e-4b7c-9e44-5c54e1800f94",
-                      "processedAt": "2026-05-21T10:00:00-06:00",
-                      "billable": false,
                       "errors": [
                         {
-                          "field": "username",
-                          "code": "MISSING_REQUIRED_FIELD",
-                          "message": "Field 'username' is required"
+                          "field": "expireAfter",
+                          "code": "OUT_OF_RANGE",
+                          "message": "expireAfter must be <= 3600 seconds"
+                        },
+                        {
+                          "field": "expireAfter",
+                          "code": "OUT_OF_RANGE",
+                          "message": "expireAfter must be >= 1 second"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
-                      ]
+                      ],
+                      "transactionId": "e5a8833d-2b8e-4b7c-9e44-5c54e1800f94",
+                      "processedAt": "2026-05-21T10:00:00-06:00",
+                      "billable": false
                     }
                   },
                   "Internal Error": {
@@ -163,6 +187,18 @@
                       "message": "Invalid credentials",
                       "data": null,
                       "transactionId": "71d64fd8-8a54-4792-a844-7e2466eb01f7",
+                      "processedAt": "2026-05-21T10:00:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Bearer Cannot Chain": {
+                    "summary": "Bearer Cannot Chain",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "UNAUTHORIZED",
+                      "message": "Bearer auth cannot issue new tokens — use api_key or basic",
+                      "data": null,
+                      "transactionId": "a2c83e91-5cf4-4f27-93ab-9eb8af115e02",
                       "processedAt": "2026-05-21T10:00:00-06:00",
                       "billable": false
                     }
