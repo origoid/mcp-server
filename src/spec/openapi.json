@@ -5956,8 +5956,8 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Success legal entity": {
-                    "summary": "Success: Company (Based on real document)",
+                  "Success Legal Entity": {
+                    "summary": "Success Legal Entity",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -6023,8 +6023,8 @@
                       "billable": true
                     }
                   },
-                  "Success individual": {
-                    "summary": "Success: Individual",
+                  "Success Individual": {
+                    "summary": "Success Individual",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -6079,8 +6079,8 @@
                       "billable": true
                     }
                   },
-                  "Not found": {
-                    "summary": "Result: Tax Profile Not Found",
+                  "Tax profile not found": {
+                    "summary": "Tax profile not found",
                     "value": {
                       "status": "OK",
                       "type": "TAX_PROFILE_NOT_FOUND",
@@ -6092,7 +6092,7 @@
                     }
                   },
                   "Validation error": {
-                    "summary": "Validation Error",
+                    "summary": "Validation error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -6102,7 +6102,27 @@
                         {
                           "field": "body",
                           "code": "MISSING_SEARCH_CRITERIA",
-                          "message": "You must provide either a 'document' or both 'rfc' and 'cif'"
+                          "message": "must provide either 'document' or both 'rfc' and 'cif'"
+                        },
+                        {
+                          "field": "body",
+                          "code": "MISSING_DEPENDENT_FIELD",
+                          "message": "direct-identifier mode requires both rfc and cif (missing: cif)"
+                        },
+                        {
+                          "field": "rfc",
+                          "code": "INVALID_FORMAT",
+                          "message": "rfc must be 12 or 13 alphanumeric characters (SAT format)"
+                        },
+                        {
+                          "field": "cif",
+                          "code": "INVALID_FORMAT",
+                          "message": "cif must be 8 to 12 digits"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
                       ],
                       "transactionId": "2193e042-62b4-4197-ae4c-bca518fca008",
@@ -6110,27 +6130,27 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
-                    "summary": "Service Unavailable",
-                    "value": {
-                      "status": "ERROR",
-                      "type": "SERVICE_UNAVAILABLE",
-                      "message": "The SAT infrastructure is currently unavailable",
-                      "data": null,
-                      "transactionId": "097acb01-21a6-4cb1-b8da-b45ab153616b",
-                      "processedAt": "2026-03-19T21:16:00-06:00",
-                      "billable": false
-                    }
-                  },
                   "Internal error": {
-                    "summary": "Error: Internal Server Error",
+                    "summary": "Internal error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
                       "message": "Unexpected internal error",
                       "data": null,
-                      "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-123456789015",
-                      "processedAt": "2026-03-15T12:30:00-06:00",
+                      "transactionId": "f7a8b9c0-d1e2-3456-7890-abcdef012345",
+                      "processedAt": "2026-03-19T21:16:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Service unavailable": {
+                    "summary": "Service unavailable",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "SERVICE_UNAVAILABLE",
+                      "message": "The SAT infrastructure is currently unavailable. Please retry.",
+                      "data": null,
+                      "transactionId": "097acb01-21a6-4cb1-b8da-b45ab153616b",
+                      "processedAt": "2026-03-19T21:17:00-06:00",
                       "billable": false
                     }
                   }
