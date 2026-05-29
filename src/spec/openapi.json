@@ -486,12 +486,17 @@
                         {
                           "field": "curp",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "CURP parameter is required"
+                          "message": "must have required property 'curp'"
                         },
                         {
                           "field": "curp",
                           "code": "INVALID_FORMAT",
-                          "message": "Invalid CURP format"
+                          "message": "curp is not a valid CURP"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
                       ],
                       "transactionId": "550e8400-e29b-41d4-a716-446655440004",
@@ -504,7 +509,7 @@
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
-                      "message": "RENAPO service is currently unavailable",
+                      "message": "The RENAPO service is currently unavailable. Please retry.",
                       "data": null,
                       "transactionId": "550e8400-e29b-41d4-a716-446655440005",
                       "processedAt": "2026-03-15T12:35:00-06:00",
