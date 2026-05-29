@@ -84,7 +84,7 @@
               "application/json": {
                 "examples": {
                   "Success": {
-                    "summary": "Token generated successfully",
+                    "summary": "Token Generated Successfully",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -100,7 +100,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -112,7 +112,7 @@
                       "billable": false
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -131,7 +131,7 @@
                       ]
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -463,7 +463,7 @@
                       "billable": true
                     }
                   },
-                  "Not found": {
+                  "Not Found": {
                     "summary": "Not Found",
                     "value": {
                       "status": "OK",
@@ -475,7 +475,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -499,7 +499,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -511,7 +511,7 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -585,7 +585,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -921,7 +921,7 @@
                       "billable": true
                     }
                   },
-                  "Not found": {
+                  "Not Found": {
                     "summary": "Not Found",
                     "value": {
                       "status": "OK",
@@ -933,7 +933,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -972,7 +972,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -984,7 +984,7 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -1058,7 +1058,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -1169,7 +1169,7 @@
                       "billable": true
                     }
                   },
-                  "Inconsistent data": {
+                  "Inconsistent Data": {
                     "summary": "Inconsistent Data",
                     "value": {
                       "status": "OK",
@@ -1193,7 +1193,7 @@
                       "billable": true
                     }
                   },
-                  "Operation limit": {
+                  "Operation Limit": {
                     "summary": "Operation Limit",
                     "value": {
                       "status": "ERROR",
@@ -1205,7 +1205,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -1217,7 +1217,7 @@
                       "billable": false
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -1241,7 +1241,7 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -1315,7 +1315,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -1405,7 +1405,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Active employment": {
+                  "Active Employment": {
                     "summary": "Active Employment",
                     "value": {
                       "status": "OK",
@@ -1445,7 +1445,7 @@
                       "billable": true
                     }
                   },
-                  "Inactive employment": {
+                  "Inactive Employment": {
                     "summary": "Inactive Employment",
                     "value": {
                       "status": "OK",
@@ -1495,7 +1495,7 @@
                       "billable": true
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -1507,7 +1507,7 @@
                       "billable": false
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -1541,7 +1541,7 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -1615,7 +1615,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -1723,7 +1723,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Valid voter": {
+                  "Valid Voter": {
                     "summary": "Valid Voter",
                     "value": {
                       "status": "OK",
@@ -1758,7 +1758,7 @@
                       "billable": true
                     }
                   },
-                  "Foreign voter": {
+                  "Foreign Voter": {
                     "summary": "Foreign Voter",
                     "value": {
                       "status": "OK",
@@ -1793,7 +1793,7 @@
                       "billable": true
                     }
                   },
-                  "Id only": {
+                  "Id Only": {
                     "summary": "ID Only",
                     "value": {
                       "status": "OK",
@@ -1828,7 +1828,7 @@
                       "billable": true
                     }
                   },
-                  "Stolen or lost": {
+                  "Stolen or Lost": {
                     "summary": "Stolen or Lost",
                     "value": {
                       "status": "OK",
@@ -1863,7 +1863,7 @@
                       "billable": true
                     }
                   },
-                  "Not valid": {
+                  "Not Valid": {
                     "summary": "Not Valid",
                     "value": {
                       "status": "OK",
@@ -1898,7 +1898,7 @@
                       "billable": true
                     }
                   },
-                  "Suspended judicial": {
+                  "Suspended Judicial": {
                     "summary": "Suspended Judicial",
                     "value": {
                       "status": "OK",
@@ -1933,7 +1933,7 @@
                       "billable": true
                     }
                   },
-                  "Not found": {
+                  "Not Found": {
                     "summary": "Not Found",
                     "value": {
                       "status": "OK",
@@ -1961,7 +1961,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -2005,7 +2005,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -2017,7 +2017,7 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -2091,7 +2091,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -2398,7 +2398,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -2442,7 +2442,7 @@
                       ]
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -2516,7 +2516,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -2710,7 +2710,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -2749,7 +2749,7 @@
                       ]
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -2823,7 +2823,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -2932,7 +2932,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Match local": {
+                  "Match Local": {
                     "summary": "Success: Local Face Match (INE)",
                     "value": {
                       "status": "OK",
@@ -2949,7 +2949,7 @@
                       "billable": true
                     }
                   },
-                  "Match foreign": {
+                  "Match Foreign": {
                     "summary": "Success: Foreign/Unmapped ID Match",
                     "value": {
                       "status": "OK",
@@ -2983,7 +2983,7 @@
                       "billable": true
                     }
                   },
-                  "No face": {
+                  "No Face": {
                     "summary": "Error: No Face Detected",
                     "value": {
                       "status": "OK",
@@ -3000,7 +3000,7 @@
                       "billable": true
                     }
                   },
-                  "No document detected": {
+                  "No Document Detected": {
                     "summary": "No document detected (ANY mode)",
                     "value": {
                       "status": "OK",
@@ -3012,7 +3012,7 @@
                       "billable": true
                     }
                   },
-                  "Doc mismatch": {
+                  "Doc Mismatch": {
                     "summary": "Error: Strict Document Mismatch",
                     "value": {
                       "status": "OK",
@@ -3029,7 +3029,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -3058,7 +3058,7 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -3070,7 +3070,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -3144,7 +3144,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -3229,7 +3229,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Success live": {
+                  "Success Live": {
                     "summary": "Live (real person)",
                     "value": {
                       "status": "OK",
@@ -3246,8 +3246,8 @@
                       "billable": true
                     }
                   },
-                  "Success live borderline": {
-                    "summary": "Live but borderline",
+                  "Success Live Borderline": {
+                    "summary": "Live But Borderline",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -3263,8 +3263,8 @@
                       "billable": true
                     }
                   },
-                  "Success spoof print": {
-                    "summary": "Print attack detected",
+                  "Success Spoof Print": {
+                    "summary": "Print Attack Detected",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -3282,8 +3282,8 @@
                       "billable": true
                     }
                   },
-                  "Success spoof screen": {
-                    "summary": "Screen replay detected",
+                  "Success Spoof Screen": {
+                    "summary": "Screen Replay Detected",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -3301,8 +3301,8 @@
                       "billable": true
                     }
                   },
-                  "Success spoof mask": {
-                    "summary": "Mask detected",
+                  "Success Spoof Mask": {
+                    "summary": "Mask Detected",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -3320,8 +3320,8 @@
                       "billable": true
                     }
                   },
-                  "No face detected": {
-                    "summary": "No face detected",
+                  "No Face Detected": {
+                    "summary": "No Face Detected",
                     "value": {
                       "status": "OK",
                       "type": "NO_FACE_DETECTED",
@@ -3332,8 +3332,8 @@
                       "billable": true
                     }
                   },
-                  "Image unreadable": {
-                    "summary": "Unreadable image",
+                  "Image Unreadable": {
+                    "summary": "Unreadable Image",
                     "value": {
                       "status": "OK",
                       "type": "IMAGE_UNREADABLE",
@@ -3344,7 +3344,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -3363,7 +3363,7 @@
                       ]
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -3375,7 +3375,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -3449,7 +3449,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -3540,7 +3540,7 @@
               },
               "examples": {
                 "by_name": {
-                  "summary": "By name",
+                  "summary": "By Name",
                   "value": {
                     "name": "JUAN PEREZ LOPEZ"
                   }
@@ -3713,8 +3713,8 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
-                    "summary": "Validation error",
+                  "Validation Error": {
+                    "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -3752,8 +3752,8 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
-                    "summary": "Internal error",
+                  "Internal Error": {
+                    "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -3764,8 +3764,8 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
-                    "summary": "Service unavailable",
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
@@ -3838,7 +3838,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -3929,7 +3929,7 @@
               },
               "examples": {
                 "by_name": {
-                  "summary": "By name",
+                  "summary": "By Name",
                   "value": {
                     "name": "JUAN PEREZ LOPEZ"
                   }
@@ -4104,8 +4104,8 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
-                    "summary": "Validation error",
+                  "Validation Error": {
+                    "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -4143,8 +4143,8 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
-                    "summary": "Internal error",
+                  "Internal Error": {
+                    "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -4155,8 +4155,8 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
-                    "summary": "Service unavailable",
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
@@ -4229,7 +4229,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -4322,7 +4322,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Match critical": {
+                  "Match Critical": {
                     "summary": "Match: CRITICAL Risk (OFAC SDN)",
                     "value": {
                       "status": "OK",
@@ -4357,7 +4357,7 @@
                       "billable": true
                     }
                   },
-                  "No match": {
+                  "No Match": {
                     "summary": "Clean: No OFAC Match",
                     "value": {
                       "status": "OK",
@@ -4373,7 +4373,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
@@ -4392,7 +4392,7 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -4404,7 +4404,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -4478,7 +4478,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -4594,7 +4594,7 @@
               },
               "examples": {
                 "by_names": {
-                  "summary": "By full name",
+                  "summary": "By Full Name",
                   "value": {
                     "givenNames": "JUAN",
                     "firstSurname": "PEREZ",
@@ -4623,7 +4623,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Match found": {
+                  "Match Found": {
                     "summary": "Match: High Risk PEP Found",
                     "value": {
                       "status": "OK",
@@ -4676,7 +4676,7 @@
                       "billable": true
                     }
                   },
-                  "No match": {
+                  "No Match": {
                     "summary": "Clean: No PEP Match",
                     "value": {
                       "status": "OK",
@@ -4692,7 +4692,7 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
+                  "Validation Error": {
                     "summary": "Validation Error (Missing Parameters)",
                     "value": {
                       "status": "ERROR",
@@ -4711,7 +4711,7 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
+                  "Internal Error": {
                     "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
@@ -4723,7 +4723,7 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
+                  "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
@@ -4797,7 +4797,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -5010,8 +5010,8 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
-                    "summary": "Validation error",
+                  "Validation Error": {
+                    "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -5039,8 +5039,8 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
-                    "summary": "Internal error",
+                  "Internal Error": {
+                    "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -5051,8 +5051,8 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
-                    "summary": "Service unavailable",
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
@@ -5122,7 +5122,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -5453,8 +5453,8 @@
                       "billable": true
                     }
                   },
-                  "Error unreadable": {
-                    "summary": "Unreadable image",
+                  "Error Unreadable": {
+                    "summary": "Unreadable Image",
                     "value": {
                       "status": "OK",
                       "type": "IMAGE_UNREADABLE",
@@ -5465,8 +5465,8 @@
                       "billable": true
                     }
                   },
-                  "Error unsupported": {
-                    "summary": "Unsupported provider",
+                  "Error Unsupported": {
+                    "summary": "Unsupported Provider",
                     "value": {
                       "status": "OK",
                       "type": "DOCUMENT_NOT_SUPPORTED",
@@ -5477,8 +5477,8 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
-                    "summary": "Validation error",
+                  "Validation Error": {
+                    "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -5506,8 +5506,8 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
-                    "summary": "Internal error",
+                  "Internal Error": {
+                    "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -5580,7 +5580,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -5723,8 +5723,8 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
-                    "summary": "Validation error",
+                  "Validation Error": {
+                    "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -5752,8 +5752,8 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
-                    "summary": "Internal error",
+                  "Internal Error": {
+                    "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -5764,8 +5764,8 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
-                    "summary": "Service unavailable",
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
@@ -5838,7 +5838,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -6079,8 +6079,8 @@
                       "billable": true
                     }
                   },
-                  "Tax profile not found": {
-                    "summary": "Tax profile not found",
+                  "Tax Profile Not Found": {
+                    "summary": "Tax Profile Not Found",
                     "value": {
                       "status": "OK",
                       "type": "TAX_PROFILE_NOT_FOUND",
@@ -6091,8 +6091,8 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
-                    "summary": "Validation error",
+                  "Validation Error": {
+                    "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -6130,8 +6130,8 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
-                    "summary": "Internal error",
+                  "Internal Error": {
+                    "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -6142,8 +6142,8 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
-                    "summary": "Service unavailable",
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
@@ -6216,7 +6216,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
@@ -6366,8 +6366,8 @@
                       "billable": true
                     }
                   },
-                  "CFDI canceled": {
-                    "summary": "CFDI canceled",
+                  "CFDI Canceled": {
+                    "summary": "CFDI Canceled",
                     "value": {
                       "status": "OK",
                       "type": "CFDI_CANCELED",
@@ -6400,8 +6400,8 @@
                       "billable": true
                     }
                   },
-                  "CFDI not found": {
-                    "summary": "CFDI not found",
+                  "CFDI Not Found": {
+                    "summary": "CFDI Not Found",
                     "value": {
                       "status": "OK",
                       "type": "CFDI_NOT_FOUND",
@@ -6412,8 +6412,8 @@
                       "billable": true
                     }
                   },
-                  "Validation error": {
-                    "summary": "Validation error",
+                  "Validation Error": {
+                    "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -6461,8 +6461,8 @@
                       "billable": false
                     }
                   },
-                  "Internal error": {
-                    "summary": "Internal error",
+                  "Internal Error": {
+                    "summary": "Internal Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -6473,8 +6473,8 @@
                       "billable": false
                     }
                   },
-                  "Service unavailable": {
-                    "summary": "Service unavailable",
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
@@ -6547,7 +6547,7 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Rate limit": {
+                  "Rate Limit": {
                     "summary": "Rate Limit Exceeded",
                     "value": {
                       "status": "ERROR",
