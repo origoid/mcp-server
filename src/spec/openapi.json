@@ -5454,7 +5454,7 @@
                     }
                   },
                   "Error unreadable": {
-                    "summary": "Unreadable Image",
+                    "summary": "Unreadable image",
                     "value": {
                       "status": "OK",
                       "type": "IMAGE_UNREADABLE",
@@ -5466,7 +5466,7 @@
                     }
                   },
                   "Error unsupported": {
-                    "summary": "Unsupported Provider",
+                    "summary": "Unsupported provider",
                     "value": {
                       "status": "OK",
                       "type": "DOCUMENT_NOT_SUPPORTED",
@@ -5478,7 +5478,7 @@
                     }
                   },
                   "Validation error": {
-                    "summary": "Validation Error",
+                    "summary": "Validation error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -5488,7 +5488,17 @@
                         {
                           "field": "file",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "The 'file' parameter is required in base64 format"
+                          "message": "must have required property 'file'"
+                        },
+                        {
+                          "field": "file",
+                          "code": "INVALID_FORMAT",
+                          "message": "file must be a valid PNG, JPG, or PDF"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
                       ],
                       "transactionId": "9d8c7b6a-5e4d-3c2b-1a0f-9e8d7c6b5a4b",
@@ -5497,7 +5507,7 @@
                     }
                   },
                   "Internal error": {
-                    "summary": "Internal Error",
+                    "summary": "Internal error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -5509,7 +5519,7 @@
                     }
                   },
                   "Service unavailable": {
-                    "summary": "Service Unavailable",
+                    "summary": "Service unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
