@@ -4886,8 +4886,8 @@
                   "$ref": "#/components/schemas/Envelope"
                 },
                 "examples": {
-                  "Deliverable": {
-                    "summary": "Deliverable",
+                  "Risk: NONE": {
+                    "summary": "Risk: NONE — deliverable mailbox",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -4917,8 +4917,8 @@
                       "billable": true
                     }
                   },
-                  "Risky": {
-                    "summary": "Catch-all (MEDIUM)",
+                  "Risk: MEDIUM": {
+                    "summary": "Risk: MEDIUM — catch-all domain (mailbox cannot be confirmed)",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -4944,12 +4944,43 @@
                         }
                       },
                       "transactionId": "660e8400-e29b-41d4-a716-446655441111",
-                      "processedAt": "2026-03-07T14:23:00-06:00",
+                      "processedAt": "2026-03-07T14:24:00-06:00",
                       "billable": true
                     }
                   },
-                  "Undeliverable": {
-                    "summary": "Undeliverable",
+                  "Risk: HIGH": {
+                    "summary": "Risk: HIGH — disposable email domain detected",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "Disposable email domain detected",
+                      "data": {
+                        "email": "user123@mailinator.com",
+                        "deliverability": "deliverable",
+                        "riskLevel": "HIGH",
+                        "score": 60,
+                        "toxicityScore": 0,
+                        "verdicts": {
+                          "isFree": false,
+                          "isDisposable": true,
+                          "isRoleAccount": false,
+                          "isFull": false,
+                          "isCatchAll": true,
+                          "isToxic": false
+                        },
+                        "infrastructure": {
+                          "domain": "mailinator.com",
+                          "provider": "mailinator.com",
+                          "mxRecord": "mail2.mailinator.com"
+                        }
+                      },
+                      "transactionId": "880e8400-e29b-41d4-a716-446655443333",
+                      "processedAt": "2026-03-07T14:25:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: CRITICAL": {
+                    "summary": "Risk: CRITICAL — mailbox does not exist",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -4975,12 +5006,12 @@
                         }
                       },
                       "transactionId": "770e8400-e29b-41d4-a716-446655442222",
-                      "processedAt": "2026-03-07T14:23:00-06:00",
+                      "processedAt": "2026-03-07T14:26:00-06:00",
                       "billable": true
                     }
                   },
                   "Validation error": {
-                    "summary": "Validation Error",
+                    "summary": "Validation error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -4990,21 +5021,26 @@
                         {
                           "field": "email",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "The 'email' parameter is required"
+                          "message": "must have required property 'email'"
                         },
                         {
                           "field": "email",
                           "code": "INVALID_FORMAT",
-                          "message": "The provided value is not a valid email address"
+                          "message": "email must be a valid email address"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
                       ],
                       "transactionId": "990e8400-e29b-41d4-a716-446655444444",
-                      "processedAt": "2026-03-07T14:23:00-06:00",
+                      "processedAt": "2026-03-07T14:27:00-06:00",
                       "billable": false
                     }
                   },
                   "Internal error": {
-                    "summary": "Internal Error",
+                    "summary": "Internal error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
@@ -5016,7 +5052,7 @@
                     }
                   },
                   "Service unavailable": {
-                    "summary": "Service Unavailable",
+                    "summary": "Service unavailable",
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
