@@ -6333,8 +6333,8 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Success valid CFDI": {
-                    "summary": "Valid CFDI (Vigente)",
+                  "Success Valid CFDI": {
+                    "summary": "Success Valid CFDI",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -6367,7 +6367,7 @@
                     }
                   },
                   "CFDI canceled": {
-                    "summary": "CFDI Canceled",
+                    "summary": "CFDI canceled",
                     "value": {
                       "status": "OK",
                       "type": "CFDI_CANCELED",
@@ -6401,7 +6401,7 @@
                     }
                   },
                   "CFDI not found": {
-                    "summary": "CFDI Not Found",
+                    "summary": "CFDI not found",
                     "value": {
                       "status": "OK",
                       "type": "CFDI_NOT_FOUND",
@@ -6413,49 +6413,74 @@
                     }
                   },
                   "Validation error": {
-                    "summary": "Validation Error",
+                    "summary": "Validation error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
                       "message": "Validation failed",
                       "data": null,
-                      "transactionId": "d526f1fc-14b5-4ffc-9be9-cadffcacc941",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
-                      "billable": false,
                       "errors": [
+                        {
+                          "field": "body",
+                          "code": "MISSING_SEARCH_CRITERIA",
+                          "message": "must provide either 'document' or all of uuid, rfcEmisor, rfcReceptor and total"
+                        },
+                        {
+                          "field": "body",
+                          "code": "MISSING_DEPENDENT_FIELD",
+                          "message": "direct-identifier mode requires uuid, rfcEmisor, rfcReceptor and total (missing: rfcEmisor, rfcReceptor, total)"
+                        },
                         {
                           "field": "uuid",
                           "code": "INVALID_FORMAT",
-                          "message": "The 'uuid' field must follow the 8-4-4-4-12 hex format."
+                          "message": "uuid must be a UUID in 8-4-4-4-12 hex format"
                         },
                         {
                           "field": "rfcEmisor",
-                          "code": "MISSING_REQUIRED_FIELD",
-                          "message": "The 'rfcEmisor' parameter is required."
+                          "code": "INVALID_FORMAT",
+                          "message": "rfcEmisor must be 12 or 13 alphanumeric characters (SAT format)"
+                        },
+                        {
+                          "field": "rfcReceptor",
+                          "code": "INVALID_FORMAT",
+                          "message": "rfcReceptor must be 12 or 13 alphanumeric characters (SAT format)"
+                        },
+                        {
+                          "field": "total",
+                          "code": "INVALID_FORMAT",
+                          "message": "total must be a positive decimal string with up to 6 decimals"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
-                      ]
-                    }
-                  },
-                  "Service unavailable": {
-                    "summary": "Service Unavailable",
-                    "value": {
-                      "status": "ERROR",
-                      "type": "SERVICE_UNAVAILABLE",
-                      "message": "SAT verification service is currently unavailable",
-                      "data": null,
-                      "transactionId": "480a94b0-81c7-4c32-ae7f-e4fbc0a678fc",
+                      ],
+                      "transactionId": "d526f1fc-14b5-4ffc-9be9-cadffcacc941",
                       "processedAt": "2026-04-26T10:00:00-06:00",
                       "billable": false
                     }
                   },
                   "Internal error": {
-                    "summary": "Internal Error",
+                    "summary": "Internal error",
                     "value": {
                       "status": "ERROR",
                       "type": "INTERNAL_ERROR",
                       "message": "Unexpected internal error",
                       "data": null,
                       "transactionId": "7f811230-4378-4790-a942-c63b2e2b2d77",
+                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Service unavailable": {
+                    "summary": "Service unavailable",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "SERVICE_UNAVAILABLE",
+                      "message": "The SAT verification service is currently unavailable. Please retry.",
+                      "data": null,
+                      "transactionId": "480a94b0-81c7-4c32-ae7f-e4fbc0a678fc",
                       "processedAt": "2026-04-26T10:00:00-06:00",
                       "billable": false
                     }
