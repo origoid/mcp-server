@@ -3508,7 +3508,7 @@
           "Compliance"
         ],
         "summary": "SAT Article 69 Check",
-        "description": "**Credits:** 1 per call.\n\nValidates if an individual or legal entity is listed in the Mexican Tax Authority (SAT) Article 69 blacklist. This endpoint covers all sub-lists of Art. 69. Note: This endpoint does NOT evaluate Article 69-B (EFOS/simulated operations).\n\n**Business Rules (Search Priority):**\n1. The client must provide EITHER a name (`name` / Razón Social) OR an exact identifier (`rfc`).\n2. If `rfc` is provided, the backend performs a strict exact match. If only `name` is provided, the backend performs a highly restrictive text search.\n\n**Risk Level Matrix (`riskLevel`):**\n- `NONE`: No matches found. Safe for automated approval.\n- `LOW` (Informativo / Sin Riesgo Operativo): The subject has historical or administrative records but is legally operating. **Lists:** Condonados (Todos los decretos/artículos), Reducción Art. 74 CFF, Retorno de Inversiones, Entes Públicos y de Gobierno Omisos.\n- `MEDIUM` (Riesgo Financiero / Morosidad): The subject has active enforceable debts or the SAT declared them insolvent/uncollectible. **Lists:** Firmes, Exigibles, Cancelados (Incosteabilidad / Insolvencia).\n- `HIGH` (Riesgo Operativo Grave): The subject cannot be found by authorities or their digital billing seals (CSD) have been revoked, halting their operations. **Lists:** No Localizados, CSD Sin Efectos.\n- `CRITICAL` (Riesgo Legal / Fraude Penal): The subject has criminal convictions related to tax crimes. **Lists:** Sentencias.",
+        "description": "**Credits:** 1 per call.\n\nValidates if an individual or legal entity is listed in the Mexican Tax Authority (SAT) Article 69 blacklist. This endpoint covers all sub-lists of Art. 69. Note: This endpoint does NOT evaluate Article 69-B (EFOS/simulated operations).\n\n**Business Rules (Search Priority):**\n1. The client must provide EITHER a name (`name` / Razón Social) OR an exact identifier (`rfc`).\n2. If `rfc` is provided, the backend performs a strict exact match. If only `name` is provided, the backend performs a highly restrictive text search.\n\n**Risk Level Matrix (`riskLevel`):**\n- `NONE`: No matches found. Safe for automated approval.\n- `LOW` (Informativo / Sin Riesgo Operativo): The subject has historical or administrative records but is legally operating. **Lists:** Condonados (Todos los decretos/artículos), Reducción Art. 74 CFF, Retorno de Inversiones, Entes Públicos y de Gobierno Omisos.\n- `MEDIUM` (Riesgo Financiero / Morosidad): The subject has active enforceable debts or the SAT declared them insolvent/uncollectible. **Lists:** Firmes, Exigibles, Cancelados (Incosteabilidad / Insolvencia).\n- `HIGH` (Riesgo Operativo Grave): The subject cannot be found by authorities or their digital billing seals (CSD) have been revoked, halting their operations. **Lists:** No Localizados, CSD Sin Efectos.\n- `CRITICAL` (Riesgo Legal / Fraude Penal): The subject has criminal convictions related to tax crimes. **Lists:** Sentencias.\n\n**Multi-match selection:** When the subject appears in more than one SAT list, the top-level `riskLevel` reflects only the record with the most recent `publicationDate`. All historical records are still returned in `matches[]` so you can audit the full timeline.",
         "requestBody": {
           "required": true,
           "content": {
@@ -3561,68 +3561,24 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Article 69 no localizado": {
-                    "summary": "Match: HIGH Risk (No Localizado - Sin Monto)",
+                  "Risk: NONE": {
+                    "summary": "Risk: NONE — no SAT 69 records found",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
-                      "message": "SAT 69 match found",
+                      "message": "No SAT 69 matches found",
                       "data": {
-                        "matchFound": true,
-                        "riskLevel": "HIGH",
-                        "matches": [
-                          {
-                            "listType": "SAT_69_NO_LOCALIZADOS",
-                            "rfc": "DMC990622AG8",
-                            "razonSocial": "2 M CONSTRUCTORA SA DE CV",
-                            "similarityScore": 100,
-                            "complianceDetails": {
-                              "taxpayerType": "PERSONA_MORAL",
-                              "status": "NO LOCALIZADOS",
-                              "taxAmount": null,
-                              "publicationDate": "2014-01-01",
-                              "state": "CIUDAD DE MEXICO"
-                            }
-                          }
-                        ]
+                        "matchFound": false,
+                        "riskLevel": "NONE",
+                        "matches": []
                       },
-                      "transactionId": "b2c3d4e5-f6a7-8b9c-0d1e-123456789002",
+                      "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-234567890123",
                       "processedAt": "2026-03-19T10:05:00-06:00",
                       "billable": true
                     }
                   },
-                  "Article 69 sentencia": {
-                    "summary": "Match: CRITICAL Risk (Sentencias)",
-                    "value": {
-                      "status": "OK",
-                      "type": "SUCCESS",
-                      "message": "SAT 69 match found",
-                      "data": {
-                        "matchFound": true,
-                        "riskLevel": "CRITICAL",
-                        "matches": [
-                          {
-                            "listType": "SAT_69_SENTENCIAS",
-                            "rfc": "AAKA5806108N2",
-                            "razonSocial": "ALFREDO ADAME VON KNOOP",
-                            "similarityScore": 100,
-                            "complianceDetails": {
-                              "taxpayerType": "PERSONA_FISICA",
-                              "status": "SENTENCIAS",
-                              "taxAmount": null,
-                              "publicationDate": "2014-01-01",
-                              "state": "CIUDAD DE MEXICO"
-                            }
-                          }
-                        ]
-                      },
-                      "transactionId": "49ac48d4-ddf5-4408-b2a4-44fddd05ff88",
-                      "processedAt": "2026-03-19T10:06:00-06:00",
-                      "billable": true
-                    }
-                  },
-                  "Article 69 retorno inversion": {
-                    "summary": "Match: LOW Risk (Retorno Inversiones / Condonados)",
+                  "Risk: LOW": {
+                    "summary": "Risk: LOW — Retorno Inversiones / Condonados",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -3650,23 +3606,110 @@
                         ]
                       },
                       "transactionId": "a1b2c3d4-e5f6-4789-abcd-1234567890ab",
+                      "processedAt": "2026-03-19T10:06:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: MEDIUM": {
+                    "summary": "Risk: MEDIUM — multiple records (most recent publicationDate wins)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "SAT 69 match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "MEDIUM",
+                        "matches": [
+                          {
+                            "listType": "SAT_69_FIRMES",
+                            "rfc": "AAKA5806108N2",
+                            "razonSocial": "ALFREDO ADAME VON KNOOP",
+                            "similarityScore": 100,
+                            "complianceDetails": {
+                              "taxpayerType": "PERSONA_FISICA",
+                              "status": "FIRMES",
+                              "taxAmount": null,
+                              "publicationDate": "2025-01-01",
+                              "state": "CIUDAD DE MEXICO"
+                            }
+                          },
+                          {
+                            "listType": "SAT_69_SENTENCIAS",
+                            "rfc": "AAKA5806108N2",
+                            "razonSocial": "ALFREDO ADAME VON KNOOP",
+                            "similarityScore": 100,
+                            "complianceDetails": {
+                              "taxpayerType": "PERSONA_FISICA",
+                              "status": "SENTENCIAS",
+                              "taxAmount": null,
+                              "publicationDate": "2014-01-01",
+                              "state": "CIUDAD DE MEXICO"
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "f4a1ce92-2c97-4c0e-bbd6-7d80f5a9a9b1",
                       "processedAt": "2026-03-19T10:07:00-06:00",
                       "billable": true
                     }
                   },
-                  "No match": {
-                    "summary": "Clean: No SAT Match",
+                  "Risk: HIGH": {
+                    "summary": "Risk: HIGH — No Localizado",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
-                      "message": "No SAT 69 matches found",
+                      "message": "SAT 69 match found",
                       "data": {
-                        "matchFound": false,
-                        "riskLevel": "NONE",
-                        "matches": []
+                        "matchFound": true,
+                        "riskLevel": "HIGH",
+                        "matches": [
+                          {
+                            "listType": "SAT_69_NO_LOCALIZADOS",
+                            "rfc": "DMC990622AG8",
+                            "razonSocial": "2 M CONSTRUCTORA SA DE CV",
+                            "similarityScore": 100,
+                            "complianceDetails": {
+                              "taxpayerType": "PERSONA_MORAL",
+                              "status": "NO LOCALIZADOS",
+                              "taxAmount": null,
+                              "publicationDate": "2014-01-01",
+                              "state": "CIUDAD DE MEXICO"
+                            }
+                          }
+                        ]
                       },
-                      "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-234567890123",
+                      "transactionId": "b2c3d4e5-f6a7-8b9c-0d1e-123456789002",
                       "processedAt": "2026-03-19T10:08:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: CRITICAL": {
+                    "summary": "Risk: CRITICAL — Sentencias (tax-crime conviction)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "SAT 69 match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "CRITICAL",
+                        "matches": [
+                          {
+                            "listType": "SAT_69_SENTENCIAS",
+                            "rfc": "AAKA5806108N2",
+                            "razonSocial": "ALFREDO ADAME VON KNOOP",
+                            "similarityScore": 100,
+                            "complianceDetails": {
+                              "taxpayerType": "PERSONA_FISICA",
+                              "status": "SENTENCIAS",
+                              "taxAmount": null,
+                              "publicationDate": "2014-01-01",
+                              "state": "CIUDAD DE MEXICO"
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "49ac48d4-ddf5-4408-b2a4-44fddd05ff88",
+                      "processedAt": "2026-03-19T10:09:00-06:00",
                       "billable": true
                     }
                   },
@@ -3854,7 +3897,7 @@
           "Compliance"
         ],
         "summary": "SAT Article 69-B Check (EFOS)",
-        "description": "**Credits:** 1 per call.\n\nValidates if an individual or legal entity is listed in the Mexican Tax Authority (SAT) Article 69-B blacklist. This list is specifically for EFOS (Empresas que Facturan Operaciones Simuladas), commonly known as 'Factureros' or shell companies involved in tax fraud and money laundering.\n\n**Business Rules (Search Priority):**\n1. The client must provide EITHER a name (`name` / Razón Social) OR an exact identifier (`rfc`).\n2. If `rfc` is provided, the backend performs a strict exact match. If only `name` is provided, the backend performs a highly restrictive text search.\n\n**Risk Level Matrix (`riskLevel` mapped to SAT Status):**\n- `NONE`: No matches found in the SAT 69-B list. Safe for automated approval.\n- `LOW`: The SAT status is **'Desvirtuado'** (Investigated but successfully proved innocence) or **'Sentencia Favorable'** (Won in court / cleared). Provided for audit trails and historical record.\n- `MEDIUM`: Reserved for intermediate risk states. Currently not produced by the SAT 69-B classification.\n- `HIGH`: The SAT status is **'Presunto'** (Currently under investigation for simulated operations). Extreme caution advised; usually triggers Enhanced Due Diligence (EDD) or temporal blocks.\n- `CRITICAL`: The SAT status is **'Definitivo'** (Confirmed shell company / EFOS). Legally binding block required for AML compliance.",
+        "description": "**Credits:** 1 per call.\n\nValidates if an individual or legal entity is listed in the Mexican Tax Authority (SAT) Article 69-B blacklist. This list is specifically for EFOS (Empresas que Facturan Operaciones Simuladas), commonly known as 'Factureros' or shell companies involved in tax fraud and money laundering.\n\n**Business Rules (Search Priority):**\n1. The client must provide EITHER a name (`name` / Razón Social) OR an exact identifier (`rfc`).\n2. If `rfc` is provided, the backend performs a strict exact match. If only `name` is provided, the backend performs a highly restrictive text search.\n\n**Risk Level Matrix (`riskLevel` mapped to SAT Status):**\n- `NONE`: No matches found in the SAT 69-B list. Safe for automated approval.\n- `LOW`: The SAT status is **'Desvirtuado'** (Investigated but successfully proved innocence) or **'Sentencia Favorable'** (Won in court / cleared). Provided for audit trails and historical record.\n- `MEDIUM`: Reserved for intermediate risk states. Currently not produced by the SAT 69-B classification.\n- `HIGH`: The SAT status is **'Presunto'** (Currently under investigation for simulated operations). Extreme caution advised; usually triggers Enhanced Due Diligence (EDD) or temporal blocks.\n- `CRITICAL`: The SAT status is **'Definitivo'** (Confirmed shell company / EFOS). Legally binding block required for AML compliance.\n\n**Multi-match selection:** A taxpayer may appear in more than one record (e.g., first listed as `PRESUNTO`, later reclassified to `DEFINITIVO` or `SENTENCIA_FAVORABLE`). The top-level `riskLevel` reflects only the record with the most recent `publicationDateSat` (falling back to `publicationDateDof`). All historical records are still returned in `matches[]` so you can audit the full timeline.",
         "requestBody": {
           "required": true,
           "content": {
@@ -3907,70 +3950,24 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Article 69B definitivo": {
-                    "summary": "Match: CRITICAL Risk (Definitivo)",
+                  "Risk: NONE": {
+                    "summary": "Risk: NONE — no SAT 69-B records found",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
-                      "message": "SAT 69-B match found",
+                      "message": "No SAT 69-B matches found",
                       "data": {
-                        "matchFound": true,
-                        "riskLevel": "CRITICAL",
-                        "matches": [
-                          {
-                            "listType": "SAT_69B",
-                            "rfc": "ZUL131022LD6",
-                            "razonSocial": "ZULPER, S.A. DE C.V.",
-                            "similarityScore": 100,
-                            "complianceDetails": {
-                              "taxpayerType": "PERSONA_MORAL",
-                              "status": "DEFINITIVO",
-                              "publicationDateSat": "2018-09-20",
-                              "oficioSat": "500-05-2018-27059 de fecha 19 de septiembre de 2018",
-                              "publicationDateDof": "2018-10-08",
-                              "oficioDof": "500-05-2018-27059 de fecha 19 de septiembre de 2018"
-                            }
-                          }
-                        ]
+                        "matchFound": false,
+                        "riskLevel": "NONE",
+                        "matches": []
                       },
-                      "transactionId": "b2c3d4e5-f6a7-8b9c-0d1e-123456789002",
+                      "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-234567890123",
                       "processedAt": "2026-03-19T10:05:00-06:00",
                       "billable": true
                     }
                   },
-                  "Article 69B presunto": {
-                    "summary": "Match: HIGH Risk (Presunto)",
-                    "value": {
-                      "status": "OK",
-                      "type": "SUCCESS",
-                      "message": "SAT 69-B match found",
-                      "data": {
-                        "matchFound": true,
-                        "riskLevel": "HIGH",
-                        "matches": [
-                          {
-                            "listType": "SAT_69B",
-                            "rfc": "GOMR800101XX1",
-                            "razonSocial": "GRUPO OPERATIVO MEXICANO S.A. DE C.V.",
-                            "similarityScore": 100,
-                            "complianceDetails": {
-                              "taxpayerType": "PERSONA_MORAL",
-                              "status": "PRESUNTO",
-                              "publicationDateSat": "2023-11-15",
-                              "oficioSat": "500-05-2023-14500 de fecha 10 de noviembre de 2023",
-                              "publicationDateDof": "2023-11-20",
-                              "oficioDof": "500-05-2023-14500 de fecha 10 de noviembre de 2023"
-                            }
-                          }
-                        ]
-                      },
-                      "transactionId": "49ac48d4-ddf5-4408-b2a4-44fddd05ff88",
-                      "processedAt": "2026-03-19T10:06:00-06:00",
-                      "billable": true
-                    }
-                  },
-                  "Article 69B sentencia favorable": {
-                    "summary": "Match: LOW Risk (Sentencia Favorable)",
+                  "Risk: LOW": {
+                    "summary": "Risk: LOW — Sentencia Favorable",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -3996,23 +3993,114 @@
                         ]
                       },
                       "transactionId": "7bc578c0-cce0-418f-9a54-24c6d95ee7f4",
+                      "processedAt": "2026-03-19T10:06:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: HIGH": {
+                    "summary": "Risk: HIGH — Presunto (under investigation)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "SAT 69-B match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "HIGH",
+                        "matches": [
+                          {
+                            "listType": "SAT_69B",
+                            "rfc": "GOMR800101XX1",
+                            "razonSocial": "GRUPO OPERATIVO MEXICANO S.A. DE C.V.",
+                            "similarityScore": 100,
+                            "complianceDetails": {
+                              "taxpayerType": "PERSONA_MORAL",
+                              "status": "PRESUNTO",
+                              "publicationDateSat": "2023-11-15",
+                              "oficioSat": "500-05-2023-14500 de fecha 10 de noviembre de 2023",
+                              "publicationDateDof": "2023-11-20",
+                              "oficioDof": "500-05-2023-14500 de fecha 10 de noviembre de 2023"
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "49ac48d4-ddf5-4408-b2a4-44fddd05ff88",
                       "processedAt": "2026-03-19T10:07:00-06:00",
                       "billable": true
                     }
                   },
-                  "No match": {
-                    "summary": "Clean: No SAT 69-B Match",
+                  "Risk: CRITICAL": {
+                    "summary": "Risk: CRITICAL — Definitivo (confirmed EFOS)",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
-                      "message": "No SAT 69-B matches found",
+                      "message": "SAT 69-B match found",
                       "data": {
-                        "matchFound": false,
-                        "riskLevel": "NONE",
-                        "matches": []
+                        "matchFound": true,
+                        "riskLevel": "CRITICAL",
+                        "matches": [
+                          {
+                            "listType": "SAT_69B",
+                            "rfc": "ZUL131022LD6",
+                            "razonSocial": "ZULPER, S.A. DE C.V.",
+                            "similarityScore": 100,
+                            "complianceDetails": {
+                              "taxpayerType": "PERSONA_MORAL",
+                              "status": "DEFINITIVO",
+                              "publicationDateSat": "2018-09-20",
+                              "oficioSat": "500-05-2018-27059 de fecha 19 de septiembre de 2018",
+                              "publicationDateDof": "2018-10-08",
+                              "oficioDof": "500-05-2018-27059 de fecha 19 de septiembre de 2018"
+                            }
+                          }
+                        ]
                       },
-                      "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-234567890123",
+                      "transactionId": "b2c3d4e5-f6a7-8b9c-0d1e-123456789002",
                       "processedAt": "2026-03-19T10:08:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: CRITICAL (multiple records)": {
+                    "summary": "Risk: CRITICAL — multiple records (most recent publicationDateSat wins)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "SAT 69-B match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "CRITICAL",
+                        "matches": [
+                          {
+                            "listType": "SAT_69B",
+                            "rfc": "AAS110331G59",
+                            "razonSocial": "ABIRA & SAFFI CORPORATIVO, S. DE R.L. DE C.V.",
+                            "similarityScore": 100,
+                            "complianceDetails": {
+                              "taxpayerType": "PERSONA_MORAL",
+                              "status": "DEFINITIVO",
+                              "publicationDateSat": "2020-06-19",
+                              "oficioSat": "500-05-2020-13691 de fecha 19 de junio de 2020",
+                              "publicationDateDof": "2020-07-07",
+                              "oficioDof": "500-05-2020-13691 de fecha 19 de junio de 2020"
+                            }
+                          },
+                          {
+                            "listType": "SAT_69B",
+                            "rfc": "AAS110331G59",
+                            "razonSocial": "ABIRA & SAFFI CORPORATIVO, S. DE R.L. DE C.V.",
+                            "similarityScore": 100,
+                            "complianceDetails": {
+                              "taxpayerType": "PERSONA_MORAL",
+                              "status": "SENTENCIA_FAVORABLE",
+                              "publicationDateSat": "2019-12-20",
+                              "oficioSat": "500-05-2019-40235 de fecha 20 de diciembre de 2019",
+                              "publicationDateDof": "2020-01-27",
+                              "oficioDof": "500-05-2019-40235 de fecha 20 de diciembre de 2019"
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "6181a4a6-cbb3-4fb8-9c8a-f8eeae6c9cf6",
+                      "processedAt": "2026-03-19T10:09:00-06:00",
                       "billable": true
                     }
                   },
