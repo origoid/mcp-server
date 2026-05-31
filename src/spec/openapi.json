@@ -4421,7 +4421,7 @@
           "Compliance"
         ],
         "summary": "OFAC Sanctions List Check",
-        "description": "**Credits:** 1 per call.\n\nSearches the consolidated OFAC sanctions lists for the provided name. Coverage includes:\n\n- **SDN consolidated** — Specially Designated Nationals (general SDN, plus sub-programs `SDGT` Specially Designated Global Terrorists and `SDNTK` Specially Designated Narcotics Traffickers / Kingpin Act).\n- **Non-SDN consolidated** — Foreign Sanctions Evaders (`FSE`), Sectoral Sanctions Identifications (`SSI`), Correspondent Account / Payable-Through Account restrictions (`CAPTA`), Menu-Based Sanctions (`NS-MBS`), Iran Sanctions Act non-SDN (`NS-ISA`), Palestinian Legislative Council (`NS-PLC`).\n- **UN consolidated sanctions** — surfaced as `OFAC_UN` for clients who want a single endpoint covering both US and UN screening.\n\nEach match carries the originating list (`listType`), the sanction programs that apply, entity type (individual, entity, vessel, aircraft), full aliases and any compliance remarks published with the record.\n\n**Risk Level Matrix (`riskLevel`):**\n- `NONE` (envelope `type: SUCCESS`): no matches at or above `minSimilarityScore`. Safe for automated approval from an OFAC perspective.\n- `CRITICAL` (envelope `type: SUCCESS`): one or more matches found in **any** OFAC or UN sanctions list. Treat as a hard block, reject the relationship, and file the SAR (Suspicious Activity Report) required by your jurisdiction.\n\nThere are intentionally only two levels. AML best practice treats any sanctions list hit — SDN, sectoral, informational, anywhere — as a binding stop. Surfacing intermediate gradations (HIGH / MEDIUM / LOW) misleads the client into believing some hits are merely advisory and is the most common cause of regulatory findings against KYC systems. The `listType` and `complianceDetails.programs` of every match are still surfaced so your compliance team can apply finer policy on top of the binary verdict.\n\n**Multi-match handling:** common names can produce dozens of fuzzy hits. To keep responses bounded:\n- `data.matches[]` is **capped at the top 10 records**, sorted by `similarityScore` descending.\n- `data.totalMatchesFound` reports the **uncapped count** so the client can tell when the cap was hit and decide whether to tighten `minSimilarityScore`.\n\n**Data freshness:** the underlying OFAC and UN consolidated files are refreshed daily by a publisher job and served from a region-replicated cache, so search latency stays sub-second and there is no live dependency on `sanctionssearch.ofac.treas.gov` at request time. The freshness window is up to 24 hours.\n\nUse this endpoint as part of mandatory AML compliance to detect counterparties subject to United States or United Nations sanctions before extending financial services. Required by CNBV for regulated financial institutions and recommended for any cross-border activity.",
+        "description": "**Credits:** 1 per call.\n\nSearches the consolidated OFAC sanctions lists for the provided name. Coverage includes:\n\n- **SDN consolidated** — Specially Designated Nationals (general SDN, plus sub-programs `SDGT` Specially Designated Global Terrorists and `SDNTK` Specially Designated Narcotics Traffickers / Kingpin Act).\n- **Non-SDN consolidated** — Foreign Sanctions Evaders (`FSE`), Sectoral Sanctions Identifications (`SSI`), Correspondent Account / Payable-Through Account restrictions (`CAPTA`), Menu-Based Sanctions (`NS-MBS`), Iran Sanctions Act non-SDN (`NS-ISA`), Palestinian Legislative Council (`NS-PLC`).\n- **UN consolidated sanctions** — surfaced as `OFAC_UN` for clients who want a single endpoint covering both US and UN screening.\n\nEach match carries the originating list (`listType`), the sanction programs that apply, entity type (individual, entity, vessel, aircraft), full aliases and any compliance remarks published with the record.\n\n**Risk Level Matrix (`riskLevel`):**\n- `NONE` (envelope `type: SUCCESS`): no matches at or above `minSimilarityScore`. Safe for automated approval from an OFAC perspective.\n- `CRITICAL` (envelope `type: SUCCESS`): one or more matches found in **any** OFAC or UN sanctions list. Treat as a hard block, reject the relationship, and file the SAR (Suspicious Activity Report) required by your jurisdiction.\n\nThere are intentionally only two levels. AML best practice treats any sanctions list hit — SDN, sectoral, informational, anywhere — as a binding stop. Surfacing intermediate gradations (HIGH / MEDIUM / LOW) misleads the client into believing some hits are merely advisory and is the most common cause of regulatory findings against KYC systems. The `listType` and `complianceDetails.programs` of every match are still surfaced so your compliance team can apply finer policy on top of the binary verdict.\n\n**Multi-match handling:** common names can produce dozens of fuzzy hits. The response returns **every record at or above `minSimilarityScore`**, sorted by `similarityScore` descending. There is no fixed truncation, so a genuine hit will never be hidden by a cap. If the volume of matches is higher than your review process can absorb, raise `minSimilarityScore` to tighten the match. `data.totalMatchesFound` mirrors `matches[].length` and is provided for convenience.\n\n**Which variant matched:** every entry in `matches[]` carries a `matchedOn` object indicating whether the query matched the canonical `entityName` or one of the record's aliases:\n- `matchedOn.type` is either `entityName` (the query matched the canonical name) or `alias` (the query matched an alias on the record).\n- `matchedOn.value` is the alias text that produced the hit when `type` is `alias`, and `null` when `type` is `entityName`.\n\nWhy this matters: OFAC sometimes lists a person under a family member's record (e.g. `OSEGUERA CERVANTES, Nemesio` — better known as El Mencho — is published as an alias of the canonical `OSEGUERA CERVANTES, Ruben`). Without `matchedOn` a reviewer scanning the response would see `Ruben` with score 100 and discount the hit. With `matchedOn` the alias is surfaced explicitly so the reviewer can confirm the right person was matched.\n\n**Multi-identifier matching:** `name` is required, but you can pass `passportNumber` and/or `nationalIdNumber` alongside it to tighten the match. Each extra identifier you provide is used to:\n\n- **Boost the score** when it agrees with the record (record's passport or national ID matches the one you sent → +5 added to `similarityScore`, capped at 100).\n- **Downgrade or filter the match** when it contradicts the record (different passport or national ID → −20 points). If the final score falls below `minSimilarityScore`, the record is excluded from `matches[]` entirely.\n- **Stay neutral** when the record does not publish that identifier (most OFAC records don't have a passport number, for example). Missing data never penalises a match — only contradicting data does.\n\nA `matchedOn` entry per match always carries an `identifiersMatched` array — for example `name` and `passportNumber` — listing exactly which fields agreed, so the reviewer can audit the confidence behind a hit.\n\n**Practical coverage of the identifier boost:** OFAC publishes passport numbers and national IDs on a minority of records — most often on non-Mexican subjects (Iranian, Russian, Venezuelan, Cuban records carry passports more frequently). For purely Mexican counterparties the boost rarely applies in practice: OFAC does not publish CURP, RFC appears only on a handful of records, and most Mexican subjects are sanctioned with name + aliases only. Use these identifiers for cross-border screening where the upside is real; for MX-only KYC the `name` field is what does the work and the optional identifiers stay neutral.",
         "requestBody": {
           "required": true,
           "content": {
@@ -4434,15 +4434,46 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "Full name of the individual or Legal Name of the entity.",
+                    "description": "Full name of the individual or Legal Name of the entity. Required.",
                     "example": "JOAQUIN GUZMAN LOERA"
+                  },
+                  "passportNumber": {
+                    "type": "string",
+                    "description": "Passport number, normalised (trimmed, uppercase). Optional. Exact match against a record's passport ID is a strong signal — adds 5 to the score and is reported in `matchedOn.identifiersMatched`. A mismatch drops the score by 20.",
+                    "example": "G01234567"
+                  },
+                  "nationalIdNumber": {
+                    "type": "string",
+                    "description": "National identifier as published by OFAC — typically `National ID`, `Cedula`, `RFC`, `SSN`, or `Tax ID` depending on jurisdiction. Optional. Normalised (trimmed, uppercase). Exact match adds 5 to the score; mismatch drops 20. OFAC does not publish CURP, and RFC appears only on a handful of records, so for Mexican subjects this field is usually neutral. Highest practical value is for cross-border screening of foreign counterparties.",
+                    "example": "BC166787"
                   },
                   "minSimilarityScore": {
                     "type": "integer",
-                    "minimum": 50,
                     "maximum": 100,
                     "default": 90,
-                    "description": "Minimum similarity score (50-100) required to return a fuzzy match. Defaults to 90, a conservative threshold tuned to suppress common-name false positives. Lower it for broader recall when manual review is in place."
+                    "description": "Minimum similarity score required to return a fuzzy match. Defaults to 90 — a conservative threshold tuned to suppress common-name false positives. Lower it for broader recall when manual review is in place; raise it for stricter automated approval. There is no enforced floor — you can request very low thresholds, but the lower you go the noisier the response will be. The final score after multi-identifier boosts and penalties is the value compared against this threshold."
+                  }
+                }
+              },
+              "examples": {
+                "Name only (basic)": {
+                  "summary": "Name only (basic)",
+                  "value": {
+                    "name": "JOAQUIN GUZMAN LOERA"
+                  }
+                },
+                "Name + passport (cross-border KYC)": {
+                  "summary": "Name + passport (cross-border KYC)",
+                  "value": {
+                    "name": "Abu Sufian al-Salamabi Muhammed Ahmed Abd al-Razziq",
+                    "passportNumber": "BC166787"
+                  }
+                },
+                "Name + national ID (cross-border KYC)": {
+                  "summary": "Name + national ID (cross-border KYC)",
+                  "value": {
+                    "name": "JOAQUIN GUZMAN LOERA",
+                    "nationalIdNumber": "BC166787"
                   }
                 }
               }
@@ -4473,7 +4504,7 @@
                     }
                   },
                   "Risk: CRITICAL": {
-                    "summary": "Risk: CRITICAL — match in OFAC SDN list",
+                    "summary": "Risk: CRITICAL — alias match (\"EL CHAPO\") against canonical SDN record",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -4484,11 +4515,18 @@
                         "totalMatchesFound": 1,
                         "matches": [
                           {
-                            "listType": "OFAC_SDN",
+                            "listType": "OFAC_SDNTK",
                             "entityName": "GUZMAN LOERA, Joaquin Archivaldo",
                             "recordType": "INDIVIDUAL",
-                            "similarityScore": 95,
+                            "similarityScore": 100,
                             "registeredAddress": "Mexico",
+                            "matchedOn": {
+                              "type": "alias",
+                              "value": "GUZMAN, Chapo",
+                              "identifiersMatched": [
+                                "name"
+                              ]
+                            },
                             "complianceDetails": {
                               "programs": [
                                 "SDNTK"
@@ -4510,8 +4548,52 @@
                       "billable": true
                     }
                   },
+                  "Risk: CRITICAL (high-confidence multi-identifier)": {
+                    "summary": "Risk: CRITICAL — name + passportNumber both match (boost applied)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "OFAC match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "CRITICAL",
+                        "totalMatchesFound": 1,
+                        "matches": [
+                          {
+                            "listType": "OFAC_SDGT",
+                            "entityName": "'ABD AL-RAZZIQ, Abu Sufian al-Salamabi Muhammed Ahmed",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 100,
+                            "registeredAddress": "Khartoum, Sudan",
+                            "matchedOn": {
+                              "type": "entityName",
+                              "value": null,
+                              "identifiersMatched": [
+                                "name",
+                                "passportNumber"
+                              ]
+                            },
+                            "complianceDetails": {
+                              "programs": [
+                                "SDGT"
+                              ],
+                              "aliases": [
+                                "ABU SUFIAN ABD AL-RAZZIQ"
+                              ],
+                              "nationality": "SDN",
+                              "dateOfBirth": "1972-01-01",
+                              "remarks": "Passport No. BC166787 (Sudan)."
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "67a9fe23-1c15-4d8d-b30e-2c1aef84c031",
+                      "processedAt": "2026-03-19T10:01:30-06:00",
+                      "billable": true
+                    }
+                  },
                   "Risk: CRITICAL (multiple records)": {
-                    "summary": "Risk: CRITICAL — common name, matches[] capped at 10 of 28",
+                    "summary": "Risk: CRITICAL — common name, all 28 matches returned (no cap)",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -4527,6 +4609,13 @@
                             "recordType": "INDIVIDUAL",
                             "similarityScore": 100,
                             "registeredAddress": "Sinaloa, Mexico",
+                            "matchedOn": {
+                              "type": "entityName",
+                              "value": null,
+                              "identifiersMatched": [
+                                "name"
+                              ]
+                            },
                             "complianceDetails": {
                               "programs": [
                                 "SDNTK"
@@ -4545,6 +4634,13 @@
                             "recordType": "INDIVIDUAL",
                             "similarityScore": 96,
                             "registeredAddress": "Moscow, Russian Federation",
+                            "matchedOn": {
+                              "type": "entityName",
+                              "value": null,
+                              "identifiersMatched": [
+                                "name"
+                              ]
+                            },
                             "complianceDetails": {
                               "programs": [
                                 "UKRAINE-EO13662"
@@ -4561,11 +4657,20 @@
                             "recordType": "INDIVIDUAL",
                             "similarityScore": 93,
                             "registeredAddress": "Caracas, Venezuela",
+                            "matchedOn": {
+                              "type": "alias",
+                              "value": "JOSE A. GARCIA",
+                              "identifiersMatched": [
+                                "name"
+                              ]
+                            },
                             "complianceDetails": {
                               "programs": [
                                 "UN-1267"
                               ],
-                              "aliases": [],
+                              "aliases": [
+                                "JOSE A. GARCIA"
+                              ],
                               "nationality": "VEN",
                               "dateOfBirth": "1968-03-02",
                               "remarks": "UN consolidated list, ISIL/Da'esh and Al-Qaida sanctions list."
@@ -4594,7 +4699,7 @@
                         {
                           "field": "minSimilarityScore",
                           "code": "OUT_OF_RANGE",
-                          "message": "minSimilarityScore must be between 50 and 100"
+                          "message": "minSimilarityScore must be 100 or below"
                         },
                         {
                           "field": "body",
@@ -4717,31 +4822,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/global/compliance/v1/ofac-searches \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"name\": \"JOAQUIN GUZMAN LOERA\"}'"
+            "source": "curl -X POST https://api.origoid.com/global/compliance/v1/ofac-searches \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\n    \"name\": \"Abu Sufian al-Salamabi Muhammed Ahmed Abd al-Razziq\",\n    \"passportNumber\": \"BC166787\"\n  }'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/global/compliance/v1/ofac-searches\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"name\": \"JOAQUIN GUZMAN LOERA\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/global/compliance/v1/ofac-searches\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"name\": \"Abu Sufian al-Salamabi Muhammed Ahmed Abd al-Razziq\",\n    \"passportNumber\": \"BC166787\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/global/compliance/v1/ofac-searches\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"name\": \"JOAQUIN GUZMAN LOERA\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/global/compliance/v1/ofac-searches\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"name\": \"Abu Sufian al-Salamabi Muhammed Ahmed Abd al-Razziq\",\n        \"passportNumber\": \"BC166787\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"name\\\": \\\"JOAQUIN GUZMAN LOERA\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/global/compliance/v1/ofac-searches\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"name\\\": \\\"Abu Sufian al-Salamabi Muhammed Ahmed Abd al-Razziq\\\", \\\"passportNumber\\\": \\\"BC166787\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/global/compliance/v1/ofac-searches\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"name\": \"JOAQUIN GUZMAN LOERA\"}';\n\n$ch = curl_init('https://api.origoid.com/global/compliance/v1/ofac-searches');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"name\": \"Abu Sufian al-Salamabi Muhammed Ahmed Abd al-Razziq\", \"passportNumber\": \"BC166787\"}';\n\n$ch = curl_init('https://api.origoid.com/global/compliance/v1/ofac-searches');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"name\": \"JOAQUIN GUZMAN LOERA\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/global/compliance/v1/ofac-searches\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"name\": \"Abu Sufian al-Salamabi Muhammed Ahmed Abd al-Razziq\", \"passportNumber\": \"BC166787\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/global/compliance/v1/ofac-searches\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"name\\\": \\\"JOAQUIN GUZMAN LOERA\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/global/compliance/v1/ofac-searches\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"name\\\": \\\"Abu Sufian al-Salamabi Muhammed Ahmed Abd al-Razziq\\\", \\\"passportNumber\\\": \\\"BC166787\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/global/compliance/v1/ofac-searches\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
