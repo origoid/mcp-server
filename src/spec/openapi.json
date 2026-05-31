@@ -1215,11 +1215,11 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/mex/renapo/v1/curp-lookups \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"givenNames\": \"JUAN\", \"firstSurname\": \"PEREZ\", \"secondSurname\": \"LOPEZ\", \"dateOfBirth\": \"1990-01-01\", \"gender\": \"H\", \"birthStateCode\": \"DF\", \"generateRfc\": true}'"
+            "source": "curl -X POST https://api.origoid.com/mex/renapo/v1/curp-lookups \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"givenNames\": \"ANDRES MANUEL\", \"firstSurname\": \"LOPEZ\", \"secondSurname\": \"OBRADOR\", \"nationalIdNumber\": \"LOOA531113HTCPBN07\", \"dateOfBirth\": \"1990-01-01\", \"gender\": \"H\", \"birthStateCode\": \"DF\", \"generateRfc\": true}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/mex/renapo/v1/curp-lookups\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"givenNames\": \"JUAN\",\n    \"firstSurname\": \"PEREZ\",\n    \"secondSurname\": \"LOPEZ\",\n    \"dateOfBirth\": \"1990-01-01\",\n    \"gender\": \"H\",\n    \"birthStateCode\": \"DF\",\n    \"generateRfc\": true\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/renapo/v1/curp-lookups\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"givenNames\": \"ANDRES MANUEL\",\n    \"firstSurname\": \"LOPEZ\",\n    \"secondSurname\": \"OBRADOR\",\n    \"nationalIdNumber\": \"LOOA531113HTCPBN07\",\n    \"dateOfBirth\": \"1990-01-01\",\n    \"gender\": \"H\",\n    \"birthStateCode\": \"DF\",\n    \"generateRfc\": true\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
@@ -1227,19 +1227,19 @@
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"givenNames\\\": \\\"JUAN\\\", \\\"firstSurname\\\": \\\"PEREZ\\\", \\\"secondSurname\\\": \\\"LOPEZ\\\", \\\"dateOfBirth\\\": \\\"1990-01-01\\\", \\\"gender\\\": \\\"H\\\", \\\"birthStateCode\\\": \\\"DF\\\", \\\"generateRfc\\\": true}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/renapo/v1/curp-lookups\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"givenNames\\\": \\\"ANDRES MANUEL\\\", \\\"firstSurname\\\": \\\"LOPEZ\\\", \\\"secondSurname\\\": \\\"OBRADOR\\\", \\\"nationalIdNumber\\\": \\\"LOOA531113HTCPBN07\\\", \\\"dateOfBirth\\\": \\\"1990-01-01\\\", \\\"gender\\\": \\\"H\\\", \\\"birthStateCode\\\": \\\"DF\\\", \\\"generateRfc\\\": true}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/renapo/v1/curp-lookups\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"givenNames\": \"JUAN\", \"firstSurname\": \"PEREZ\", \"secondSurname\": \"LOPEZ\", \"dateOfBirth\": \"1990-01-01\", \"gender\": \"H\", \"birthStateCode\": \"DF\", \"generateRfc\": true}';\n\n$ch = curl_init('https://api.origoid.com/mex/renapo/v1/curp-lookups');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"givenNames\": \"ANDRES MANUEL\", \"firstSurname\": \"LOPEZ\", \"secondSurname\": \"OBRADOR\", \"nationalIdNumber\": \"LOOA531113HTCPBN07\", \"dateOfBirth\": \"1990-01-01\", \"gender\": \"H\", \"birthStateCode\": \"DF\", \"generateRfc\": true}';\n\n$ch = curl_init('https://api.origoid.com/mex/renapo/v1/curp-lookups');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"givenNames\": \"JUAN\", \"firstSurname\": \"PEREZ\", \"secondSurname\": \"LOPEZ\", \"dateOfBirth\": \"1990-01-01\", \"gender\": \"H\", \"birthStateCode\": \"DF\", \"generateRfc\": true}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/renapo/v1/curp-lookups\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"givenNames\": \"ANDRES MANUEL\", \"firstSurname\": \"LOPEZ\", \"secondSurname\": \"OBRADOR\", \"nationalIdNumber\": \"LOOA531113HTCPBN07\", \"dateOfBirth\": \"1990-01-01\", \"gender\": \"H\", \"birthStateCode\": \"DF\", \"generateRfc\": true}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/renapo/v1/curp-lookups\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"givenNames\\\": \\\"JUAN\\\", \\\"firstSurname\\\": \\\"PEREZ\\\", \\\"secondSurname\\\": \\\"LOPEZ\\\", \\\"dateOfBirth\\\": \\\"1990-01-01\\\", \\\"gender\\\": \\\"H\\\", \\\"birthStateCode\\\": \\\"DF\\\", \\\"generateRfc\\\": true}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/renapo/v1/curp-lookups\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"givenNames\\\": \\\"ANDRES MANUEL\\\", \\\"firstSurname\\\": \\\"LOPEZ\\\", \\\"secondSurname\\\": \\\"OBRADOR\\\", \\\"nationalIdNumber\\\": \\\"LOOA531113HTCPBN07\\\", \\\"dateOfBirth\\\": \\\"1990-01-01\\\", \\\"gender\\\": \\\"H\\\", \\\"birthStateCode\\\": \\\"DF\\\", \\\"generateRfc\\\": true}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/renapo/v1/curp-lookups\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -4697,6 +4697,16 @@
                           "message": "must have required property 'name'"
                         },
                         {
+                          "field": "name",
+                          "code": "NAME_TOO_SHORT",
+                          "message": "name must be at least 2 characters"
+                        },
+                        {
+                          "field": "name",
+                          "code": "NAME_ONLY_STOPWORDS",
+                          "message": "name cannot consist solely of stopwords"
+                        },
+                        {
                           "field": "minSimilarityScore",
                           "code": "OUT_OF_RANGE",
                           "message": "minSimilarityScore must be 100 or below"
@@ -4857,7 +4867,7 @@
           "Compliance"
         ],
         "summary": "PEP (Politically Exposed Person) Check",
-        "description": "**Credits:** 1 per call.\n\nSearches for the subject in our consolidated PEP (Politically Exposed Persons) database — including active PEPs, former PEPs (EX_PEP), and their immediate family and close associates (PEP_AFFINITY, EX_PEP_AFFINITY). Accepts full name, CURP, or RFC for matching.\n\nReturns each match with the political position held, institution, status (active/inactive), country, and risk level. Use this endpoint as part of enhanced due diligence for clients in regulated financial products (LFPIORPI requirements).",
+        "description": "**Credits:** 1 per call.\n\nSearches the consolidated PEP (Politically Exposed Persons) database for a subject — covering active PEPs, former PEPs (`EX_PEP`), their immediate family and close associates (`PEP_AFFINITY`, `EX_PEP_AFFINITY`), and current world leaders catalog (`INTL_LEADER`).\n\n**Input flexibility — three valid invocation forms:**\n\nThe endpoint accepts a search in any of three forms — pick the one that matches the data you have on hand. You may include `nationalIdNumber` alongside any of them to tighten the match.\n\n1. **Single name (`name`)** — pass the full name as one string. Quick and convenient when you only have the full name as a single value.\n2. **Separated name (`givenNames` + `firstSurname` + optional `secondSurname`)** — Mexican-style split. **Strongly recommended for best match quality**, because the matching engine can apply per-component logic that produces fewer false positives on compound first names and compound surnames. When using this form, both `givenNames` and `firstSurname` are required.\n3. **Identifier only (`nationalIdNumber`)** — pass a CURP or RFC by itself when that is all you have. The search runs against records that publish the identifier.\n\nIf more than one form is sent (for example `name` plus separated fields), the separated fields take precedence over `name`. The `nationalIdNumber` is normalised (trim, uppercase) and reported back per match in `matchedOn.identifiersMatched` and in the standalone `identifierMatch` field.\n\n**Risk Level Matrix (`riskLevel`):**\n\nEach match in `matches[]` has a base severity per its `listType`:\n\n| `listType` | base severity |\n|---|---|\n| `PEP_ACTIVE` | HIGH |\n| `INTL_LEADER` | HIGH |\n| `EX_PEP` | MEDIUM |\n| `PEP_INACTIVE` | MEDIUM |\n| `PEP_AFFINITY` | MEDIUM |\n| `EX_PEP_AFFINITY` | LOW |\n\nThe endpoint `riskLevel` is the **maximum** severity across `matches[]`:\n\n- `NONE` — no matches at or above `minSimilarityScore`. Safe for automated approval from a PEP perspective.\n- `LOW` — only `EX_PEP_AFFINITY` hits found (family or close associate of a former PEP).\n- `MEDIUM` — at least one `EX_PEP`, `PEP_INACTIVE`, or `PEP_AFFINITY` hit.\n- `HIGH` — at least one `PEP_ACTIVE` or `INTL_LEADER` hit. Aligned with the categories that FATF Recommendation 12 and Mexican LFPIORPI flag for Enhanced Due Diligence (EDD).\n\n`riskLevel` is a screening signal intended to feed your compliance workflow. Combine it with `identifierMatch`, `similarityScore`, and the per-match `complianceDetails` we surface so your team can apply its own internal policy.\n\n**Which variant matched:** every entry in `matches[]` carries a `matchedOn` object identifying the canonical record that was hit and an `identifiersMatched` array — for example `name` and `nationalIdNumber` — listing which fields agreed. The standalone `identifierMatch` field exposes the precision of the identifier comparison (`EXACT`, `PARTIAL`, `MISMATCH`, or `NOT_PROVIDED` when no identifier was sent). Use these together to audit the confidence behind a hit.\n\n**Multi-match handling:** the response returns every match at or above `minSimilarityScore`, sorted by `similarityScore` descending. `data.totalMatchesFound` mirrors `matches[].length` and is provided for convenience.\n\nUse this endpoint as part of AML programs where screening counterparties against PEPs is part of your KYC workflow — common in regulated financial services, cross-border payments, and onboarding pipelines.",
         "requestBody": {
           "required": true,
           "content": {
@@ -4865,35 +4875,44 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Full name of the subject (single string). Optional alternative to the split `givenNames` / `firstSurname` format. Use this when you only have the full name as one value (form input, OCR extraction). For best match quality, prefer the separated fields below.",
+                    "example": "ANDRES MANUEL LOPEZ OBRADOR"
+                  },
                   "givenNames": {
                     "type": "string",
-                    "description": "Subject's given name(s)."
+                    "description": "Subject's given name(s). Use together with `firstSurname` for the most precise matching. Recommended over the single `name` field whenever the components are available.",
+                    "example": "ANDRES MANUEL"
                   },
                   "firstSurname": {
                     "type": "string",
-                    "description": "Subject's first surname (paternal)."
+                    "description": "Subject's first (paternal) surname. Use with `givenNames` for best match quality.",
+                    "example": "LOPEZ"
                   },
                   "secondSurname": {
                     "type": "string",
-                    "description": "Subject's second surname (maternal). Optional."
+                    "description": "Subject's second (maternal) surname. Optional.",
+                    "example": "OBRADOR"
                   },
-                  "curp": {
+                  "nationalIdNumber": {
                     "type": "string",
-                    "description": "Subject's CURP. Prioritized for exact matching if provided."
-                  },
-                  "rfc": {
-                    "type": "string",
-                    "description": "Subject's RFC. Prioritized for exact matching if provided."
+                    "description": "National identifier — CURP (18 chars) or RFC (12-13 chars). Optional. Normalised (trimmed, uppercase). When provided, it is reported back per match in `matchedOn.identifiersMatched` and in the standalone `identifierMatch` field so the reviewer can audit the precision of the hit. Examples: `LOOA531113HTCPBN07` (CURP), `LOOA531113FI5` (RFC).",
+                    "example": "LOOA531113HTCPBN07"
                   },
                   "minSimilarityScore": {
                     "type": "integer",
-                    "minimum": 1,
                     "maximum": 100,
                     "default": 70,
-                    "description": "Minimum similarity score (1-100) required to return a fuzzy match. Defaults to 70. Ignored if an exact identifier (curp/rfc) is provided."
+                    "description": "Minimum similarity score required to return a fuzzy match. Defaults to 70 — a balanced threshold for PEP screening. Lower it for broader recall when manual review is in place; raise it for stricter automated approval. There is no enforced floor — you can request very low thresholds, but the lower you go the noisier the response will be."
                   }
                 },
-                "oneOf": [
+                "anyOf": [
+                  {
+                    "required": [
+                      "name"
+                    ]
+                  },
                   {
                     "required": [
                       "givenNames",
@@ -4902,35 +4921,46 @@
                   },
                   {
                     "required": [
-                      "curp"
-                    ]
-                  },
-                  {
-                    "required": [
-                      "rfc"
+                      "nationalIdNumber"
                     ]
                   }
                 ]
               },
               "examples": {
-                "by_names": {
-                  "summary": "By Full Name",
+                "By single name (basic)": {
+                  "summary": "By single name (basic)",
                   "value": {
-                    "givenNames": "JUAN",
-                    "firstSurname": "PEREZ",
-                    "secondSurname": "LOPEZ"
+                    "name": "ANDRES MANUEL LOPEZ OBRADOR"
                   }
                 },
-                "by_curp": {
-                  "summary": "By CURP",
+                "By separated name (recommended)": {
+                  "summary": "By separated name (recommended for best match)",
                   "value": {
-                    "curp": "PELJ900101HDFRRN09"
+                    "givenNames": "ANDRES MANUEL",
+                    "firstSurname": "LOPEZ",
+                    "secondSurname": "OBRADOR"
                   }
                 },
-                "by_rfc": {
-                  "summary": "By RFC",
+                "By separated name + CURP": {
+                  "summary": "By separated name + CURP (highest confidence)",
                   "value": {
-                    "rfc": "PELJ900101AAA"
+                    "givenNames": "ANDRES MANUEL",
+                    "firstSurname": "LOPEZ",
+                    "secondSurname": "OBRADOR",
+                    "nationalIdNumber": "LOOA531113HTCPBN07"
+                  }
+                },
+                "By single name + RFC": {
+                  "summary": "By single name + RFC",
+                  "value": {
+                    "name": "ANDRES MANUEL LOPEZ OBRADOR",
+                    "nationalIdNumber": "LOOA531113FI5"
+                  }
+                },
+                "By identifier only (CURP)": {
+                  "summary": "By identifier only (CURP)",
+                  "value": {
+                    "nationalIdNumber": "LOOA531113HTCPBN07"
                   }
                 }
               }
@@ -4943,61 +4973,8 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "Match Found": {
-                    "summary": "Match: High Risk PEP Found",
-                    "value": {
-                      "status": "OK",
-                      "type": "SUCCESS",
-                      "message": "PEPs match found",
-                      "data": {
-                        "matchFound": true,
-                        "riskLevel": "HIGH",
-                        "matches": [
-                          {
-                            "listType": "PEP",
-                            "entityName": "LOPEZ OBRADOR ANDRES MANUEL",
-                            "similarityScore": 100,
-                            "personalInfo": {
-                              "curp": "LOOA531113HTCPBN07",
-                              "rfc": "LOOA531113FI5",
-                              "dateOfBirth": "1953-11-13"
-                            },
-                            "registeredAddress": "C ODONTOLOGIA 57 EDIF B, DEPT 301, COL COPILCO...",
-                            "complianceDetails": {
-                              "position": "PRESIDENTE DE LOS ESTADOS UNIDOS MEXICANOS",
-                              "institution": "Oficina de la Presidencia de la Republica",
-                              "status": "INACTIVE",
-                              "category": "EX_PEP",
-                              "country": "MEX"
-                            }
-                          },
-                          {
-                            "listType": "PEP_AFFINITY",
-                            "entityName": "PIO LORENZO LOPEZ OBRADOR",
-                            "similarityScore": 60,
-                            "personalInfo": {
-                              "curp": null,
-                              "rfc": null,
-                              "dateOfBirth": null
-                            },
-                            "registeredAddress": "MEXICO",
-                            "complianceDetails": {
-                              "position": null,
-                              "institution": null,
-                              "status": "UNKNOWN",
-                              "category": "ASSOCIATE",
-                              "country": "MEX"
-                            }
-                          }
-                        ]
-                      },
-                      "transactionId": "b1c2d3e4-f5a6-7b8c-9d0e-123456789001",
-                      "processedAt": "2026-03-19T10:00:00-06:00",
-                      "billable": true
-                    }
-                  },
-                  "No Match": {
-                    "summary": "Clean: No PEP Match",
+                  "Risk: NONE": {
+                    "summary": "Risk: NONE — no PEP match",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -5005,6 +4982,7 @@
                       "data": {
                         "matchFound": false,
                         "riskLevel": "NONE",
+                        "totalMatchesFound": 0,
                         "matches": []
                       },
                       "transactionId": "d2b0b572-0be8-4744-bf0d-72f21135125b",
@@ -5012,8 +4990,160 @@
                       "billable": true
                     }
                   },
+                  "Risk: LOW": {
+                    "summary": "Risk: LOW — only EX_PEP_AFFINITY hit",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "PEPs match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "LOW",
+                        "totalMatchesFound": 1,
+                        "matches": [
+                          {
+                            "listType": "EX_PEP_AFFINITY",
+                            "entityName": "ROSA MARIA HERNANDEZ MARTINEZ",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 78,
+                            "identifierMatch": "NOT_PROVIDED",
+                            "matchedOn": {
+                              "type": "entityName",
+                              "value": null,
+                              "identifiersMatched": [
+                                "name"
+                              ]
+                            },
+                            "complianceDetails": {
+                              "position": null,
+                              "institution": null,
+                              "status": "UNKNOWN",
+                              "positionEndDate": null,
+                              "dateOfBirth": null,
+                              "curp": null,
+                              "rfc": null,
+                              "registeredAddress": "MEXICO"
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "e9af2c47-1b94-4a23-a0a6-5fa6d3eed101",
+                      "processedAt": "2026-03-19T10:00:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: MEDIUM": {
+                    "summary": "Risk: MEDIUM — EX_PEP hit (former office-holder)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "PEPs match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "MEDIUM",
+                        "totalMatchesFound": 2,
+                        "matches": [
+                          {
+                            "listType": "EX_PEP",
+                            "entityName": "LOPEZ OBRADOR ANDRES MANUEL",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 100,
+                            "identifierMatch": "EXACT",
+                            "matchedOn": {
+                              "type": "entityName",
+                              "value": null,
+                              "identifiersMatched": [
+                                "name",
+                                "nationalIdNumber"
+                              ]
+                            },
+                            "complianceDetails": {
+                              "position": "PRESIDENTE DE LOS ESTADOS UNIDOS MEXICANOS",
+                              "institution": "Gobierno de los Estados Unidos Mexicanos",
+                              "status": "INACTIVE",
+                              "positionEndDate": "2024-09-30",
+                              "dateOfBirth": "1953-11-13",
+                              "curp": "LOOA531113HTCPBN07",
+                              "rfc": "LOOA531113FI5",
+                              "registeredAddress": "C ODONTOLOGIA 57 EDIF B, DEPT 301, COYOACAN, MEXICO"
+                            }
+                          },
+                          {
+                            "listType": "PEP_AFFINITY",
+                            "entityName": "PIO LORENZO LOPEZ OBRADOR",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 60,
+                            "identifierMatch": "NOT_PROVIDED",
+                            "matchedOn": {
+                              "type": "entityName",
+                              "value": null,
+                              "identifiersMatched": [
+                                "name"
+                              ]
+                            },
+                            "complianceDetails": {
+                              "position": null,
+                              "institution": null,
+                              "status": "UNKNOWN",
+                              "positionEndDate": null,
+                              "dateOfBirth": null,
+                              "curp": null,
+                              "rfc": null,
+                              "registeredAddress": "MEXICO"
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "b1c2d3e4-f5a6-7b8c-9d0e-123456789001",
+                      "processedAt": "2026-03-19T10:01:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: HIGH": {
+                    "summary": "Risk: HIGH — sitting PEP, EDD required",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "PEPs match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "HIGH",
+                        "totalMatchesFound": 1,
+                        "matches": [
+                          {
+                            "listType": "PEP_ACTIVE",
+                            "entityName": "SHEINBAUM PARDO CLAUDIA",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 100,
+                            "identifierMatch": "EXACT",
+                            "matchedOn": {
+                              "type": "entityName",
+                              "value": null,
+                              "identifiersMatched": [
+                                "name",
+                                "nationalIdNumber"
+                              ]
+                            },
+                            "complianceDetails": {
+                              "position": "PRESIDENTA DE LOS ESTADOS UNIDOS MEXICANOS",
+                              "institution": "Gobierno de los Estados Unidos Mexicanos",
+                              "status": "ACTIVE",
+                              "positionEndDate": null,
+                              "dateOfBirth": "1962-06-24",
+                              "curp": "SEPC620624MDFHRL05",
+                              "rfc": "SEPC620624C57",
+                              "registeredAddress": "CIUDAD DE MEXICO, MEXICO"
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "c2d3e4f5-a6b7-8c9d-0e12-3456789ab012",
+                      "processedAt": "2026-03-19T10:02:00-06:00",
+                      "billable": true
+                    }
+                  },
                   "Validation Error": {
-                    "summary": "Validation Error (Missing Parameters)",
+                    "summary": "Validation Error",
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
@@ -5022,8 +5152,33 @@
                       "errors": [
                         {
                           "field": "body",
-                          "code": "MISSING_SEARCH_CRITERIA",
-                          "message": "You must provide either a valid identifier (curp/rfc) or name components (givenNames and firstSurname)."
+                          "code": "MISSING_REQUIRED_FIELD",
+                          "message": "Provide one of: `name` (single string), or both `givenNames` and `firstSurname` (separated form), or `nationalIdNumber` (CURP/RFC)."
+                        },
+                        {
+                          "field": "nationalIdNumber",
+                          "code": "INVALID_FORMAT",
+                          "message": "nationalIdNumber must match CURP (18 characters) or RFC (12-13 characters) format"
+                        },
+                        {
+                          "field": "firstSurname",
+                          "code": "NAME_TOO_SHORT",
+                          "message": "firstSurname must be at least 2 characters"
+                        },
+                        {
+                          "field": "name",
+                          "code": "NAME_ONLY_STOPWORDS",
+                          "message": "name cannot consist solely of stopwords"
+                        },
+                        {
+                          "field": "minSimilarityScore",
+                          "code": "OUT_OF_RANGE",
+                          "message": "minSimilarityScore must be 100 or below"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "body exceeds the maximum allowed size"
                         }
                       ],
                       "transactionId": "22cbcaa5-ba6c-45cc-a1b0-f9c048e4f481",
@@ -5141,31 +5296,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/mex/compliance/v1/peps-searches \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"givenNames\": \"JUAN\", \"firstSurname\": \"PEREZ\", \"secondSurname\": \"LOPEZ\"}'"
+            "source": "curl -X POST https://api.origoid.com/mex/compliance/v1/peps-searches \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"givenNames\": \"ANDRES MANUEL\", \"firstSurname\": \"LOPEZ\", \"secondSurname\": \"OBRADOR\", \"nationalIdNumber\": \"LOOA531113HTCPBN07\"}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/mex/compliance/v1/peps-searches\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"givenNames\": \"JUAN\",\n    \"firstSurname\": \"PEREZ\",\n    \"secondSurname\": \"LOPEZ\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/compliance/v1/peps-searches\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"givenNames\": \"ANDRES MANUEL\",\n    \"firstSurname\": \"LOPEZ\",\n    \"secondSurname\": \"OBRADOR\",\n    \"nationalIdNumber\": \"LOOA531113HTCPBN07\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/compliance/v1/peps-searches\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"givenNames\": \"JUAN\",\n        \"firstSurname\": \"PEREZ\",\n        \"secondSurname\": \"LOPEZ\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/compliance/v1/peps-searches\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"givenNames\": \"ANDRES MANUEL\",\n        \"firstSurname\": \"LOPEZ\",\n        \"secondSurname\": \"OBRADOR\",\n        \"nationalIdNumber\": \"LOOA531113HTCPBN07\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"givenNames\\\": \\\"JUAN\\\", \\\"firstSurname\\\": \\\"PEREZ\\\", \\\"secondSurname\\\": \\\"LOPEZ\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/compliance/v1/peps-searches\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"givenNames\\\": \\\"ANDRES MANUEL\\\", \\\"firstSurname\\\": \\\"LOPEZ\\\", \\\"secondSurname\\\": \\\"OBRADOR\\\", \\\"nationalIdNumber\\\": \\\"LOOA531113HTCPBN07\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/compliance/v1/peps-searches\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"givenNames\": \"JUAN\", \"firstSurname\": \"PEREZ\", \"secondSurname\": \"LOPEZ\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/compliance/v1/peps-searches');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"givenNames\": \"ANDRES MANUEL\", \"firstSurname\": \"LOPEZ\", \"secondSurname\": \"OBRADOR\", \"nationalIdNumber\": \"LOOA531113HTCPBN07\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/compliance/v1/peps-searches');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"givenNames\": \"JUAN\", \"firstSurname\": \"PEREZ\", \"secondSurname\": \"LOPEZ\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/compliance/v1/peps-searches\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"givenNames\": \"ANDRES MANUEL\", \"firstSurname\": \"LOPEZ\", \"secondSurname\": \"OBRADOR\", \"nationalIdNumber\": \"LOOA531113HTCPBN07\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/compliance/v1/peps-searches\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"givenNames\\\": \\\"JUAN\\\", \\\"firstSurname\\\": \\\"PEREZ\\\", \\\"secondSurname\\\": \\\"LOPEZ\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/compliance/v1/peps-searches\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"givenNames\\\": \\\"ANDRES MANUEL\\\", \\\"firstSurname\\\": \\\"LOPEZ\\\", \\\"secondSurname\\\": \\\"OBRADOR\\\", \\\"nationalIdNumber\\\": \\\"LOOA531113HTCPBN07\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/compliance/v1/peps-searches\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
