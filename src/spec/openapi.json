@@ -4867,7 +4867,7 @@
           "Compliance"
         ],
         "summary": "PEP (Politically Exposed Person) Check",
-        "description": "**Credits:** 1 per call.\n\nSearches the consolidated PEP (Politically Exposed Persons) database for a subject — covering active PEPs, former PEPs (`EX_PEP`), their immediate family and close associates (`PEP_AFFINITY`, `EX_PEP_AFFINITY`), and current world leaders catalog (`INTL_LEADER`).\n\n**Input flexibility — three valid invocation forms:**\n\nThe endpoint accepts a search in any of three forms — pick the one that matches the data you have on hand. You may include `nationalIdNumber` alongside any of them to tighten the match.\n\n1. **Single name (`name`)** — pass the full name as one string. Quick and convenient when you only have the full name as a single value.\n2. **Separated name (`givenNames` + `firstSurname` + optional `secondSurname`)** — Mexican-style split. **Strongly recommended for best match quality**, because the matching engine can apply per-component logic that produces fewer false positives on compound first names and compound surnames. When using this form, both `givenNames` and `firstSurname` are required.\n3. **Identifier only (`nationalIdNumber`)** — pass a CURP or RFC by itself when that is all you have. The search runs against records that publish the identifier.\n\nIf more than one form is sent (for example `name` plus separated fields), the separated fields take precedence over `name`. The `nationalIdNumber` is normalised (trim, uppercase) and reported back per match in `matchedOn.identifiersMatched` and in the standalone `identifierMatch` field.\n\n**Risk Level Matrix (`riskLevel`):**\n\nEach match in `matches[]` has a base severity per its `listType`:\n\n| `listType` | base severity |\n|---|---|\n| `PEP_ACTIVE` | HIGH |\n| `INTL_LEADER` | HIGH |\n| `EX_PEP` | MEDIUM |\n| `PEP_INACTIVE` | MEDIUM |\n| `PEP_AFFINITY` | MEDIUM |\n| `EX_PEP_AFFINITY` | LOW |\n\nThe endpoint `riskLevel` is the **maximum** severity across `matches[]`:\n\n- `NONE` — no matches at or above `minSimilarityScore`. Safe for automated approval from a PEP perspective.\n- `LOW` — only `EX_PEP_AFFINITY` hits found (family or close associate of a former PEP).\n- `MEDIUM` — at least one `EX_PEP`, `PEP_INACTIVE`, or `PEP_AFFINITY` hit.\n- `HIGH` — at least one `PEP_ACTIVE` or `INTL_LEADER` hit. Aligned with the categories that FATF Recommendation 12 and Mexican LFPIORPI flag for Enhanced Due Diligence (EDD).\n\n`riskLevel` is a screening signal intended to feed your compliance workflow. Combine it with `identifierMatch`, `similarityScore`, and the per-match `complianceDetails` we surface so your team can apply its own internal policy.\n\n**Which variant matched:** every entry in `matches[]` carries a `matchedOn` object identifying the canonical record that was hit and an `identifiersMatched` array — for example `name` and `nationalIdNumber` — listing which fields agreed. The standalone `identifierMatch` field exposes the precision of the identifier comparison (`EXACT`, `PARTIAL`, `MISMATCH`, or `NOT_PROVIDED` when no identifier was sent). Use these together to audit the confidence behind a hit.\n\n**Multi-match handling:** the response returns every match at or above `minSimilarityScore`, sorted by `similarityScore` descending. `data.totalMatchesFound` mirrors `matches[].length` and is provided for convenience.\n\nUse this endpoint as part of AML programs where screening counterparties against PEPs is part of your KYC workflow — common in regulated financial services, cross-border payments, and onboarding pipelines.",
+        "description": "**Credits:** 1 per call.\n\nSearches the consolidated PEP (Politically Exposed Persons) database for a subject — covering active PEPs, former PEPs (`EX_PEP`), their immediate family and close associates (`PEP_AFFINITY`, `EX_PEP_AFFINITY`), and current world leaders catalog (`INTL_LEADER`).\n\n**Input flexibility — three valid invocation forms:**\n\nThe endpoint accepts a search in any of three forms — pick the one that matches the data you have on hand. You may include `nationalIdNumber` alongside any of them to tighten the match.\n\n1. **Single name (`name`)** — pass the full name as one string. Quick and convenient when you only have the full name as a single value.\n2. **Separated name (`givenNames` + `firstSurname` + optional `secondSurname`)** — Mexican-style split. **Strongly recommended for best match quality**, because the matching engine can apply per-component logic that produces fewer false positives on compound first names and compound surnames. When using this form, both `givenNames` and `firstSurname` are required.\n3. **Identifier only (`nationalIdNumber`)** — pass a CURP or RFC by itself when that is all you have. The search runs against records that publish the identifier.\n\nIf more than one form is sent (for example `name` plus separated fields), the separated fields take precedence over `name`. The `nationalIdNumber` is normalised (trim, uppercase) and reported back per match in `matchedOn.identifiersMatched` and in the standalone `identifierMatch` field.\n\n**Risk Level Matrix (`riskLevel`):**\n\nEach match in `matches[]` has a base severity per its `listType`:\n\n| `listType` | base severity |\n|---|---|\n| `PEP_ACTIVE` | HIGH |\n| `INTL_LEADER` | HIGH |\n| `EX_PEP` | MEDIUM |\n| `PEP_INACTIVE` | MEDIUM |\n| `PEP_AFFINITY` | MEDIUM |\n| `EX_PEP_AFFINITY` | LOW |\n\nThe endpoint `riskLevel` is the **maximum** severity across `matches[]`:\n\n- `NONE` — no matches at or above `minSimilarityScore`. Safe for automated approval from a PEP perspective.\n- `LOW` — only `EX_PEP_AFFINITY` hits found (family or close associate of a former PEP).\n- `MEDIUM` — at least one `EX_PEP`, `PEP_INACTIVE`, or `PEP_AFFINITY` hit.\n- `HIGH` — at least one `PEP_ACTIVE` or `INTL_LEADER` hit. Aligned with the categories that FATF Recommendation 12 and Mexican LFPIORPI flag for Enhanced Due Diligence (EDD).\n\n`riskLevel` is a screening signal intended to feed your compliance workflow. Combine it with `identifierMatch`, `similarityScore`, and the per-match `complianceDetails` we surface so your team can apply its own internal policy.\n\n**Which variant matched:** every entry in `matches[]` carries a `matchedOn` object identifying the canonical record that was hit and an `identifiersMatched` array — for example `name` and `nationalIdNumber` — listing which fields agreed. The standalone `identifierMatch` field exposes the precision of the identifier comparison (`EXACT`, `PARTIAL`, `MISMATCH`, or `NOT_PROVIDED` when no identifier was sent). Use these together to audit the confidence behind a hit.\n\n**How `similarityScore` is computed:** the score reflects **combined name + identifier confidence**, not name alone. A match's `similarityScore` is the higher of (a) the name match quality and (b) the strength of the identifier comparison — an `EXACT` `nationalIdNumber` match contributes a full-confidence score, a `PARTIAL` match contributes a strong-but-not-certain score, and `MISMATCH` / `NOT_PROVIDED` contribute nothing (the name drives the score in those cases). This means a search by `nationalIdNumber` alone still returns a high-confidence hit even though no name was supplied to compare — a CURP or RFC coincidence is a deterministic identity signal. Inspect `identifierMatch` and `matchedOn.identifiersMatched` to see *why* a given match scored the way it did.\n\n**Multi-match handling:** the response returns every match at or above `minSimilarityScore`, sorted by `similarityScore` descending. `data.totalMatchesFound` mirrors `matches[].length` and is provided for convenience.\n\nUse this endpoint as part of AML programs where screening counterparties against PEPs is part of your KYC workflow — common in regulated financial services, cross-border payments, and onboarding pipelines.",
         "requestBody": {
           "required": true,
           "content": {
@@ -4904,7 +4904,7 @@
                     "type": "integer",
                     "maximum": 100,
                     "default": 70,
-                    "description": "Minimum similarity score required to return a fuzzy match. Defaults to 70 — a balanced threshold for PEP screening. Lower it for broader recall when manual review is in place; raise it for stricter automated approval. There is no enforced floor — you can request very low thresholds, but the lower you go the noisier the response will be."
+                    "description": "Minimum similarity score required to return a match. Defaults to 70 — a balanced threshold for PEP screening. Lower it for broader recall when manual review is in place; raise it for stricter automated approval. There is no enforced floor — you can request very low thresholds, but the lower you go the noisier the response will be. The threshold is compared against the combined name + identifier `similarityScore` (see the description), so a search by `nationalIdNumber` alone with an exact match is not filtered out even though no name was provided to compare."
                   }
                 },
                 "anyOf": [
@@ -5072,7 +5072,7 @@
                             "listType": "PEP_AFFINITY",
                             "entityName": "PIO LORENZO LOPEZ OBRADOR",
                             "recordType": "INDIVIDUAL",
-                            "similarityScore": 60,
+                            "similarityScore": 80,
                             "identifierMatch": "NOT_PROVIDED",
                             "matchedOn": {
                               "type": "entityName",
@@ -5139,6 +5139,48 @@
                       },
                       "transactionId": "c2d3e4f5-a6b7-8c9d-0e12-3456789ab012",
                       "processedAt": "2026-03-19T10:02:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Risk: MEDIUM (identifier-only search)": {
+                    "summary": "Risk: MEDIUM — searched by CURP alone, exact identifier match",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "PEPs match found",
+                      "data": {
+                        "matchFound": true,
+                        "riskLevel": "MEDIUM",
+                        "totalMatchesFound": 1,
+                        "matches": [
+                          {
+                            "listType": "EX_PEP",
+                            "entityName": "LOPEZ OBRADOR ANDRES MANUEL",
+                            "recordType": "INDIVIDUAL",
+                            "similarityScore": 100,
+                            "identifierMatch": "EXACT",
+                            "matchedOn": {
+                              "type": "entityName",
+                              "value": null,
+                              "identifiersMatched": [
+                                "nationalIdNumber"
+                              ]
+                            },
+                            "complianceDetails": {
+                              "position": "PRESIDENTE DE LOS ESTADOS UNIDOS MEXICANOS",
+                              "institution": "Gobierno de los Estados Unidos Mexicanos",
+                              "status": "INACTIVE",
+                              "positionEndDate": "2024-09-30",
+                              "dateOfBirth": "1953-11-13",
+                              "curp": "LOOA531113HTCPBN07",
+                              "rfc": "LOOA531113FI5",
+                              "registeredAddress": "C ODONTOLOGIA 57 EDIF B, DEPT 301, COYOACAN, MEXICO"
+                            }
+                          }
+                        ]
+                      },
+                      "transactionId": "f3e4d5c6-b7a8-9c0d-1e23-456789abc123",
+                      "processedAt": "2026-03-19T10:03:00-06:00",
                       "billable": true
                     }
                   },
