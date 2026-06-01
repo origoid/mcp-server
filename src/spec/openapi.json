@@ -2285,7 +2285,7 @@
           "Social Security"
         ],
         "summary": "ISSSTE Labor History",
-        "description": "**Credits:** 1 per call.\n\nRetrieves a government worker's labor history from ISSSTE (Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado) — the official PDF plus the same history mapped to JSON. This complements `imss-employment-status` (IMSS, private sector): ISSSTE covers public-sector / government employment.\n\nThe PDF is returned **inline as base64** in `data.document.content`; the parsed timeline is in `data.laborHistory[]`.\n\n**Known coverage:** today the contract reflects the **standard active-worker** case. Other situations (pensioners, no-history, multiple concurrent posts) are represented with placeholder envelope types and **may change when the real service is built** — see the spec note below.",
+        "description": "**Credits:** 1 per call.\n\nRetrieves a government worker's labor history from ISSSTE (Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado) — the official PDF plus the same history mapped to JSON. This complements `imss-employment-status` (IMSS, private sector): ISSSTE covers public-sector / government employment.\n\nThe PDF is returned **inline as base64** in `data.document.content`; the parsed timeline is in `data.laborHistory[]`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -7910,7 +7910,7 @@
           "Banking"
         ],
         "summary": "CEP / SPEI Payment Validation",
-        "description": "**Credits:** 1 per call.\n\nValidates a Mexican SPEI transfer against Banco de México's official CEP service (\"Comprobante Electrónico de Pago\") and returns the verified transfer details. Use it to confirm that a SPEI payment actually settled — for reconciliation, payout confirmation, or fraud checks on a claimed transfer.\n\nBanxico locates a transfer by the combination of its **tracking key, operation date, institutions, beneficiary account and amount** — all are required to match a single transfer.\n\n**Coverage window:** Banxico only exposes CEPs for roughly the last **45 days**; older transfers return `CEP_NOT_FOUND`. The upstream service is also rate-limited, so very high call volumes may surface `SERVICE_UNAVAILABLE`.",
+        "description": "**Credits:** 1 per call.\n\nValidates a Mexican SPEI transfer against Banco de México's official CEP service (\"Comprobante Electrónico de Pago\") and returns the verified transfer details. Use it to confirm that a SPEI payment actually settled — for reconciliation, payout confirmation, or fraud checks on a claimed transfer.\n\nBanxico locates a transfer by the combination of its **tracking key, operation date, institutions, beneficiary account and amount** — all are required to match a single transfer.\n\n**Coverage window:** Banxico only exposes CEPs for roughly the last **45 days**; older transfers return `CEP_NOT_FOUND`.",
         "requestBody": {
           "required": true,
           "content": {
