@@ -1254,7 +1254,7 @@
           "RENAPO"
         ],
         "summary": "CURP Official Document (PDF)",
-        "description": "**Credits:** 2 per call.\n\nRetrieves the official RENAPO CURP document (\"Constancia de la CURP\") as a PDF, together with the full validated record and the CURP's RENAPO status — the **same status matrix as `curp-validations`** (active, homonymy, deceased, apocryphal, judicial suspension, inactive). Use it when you need the citizen's official, printable certificate, not just the validated data.\n\n**Document availability:** RENAPO only issues a printable certificate for **active** CURPs (status `AN` / `AH`). For records in a *baja* state (deceased, apocryphal, judicially suspended, or never activated) the response still returns the person's data and the reason, but `data.document` is `null`.\n\nThe PDF is returned **inline as base64** in `data.document.content`. This is a **synchronous** call.\n\n**Why it differs from `curp-validations`:** this endpoint actually fetches the document from RENAPO, so it is heavier and expected to be far lower-volume. It is therefore priced at **2 credits** and rate-limited more tightly than the high-volume `curp-validations`.\n\n> **Spec ahead of implementation.** Documented as the agreed contract; the live service is still being built, so shapes (especially which *baja* states yield a document) may change when the real implementation lands.",
+        "description": "**Credits:** 2 per call.\n\nRetrieves the official RENAPO CURP document (\"Constancia de la CURP\") as a PDF, together with the full validated record and the CURP's RENAPO status — the **same status matrix as `curp-validations`** (active, homonymy, deceased, apocryphal, judicial suspension, inactive). Use it when you need the citizen's official, printable certificate, not just the validated data.\n\nThe PDF is returned **inline as base64** in `data.document.content`, alongside the parsed identity fields. This is a **synchronous** call.\n\n**Why it differs from `curp-validations`:** this endpoint retrieves the actual document from RENAPO, so a response takes a little longer to return. It is priced at **2 credits** and has a lower rate limit than the high-volume `curp-validations`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -1376,11 +1376,11 @@
                     }
                   },
                   "Deceased": {
-                    "summary": "CURP_DECEASED — baja, no document issued",
+                    "summary": "CURP_DECEASED — deceased record, document issued",
                     "value": {
                       "status": "OK",
                       "type": "CURP_DECEASED",
-                      "message": "CURP flagged as deceased; no certificate is issued for a deactivated record",
+                      "message": "CURP flagged as deceased",
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
@@ -1405,7 +1405,13 @@
                           "year": "1990",
                           "foreignNumber": ""
                         },
-                        "document": null
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9...TRUNCATED_BASE64...",
+                          "sizeBytes": 48213,
+                          "issuedAt": "2026-06-01T09:58:00-06:00"
+                        }
                       },
                       "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-333333333333",
                       "processedAt": "2026-06-01T10:00:00-06:00",
@@ -1413,11 +1419,11 @@
                     }
                   },
                   "Apocryphal": {
-                    "summary": "CURP_APOCRYPHAL — baja, no document issued",
+                    "summary": "CURP_APOCRYPHAL — apocryphal record, document issued",
                     "value": {
                       "status": "OK",
                       "type": "CURP_APOCRYPHAL",
-                      "message": "CURP deactivated due to apocryphal document; no certificate is issued",
+                      "message": "CURP deactivated due to apocryphal document",
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
@@ -1442,7 +1448,13 @@
                           "year": "1990",
                           "foreignNumber": ""
                         },
-                        "document": null
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9...TRUNCATED_BASE64...",
+                          "sizeBytes": 48213,
+                          "issuedAt": "2026-06-01T09:58:00-06:00"
+                        }
                       },
                       "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-444444444444",
                       "processedAt": "2026-06-01T10:00:00-06:00",
@@ -1450,11 +1462,11 @@
                     }
                   },
                   "Judicial": {
-                    "summary": "CURP_JUDICIAL_SUSPENSION — baja, no document issued",
+                    "summary": "CURP_JUDICIAL_SUSPENSION — judicially suspended, document issued",
                     "value": {
                       "status": "OK",
                       "type": "CURP_JUDICIAL_SUSPENSION",
-                      "message": "CURP suspended by judicial order; no certificate is issued",
+                      "message": "CURP suspended by judicial order",
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
@@ -1479,7 +1491,13 @@
                           "year": "1990",
                           "foreignNumber": ""
                         },
-                        "document": null
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9...TRUNCATED_BASE64...",
+                          "sizeBytes": 48213,
+                          "issuedAt": "2026-06-01T09:58:00-06:00"
+                        }
                       },
                       "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-555555555555",
                       "processedAt": "2026-06-01T10:00:00-06:00",
@@ -1487,11 +1505,11 @@
                     }
                   },
                   "Inactive": {
-                    "summary": "CURP_INACTIVE — never activated, no document issued",
+                    "summary": "CURP_INACTIVE — never activated, document issued",
                     "value": {
                       "status": "OK",
                       "type": "CURP_INACTIVE",
-                      "message": "CURP exists in RENAPO but was never activated; no certificate is issued",
+                      "message": "CURP exists in RENAPO but was never activated",
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
@@ -1516,7 +1534,13 @@
                           "year": "1990",
                           "foreignNumber": ""
                         },
-                        "document": null
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9...TRUNCATED_BASE64...",
+                          "sizeBytes": 48213,
+                          "issuedAt": "2026-06-01T09:58:00-06:00"
+                        }
                       },
                       "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-666666666666",
                       "processedAt": "2026-06-01T10:00:00-06:00",
@@ -2261,7 +2285,7 @@
           "Social Security"
         ],
         "summary": "ISSSTE Labor History",
-        "description": "**Credits:** 1 per call.\n\nRetrieves a government worker's labor history from ISSSTE (Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado) — the official PDF plus the same history mapped to JSON. This complements `imss-employment-status` (IMSS, private sector): ISSSTE covers public-sector / government employment.\n\nThe PDF is returned **inline as base64** in `data.document.content`; the parsed timeline is in `data.laborHistory[]`.\n\n**Known coverage:** today the contract reflects the **standard active-worker** case. Other situations (pensioners, no-history, multiple concurrent posts) are represented with placeholder envelope types and **may change when the real service is built** — see the spec note below.\n\n> **Spec ahead of implementation.** This endpoint is documented as the agreed contract; the live service is still being built, so shapes (especially edge-case envelope types) may change when the real implementation lands.",
+        "description": "**Credits:** 1 per call.\n\nRetrieves a government worker's labor history from ISSSTE (Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado) — the official PDF plus the same history mapped to JSON. This complements `imss-employment-status` (IMSS, private sector): ISSSTE covers public-sector / government employment.\n\nThe PDF is returned **inline as base64** in `data.document.content`; the parsed timeline is in `data.laborHistory[]`.\n\n**Known coverage:** today the contract reflects the **standard active-worker** case. Other situations (pensioners, no-history, multiple concurrent posts) are represented with placeholder envelope types and **may change when the real service is built** — see the spec note below.",
         "requestBody": {
           "required": true,
           "content": {
@@ -7886,7 +7910,7 @@
           "Banking"
         ],
         "summary": "CEP / SPEI Payment Validation",
-        "description": "**Credits:** 1 per call.\n\nValidates a Mexican SPEI transfer against Banco de México's official CEP service (\"Comprobante Electrónico de Pago\") and returns the verified transfer details. Use it to confirm that a SPEI payment actually settled — for reconciliation, payout confirmation, or fraud checks on a claimed transfer.\n\nBanxico locates a transfer by the combination of its **tracking key, operation date, institutions, beneficiary account and amount** — all are required to match a single transfer.\n\n**Coverage window:** Banxico only exposes CEPs for roughly the last **45 days**; older transfers return `CEP_NOT_FOUND`. The upstream service is also rate-limited, so very high call volumes may surface `SERVICE_UNAVAILABLE`.\n\n> **Spec ahead of implementation.** This endpoint is documented as the agreed contract; the live service is still being built, so shapes (especially edge-case envelope types) may change when the real implementation lands.",
+        "description": "**Credits:** 1 per call.\n\nValidates a Mexican SPEI transfer against Banco de México's official CEP service (\"Comprobante Electrónico de Pago\") and returns the verified transfer details. Use it to confirm that a SPEI payment actually settled — for reconciliation, payout confirmation, or fraud checks on a claimed transfer.\n\nBanxico locates a transfer by the combination of its **tracking key, operation date, institutions, beneficiary account and amount** — all are required to match a single transfer.\n\n**Coverage window:** Banxico only exposes CEPs for roughly the last **45 days**; older transfers return `CEP_NOT_FOUND`. The upstream service is also rate-limited, so very high call volumes may surface `SERVICE_UNAVAILABLE`.",
         "requestBody": {
           "required": true,
           "content": {
