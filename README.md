@@ -114,8 +114,8 @@ The server speaks MCP over stdio (standard transport).
 | `validate_rfc` | `POST /mex/fiscal/v1/rfc-validations` |
 | `extract_csf` | `POST /mex/fiscal/v1/csf-extractions` |
 | `validate_cfdi` | `POST /mex/fiscal/v1/cfdi-validations` |
-| `lookup_nss` | `POST /mex/social-security/v1/nss-lookups` |
-| `get_employment_status` | `POST /mex/social-security/v1/employment-status` |
+| `lookup_nss` | `POST /mex/social-security/v1/imss-nss-lookups` |
+| `get_employment_status` | `POST /mex/social-security/v1/imss-employment-status` |
 | `validate_voter_list` | `POST /mex/id/v1/voter-list-validations` |
 | `extract_voter_id_data` | `POST /mex/id/v1/voter-id-extractions` |
 | `extract_qr_data` | `POST /mex/id/v1/qr-extractions` |
