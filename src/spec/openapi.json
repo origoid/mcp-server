@@ -7910,7 +7910,7 @@
           "Banking"
         ],
         "summary": "CEP / SPEI Payment Validation",
-        "description": "**Credits:** 1 per call.\n\nValidates a Mexican SPEI transfer against Banco de México's official CEP service (\"Comprobante Electrónico de Pago\") and returns the verified transfer details. Use it to confirm that a SPEI payment actually settled — for reconciliation, payout confirmation, or fraud checks on a claimed transfer.\n\nBanxico locates a transfer by the combination of its **tracking key, operation date, institutions, beneficiary account and amount** — all are required to match a single transfer.\n\n**Coverage window:** Banxico only exposes CEPs for roughly the last **45 days**; older transfers return `CEP_NOT_FOUND`.",
+        "description": "**Credits:** 1 per call.\n\nValidates a Mexican SPEI transfer against Banco de México's official CEP service (\"Comprobante Electrónico de Pago\") and returns the verified transfer details. Use it to confirm that a SPEI payment actually settled — for reconciliation, payout confirmation, or fraud checks on a claimed transfer.\n\nBanxico locates a transfer by the combination of its **tracking key, operation date, institutions, beneficiary account and amount** — all are required to match a single transfer.\n\n**Coverage window:** Banxico only exposes CEPs for roughly the last **45 days**; older transfers may respond `CEP_NOT_FOUND`.",
         "requestBody": {
           "required": true,
           "content": {
