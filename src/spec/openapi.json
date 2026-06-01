@@ -50,6 +50,10 @@
     {
       "name": "Fiscal",
       "description": "RFC validation and CSF (Constancia de Situación Fiscal) extraction."
+    },
+    {
+      "name": "Banking",
+      "description": "SPEI / CEP payment validation against Banco de México."
     }
   ],
   "paths": {
@@ -1244,6 +1248,252 @@
         ]
       }
     },
+    "/mex/renapo/v1/curp-documents": {
+      "post": {
+        "tags": [
+          "RENAPO"
+        ],
+        "summary": "CURP Official Document (PDF)",
+        "description": "**Credits:** 1 per call.\n\nRetrieves the official RENAPO CURP document (\"Constancia de la CURP\") as a PDF for a given CURP, along with the key identity fields parsed from it. Use it when you need the citizen's official, printable CURP certificate — not just the validated data (for that, use `curp-validations` or `curp-lookups`).\n\nThe PDF is returned **inline as base64** inside `data.document.content`. A standard CURP certificate is small (well under the inline size limit), so no separate download step is required.\n\nThis is a **synchronous** call: one request returns the document. (An asynchronous + webhook delivery mode may be added later for sources with long fetch times; it is not part of this contract today.)\n\n> **Spec ahead of implementation.** This endpoint is documented as the agreed contract; the live service is still being built, so shapes (especially edge-case envelope types) may change when the real implementation lands.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "curp"
+                ],
+                "properties": {
+                  "curp": {
+                    "type": "string",
+                    "description": "The 18-character CURP whose official document is requested.",
+                    "example": "GULJ570404HSLNRQ09"
+                  }
+                }
+              },
+              "examples": {
+                "By CURP": {
+                  "summary": "By CURP",
+                  "value": {
+                    "curp": "GULJ570404HSLNRQ09"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CURP document result (Strict Envelope Pattern).",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Success": {
+                    "summary": "Success — document retrieved",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "CURP document retrieved",
+                      "data": {
+                        "curp": "GULJ570404HSLNRQ09",
+                        "personalInfo": {
+                          "givenNames": "JOAQUIN",
+                          "firstSurname": "GUZMAN",
+                          "secondSurname": "LOERA",
+                          "dateOfBirth": "1957-04-04",
+                          "gender": "H",
+                          "birthStateCode": "SL",
+                          "nationality": "MEX"
+                        },
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9...TRUNCATED_BASE64...",
+                          "sizeBytes": 48213,
+                          "issuedAt": "2026-06-01T09:58:00-06:00"
+                        }
+                      },
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-111111111111",
+                      "processedAt": "2026-06-01T09:58:01-06:00",
+                      "billable": true
+                    }
+                  },
+                  "CURP Not Found": {
+                    "summary": "CURP not registered at RENAPO",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "CURP_NOT_FOUND",
+                      "message": "No CURP record was found at RENAPO for the provided key",
+                      "data": null,
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-222222222222",
+                      "processedAt": "2026-06-01T09:59:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Validation Error": {
+                    "summary": "Validation Error",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "INVALID_REQUEST",
+                      "message": "Validation failed",
+                      "data": null,
+                      "errors": [
+                        {
+                          "field": "curp",
+                          "code": "MISSING_REQUIRED_FIELD",
+                          "message": "must have required property 'curp'"
+                        },
+                        {
+                          "field": "curp",
+                          "code": "INVALID_FORMAT",
+                          "message": "curp must be a valid 18-character CURP"
+                        }
+                      ],
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-333333333333",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "SERVICE_UNAVAILABLE",
+                      "message": "The RENAPO document service is currently unavailable",
+                      "data": null,
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-444444444444",
+                      "processedAt": "2026-06-01T10:01:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Internal Error": {
+                    "summary": "Internal Error",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "INTERNAL_ERROR",
+                      "message": "Unexpected internal error",
+                      "data": null,
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-555555555555",
+                      "processedAt": "2026-06-01T10:02:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Unauthorized": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "UNAUTHORIZED",
+                      "message": "Invalid credentials",
+                      "data": null,
+                      "transactionId": "71d64fd8-8a54-4792-a844-7e2466eb01f7",
+                      "processedAt": "2026-05-21T10:00:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests — endpoint rate limit exceeded.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Seconds to wait before retrying."
+              },
+              "X-RateLimit-Limit": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Total requests allowed in the current window (per minute, per endpoint, per user/plan)."
+              },
+              "X-RateLimit-Remaining": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Requests remaining in the current window."
+              },
+              "X-RateLimit-Reset": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Unix timestamp (seconds) when the rate limit window resets."
+              }
+            },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Rate Limit": {
+                    "summary": "Rate Limit Exceeded",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "RATE_LIMIT_EXCEEDED",
+                      "message": "API rate limit exceeded for this endpoint. Retry after the duration specified in the Retry-After header.",
+                      "data": null,
+                      "transactionId": "fb9c33a5-ee2f-42b2-8467-ff6807e14beb",
+                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "extractCurpDocument",
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl -X POST https://api.origoid.com/mex/renapo/v1/curp-documents \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"curp\": \"GULJ570404HSLNRQ09\"}'"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/renapo/v1/curp-documents\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n      \"curp\": \"GULJ570404HSLNRQ09\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/renapo/v1/curp-documents\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n            \"curp\": \"GULJ570404HSLNRQ09\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+          },
+          {
+            "lang": "Java",
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"curp\\\": \\\"GULJ570404HSLNRQ09\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/renapo/v1/curp-documents\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$payload = '{\"curp\": \"GULJ570404HSLNRQ09\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/renapo/v1/curp-documents');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+          },
+          {
+            "lang": "Go",
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"curp\": \"GULJ570404HSLNRQ09\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/renapo/v1/curp-documents\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"curp\\\": \\\"GULJ570404HSLNRQ09\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/renapo/v1/curp-documents\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+          }
+        ]
+      }
+    },
     "/mex/social-security/v1/nss-lookups": {
       "post": {
         "tags": [
@@ -1797,6 +2047,305 @@
           {
             "lang": "C#",
             "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"curp\\\": \\\"GARM900101HDFRZA01\\\", \\\"nss\\\": \\\"92038109713\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/social-security/v1/employment-status\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+          }
+        ]
+      }
+    },
+    "/mex/social-security/v1/issste-labor-history": {
+      "post": {
+        "tags": [
+          "Social Security"
+        ],
+        "summary": "ISSSTE Labor History",
+        "description": "**Credits:** 1 per call.\n\nRetrieves a government worker's labor history from ISSSTE (Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado) — the official PDF plus the same history mapped to JSON. This complements `employment-status` (IMSS, private sector): ISSSTE covers public-sector / government employment.\n\nThe PDF is returned **inline as base64** in `data.document.content`; the parsed timeline is in `data.laborHistory[]`.\n\n**Known coverage:** today the contract reflects the **standard active-worker** case. Other situations (pensioners, no-history, multiple concurrent posts) are represented with placeholder envelope types and **may change when the real service is built** — see the spec note below.\n\n> **Spec ahead of implementation.** This endpoint is documented as the agreed contract; the live service is still being built, so shapes (especially edge-case envelope types) may change when the real implementation lands.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "curp"
+                ],
+                "properties": {
+                  "curp": {
+                    "type": "string",
+                    "description": "CURP of the government worker whose ISSSTE labor history is requested.",
+                    "example": "GULJ570404HSLNRQ09"
+                  },
+                  "rfc": {
+                    "type": "string",
+                    "description": "RFC of the worker. Optional — improves matching when the CURP maps to more than one record.",
+                    "example": "GULJ5704041P8"
+                  }
+                }
+              },
+              "examples": {
+                "By CURP": {
+                  "summary": "By CURP",
+                  "value": {
+                    "curp": "GULJ570404HSLNRQ09"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ISSSTE labor history result (Strict Envelope Pattern).",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Success": {
+                    "summary": "Success — active worker history",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "ISSSTE labor history retrieved",
+                      "data": {
+                        "curp": "GULJ570404HSLNRQ09",
+                        "worker": {
+                          "givenNames": "JOAQUIN",
+                          "firstSurname": "GUZMAN",
+                          "secondSurname": "LOERA",
+                          "status": "ACTIVE"
+                        },
+                        "laborHistory": [
+                          {
+                            "institution": "Secretaria de Educacion Publica",
+                            "position": "DOCENTE TITULAR C",
+                            "startDate": "2014-02-16",
+                            "endDate": null,
+                            "status": "ACTIVE"
+                          },
+                          {
+                            "institution": "Gobierno del Estado de Sinaloa",
+                            "position": "ANALISTA ADMINISTRATIVO",
+                            "startDate": "2008-09-01",
+                            "endDate": "2014-02-15",
+                            "status": "INACTIVE"
+                          }
+                        ],
+                        "summary": {
+                          "totalRecords": 2,
+                          "firstStartDate": "2008-09-01",
+                          "currentStatus": "ACTIVE"
+                        },
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQKJeLjz9MK...TRUNCATED_BASE64...",
+                          "sizeBytes": 63120
+                        }
+                      },
+                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-111111111111",
+                      "processedAt": "2026-06-01T11:00:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Pensioner": {
+                    "summary": "Pensioner — shape TBD at real implementation",
+                    "value": {
+                      "status": "OK",
+                      "type": "PENSIONER",
+                      "message": "Worker is a pensioner; active labor history does not apply",
+                      "data": {
+                        "curp": "GULJ570404HSLNRQ09",
+                        "worker": {
+                          "givenNames": "JOAQUIN",
+                          "firstSurname": "GUZMAN",
+                          "secondSurname": "LOERA",
+                          "status": "PENSIONER"
+                        },
+                        "laborHistory": [],
+                        "summary": {
+                          "totalRecords": 0,
+                          "currentStatus": "PENSIONER"
+                        },
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQK...TRUNCATED_BASE64...",
+                          "sizeBytes": 41002
+                        }
+                      },
+                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-222222222222",
+                      "processedAt": "2026-06-01T11:01:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "No History": {
+                    "summary": "No ISSSTE record for this CURP",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "NO_HISTORY",
+                      "message": "No ISSSTE labor history was found for the provided CURP",
+                      "data": null,
+                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-333333333333",
+                      "processedAt": "2026-06-01T11:02:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Validation Error": {
+                    "summary": "Validation Error",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "INVALID_REQUEST",
+                      "message": "Validation failed",
+                      "data": null,
+                      "errors": [
+                        {
+                          "field": "curp",
+                          "code": "MISSING_REQUIRED_FIELD",
+                          "message": "must have required property 'curp'"
+                        },
+                        {
+                          "field": "curp",
+                          "code": "INVALID_FORMAT",
+                          "message": "curp must be a valid 18-character CURP"
+                        }
+                      ],
+                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-444444444444",
+                      "processedAt": "2026-06-01T11:03:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "SERVICE_UNAVAILABLE",
+                      "message": "The ISSSTE service is currently unavailable",
+                      "data": null,
+                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-555555555555",
+                      "processedAt": "2026-06-01T11:04:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Internal Error": {
+                    "summary": "Internal Error",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "INTERNAL_ERROR",
+                      "message": "Unexpected internal error",
+                      "data": null,
+                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-666666666666",
+                      "processedAt": "2026-06-01T11:05:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Unauthorized": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "UNAUTHORIZED",
+                      "message": "Invalid credentials",
+                      "data": null,
+                      "transactionId": "71d64fd8-8a54-4792-a844-7e2466eb01f7",
+                      "processedAt": "2026-05-21T10:00:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests — endpoint rate limit exceeded.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Seconds to wait before retrying."
+              },
+              "X-RateLimit-Limit": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Total requests allowed in the current window (per minute, per endpoint, per user/plan)."
+              },
+              "X-RateLimit-Remaining": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Requests remaining in the current window."
+              },
+              "X-RateLimit-Reset": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Unix timestamp (seconds) when the rate limit window resets."
+              }
+            },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Rate Limit": {
+                    "summary": "Rate Limit Exceeded",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "RATE_LIMIT_EXCEEDED",
+                      "message": "API rate limit exceeded for this endpoint. Retry after the duration specified in the Retry-After header.",
+                      "data": null,
+                      "transactionId": "fb9c33a5-ee2f-42b2-8467-ff6807e14beb",
+                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getIssteLaborHistory",
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl -X POST https://api.origoid.com/mex/social-security/v1/issste-labor-history \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"curp\": \"GULJ570404HSLNRQ09\"}'"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/social-security/v1/issste-labor-history\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n      \"curp\": \"GULJ570404HSLNRQ09\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/social-security/v1/issste-labor-history\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n            \"curp\": \"GULJ570404HSLNRQ09\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+          },
+          {
+            "lang": "Java",
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"curp\\\": \\\"GULJ570404HSLNRQ09\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/social-security/v1/issste-labor-history\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$payload = '{\"curp\": \"GULJ570404HSLNRQ09\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/social-security/v1/issste-labor-history');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+          },
+          {
+            "lang": "Go",
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"curp\": \"GULJ570404HSLNRQ09\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/social-security/v1/issste-labor-history\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"curp\\\": \\\"GULJ570404HSLNRQ09\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/social-security/v1/issste-labor-history\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -7123,6 +7672,317 @@
           {
             "lang": "C#",
             "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"uuid\\\": \\\"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\\\", \\\"rfcEmisor\\\": \\\"PEZJ811011KI1\\\", \\\"rfcReceptor\\\": \\\"EMP170623KI3\\\", \\\"total\\\": \\\"999999.99\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+          }
+        ]
+      }
+    },
+    "/mex/banking/v1/cep-validations": {
+      "post": {
+        "tags": [
+          "Banking"
+        ],
+        "summary": "CEP / SPEI Payment Validation",
+        "description": "**Credits:** 1 per call.\n\nValidates a Mexican SPEI transfer against Banco de México's official CEP service (\"Comprobante Electrónico de Pago\") and returns the verified transfer details. Use it to confirm that a SPEI payment actually settled — for reconciliation, payout confirmation, or fraud checks on a claimed transfer.\n\nBanxico locates a transfer by the combination of its **tracking key, operation date, institutions, beneficiary account and amount** — all are required to match a single transfer.\n\n**Coverage window:** Banxico only exposes CEPs for roughly the last **45 days**; older transfers return `CEP_NOT_FOUND`. The upstream service is also rate-limited, so very high call volumes may surface `SERVICE_UNAVAILABLE`.\n\n> **Spec ahead of implementation.** This endpoint is documented as the agreed contract; the live service is still being built, so shapes (especially edge-case envelope types) may change when the real implementation lands.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "trackingKey",
+                  "operationDate",
+                  "senderBankCode",
+                  "receiverBankCode",
+                  "beneficiaryAccount",
+                  "amount"
+                ],
+                "properties": {
+                  "trackingKey": {
+                    "type": "string",
+                    "description": "Clave de rastreo of the SPEI transfer (assigned by the ordering bank).",
+                    "example": "BNET01002026060140000012345"
+                  },
+                  "operationDate": {
+                    "type": "string",
+                    "description": "Operation date of the transfer (ISO 8601 date, YYYY-MM-DD).",
+                    "example": "2026-06-01"
+                  },
+                  "senderBankCode": {
+                    "type": "string",
+                    "description": "Banxico institution code of the ordering (sender) bank.",
+                    "example": "40012"
+                  },
+                  "receiverBankCode": {
+                    "type": "string",
+                    "description": "Banxico institution code of the beneficiary (receiver) bank.",
+                    "example": "40014"
+                  },
+                  "beneficiaryAccount": {
+                    "type": "string",
+                    "description": "Beneficiary account — CLABE (18 digits), debit card (16), or mobile number (10).",
+                    "example": "014180567812345678"
+                  },
+                  "amount": {
+                    "type": "object",
+                    "description": "Transfer amount that must match the CEP.",
+                    "properties": {
+                      "amount": {
+                        "type": "string",
+                        "description": "Decimal string.",
+                        "example": "1500.00"
+                      },
+                      "currency": {
+                        "type": "string",
+                        "description": "ISO 4217.",
+                        "example": "MXN"
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "By tracking key": {
+                  "summary": "By tracking key",
+                  "value": {
+                    "trackingKey": "BNET01002026060140000012345",
+                    "operationDate": "2026-06-01",
+                    "senderBankCode": "40012",
+                    "receiverBankCode": "40014",
+                    "beneficiaryAccount": "014180567812345678",
+                    "amount": {
+                      "amount": "1500.00",
+                      "currency": "MXN"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CEP validation result (Strict Envelope Pattern).",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Valid": {
+                    "summary": "Valid — CEP found and matches",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "CEP validated",
+                      "data": {
+                        "valid": true,
+                        "trackingKey": "BNET01002026060140000012345",
+                        "operationDate": "2026-06-01",
+                        "operationTime": "14:03:27",
+                        "amount": {
+                          "amount": "1500.00",
+                          "currency": "MXN"
+                        },
+                        "sender": {
+                          "name": "JUAN PEREZ LOPEZ",
+                          "bankCode": "40012",
+                          "bankName": "BBVA MEXICO",
+                          "account": "************5678",
+                          "rfc": "PELJ900101AAA"
+                        },
+                        "beneficiary": {
+                          "name": "MARIA GARCIA SOTO",
+                          "bankCode": "40014",
+                          "bankName": "SANTANDER",
+                          "account": "************5678",
+                          "rfc": "GASM920202BBB"
+                        },
+                        "concept": "PAGO FACTURA 1023",
+                        "spei": {
+                          "folio": "123456",
+                          "captureDate": "2026-06-01"
+                        },
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQKJeLjz9MK...TRUNCATED_BASE64...",
+                          "sizeBytes": 22140
+                        }
+                      },
+                      "transactionId": "b1c2d3e4-f5a6-7b8c-9d0e-111111111111",
+                      "processedAt": "2026-06-01T14:05:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "CEP Not Found": {
+                    "summary": "No CEP matches (wrong data or outside 45-day window)",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "CEP_NOT_FOUND",
+                      "message": "No CEP was found at Banxico matching the provided transfer details",
+                      "data": null,
+                      "transactionId": "b1c2d3e4-f5a6-7b8c-9d0e-222222222222",
+                      "processedAt": "2026-06-01T14:06:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Validation Error": {
+                    "summary": "Validation Error",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "INVALID_REQUEST",
+                      "message": "Validation failed",
+                      "data": null,
+                      "errors": [
+                        {
+                          "field": "trackingKey",
+                          "code": "MISSING_REQUIRED_FIELD",
+                          "message": "must have required property 'trackingKey'"
+                        },
+                        {
+                          "field": "operationDate",
+                          "code": "INVALID_FORMAT",
+                          "message": "operationDate must be an ISO 8601 date (YYYY-MM-DD)"
+                        }
+                      ],
+                      "transactionId": "b1c2d3e4-f5a6-7b8c-9d0e-333333333333",
+                      "processedAt": "2026-06-01T14:07:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Service Unavailable": {
+                    "summary": "Service Unavailable",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "SERVICE_UNAVAILABLE",
+                      "message": "The Banxico CEP service is currently unavailable",
+                      "data": null,
+                      "transactionId": "b1c2d3e4-f5a6-7b8c-9d0e-444444444444",
+                      "processedAt": "2026-06-01T14:08:00-06:00",
+                      "billable": false
+                    }
+                  },
+                  "Internal Error": {
+                    "summary": "Internal Error",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "INTERNAL_ERROR",
+                      "message": "Unexpected internal error",
+                      "data": null,
+                      "transactionId": "b1c2d3e4-f5a6-7b8c-9d0e-555555555555",
+                      "processedAt": "2026-06-01T14:09:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Unauthorized": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "UNAUTHORIZED",
+                      "message": "Invalid credentials",
+                      "data": null,
+                      "transactionId": "71d64fd8-8a54-4792-a844-7e2466eb01f7",
+                      "processedAt": "2026-05-21T10:00:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests — endpoint rate limit exceeded.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Seconds to wait before retrying."
+              },
+              "X-RateLimit-Limit": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Total requests allowed in the current window (per minute, per endpoint, per user/plan)."
+              },
+              "X-RateLimit-Remaining": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Requests remaining in the current window."
+              },
+              "X-RateLimit-Reset": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Unix timestamp (seconds) when the rate limit window resets."
+              }
+            },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Rate Limit": {
+                    "summary": "Rate Limit Exceeded",
+                    "value": {
+                      "status": "ERROR",
+                      "type": "RATE_LIMIT_EXCEEDED",
+                      "message": "API rate limit exceeded for this endpoint. Retry after the duration specified in the Retry-After header.",
+                      "data": null,
+                      "transactionId": "fb9c33a5-ee2f-42b2-8467-ff6807e14beb",
+                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "billable": false
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "validateCep",
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl -X POST https://api.origoid.com/mex/banking/v1/cep-validations \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"trackingKey\": \"BNET01002026060140000012345\", \"operationDate\": \"2026-06-01\", \"senderBankCode\": \"40012\", \"receiverBankCode\": \"40014\", \"beneficiaryAccount\": \"014180567812345678\", \"amount\": {\"amount\": \"1500.00\", \"currency\": \"MXN\"}}'"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/banking/v1/cep-validations\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n      \"trackingKey\": \"BNET01002026060140000012345\",\n      \"operationDate\": \"2026-06-01\",\n      \"senderBankCode\": \"40012\",\n      \"receiverBankCode\": \"40014\",\n      \"beneficiaryAccount\": \"014180567812345678\",\n      \"amount\": {\n          \"amount\": \"1500.00\",\n          \"currency\": \"MXN\"\n      }\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+          },
+          {
+            "lang": "Python",
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/banking/v1/cep-validations\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n            \"trackingKey\": \"BNET01002026060140000012345\",\n            \"operationDate\": \"2026-06-01\",\n            \"senderBankCode\": \"40012\",\n            \"receiverBankCode\": \"40014\",\n            \"beneficiaryAccount\": \"014180567812345678\",\n            \"amount\": {\n                    \"amount\": \"1500.00\",\n                    \"currency\": \"MXN\"\n            }\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+          },
+          {
+            "lang": "Java",
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"trackingKey\\\": \\\"BNET01002026060140000012345\\\", \\\"operationDate\\\": \\\"2026-06-01\\\", \\\"senderBankCode\\\": \\\"40012\\\", \\\"receiverBankCode\\\": \\\"40014\\\", \\\"beneficiaryAccount\\\": \\\"014180567812345678\\\", \\\"amount\\\": {\\\"amount\\\": \\\"1500.00\\\", \\\"currency\\\": \\\"MXN\\\"}}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/banking/v1/cep-validations\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$payload = '{\"trackingKey\": \"BNET01002026060140000012345\", \"operationDate\": \"2026-06-01\", \"senderBankCode\": \"40012\", \"receiverBankCode\": \"40014\", \"beneficiaryAccount\": \"014180567812345678\", \"amount\": {\"amount\": \"1500.00\", \"currency\": \"MXN\"}}';\n\n$ch = curl_init('https://api.origoid.com/mex/banking/v1/cep-validations');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+          },
+          {
+            "lang": "Go",
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"trackingKey\": \"BNET01002026060140000012345\", \"operationDate\": \"2026-06-01\", \"senderBankCode\": \"40012\", \"receiverBankCode\": \"40014\", \"beneficiaryAccount\": \"014180567812345678\", \"amount\": {\"amount\": \"1500.00\", \"currency\": \"MXN\"}}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/banking/v1/cep-validations\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"trackingKey\\\": \\\"BNET01002026060140000012345\\\", \\\"operationDate\\\": \\\"2026-06-01\\\", \\\"senderBankCode\\\": \\\"40012\\\", \\\"receiverBankCode\\\": \\\"40014\\\", \\\"beneficiaryAccount\\\": \\\"014180567812345678\\\", \\\"amount\\\": {\\\"amount\\\": \\\"1500.00\\\", \\\"currency\\\": \\\"MXN\\\"}}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/banking/v1/cep-validations\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
