@@ -6165,7 +6165,7 @@
         "tags": [
           "Fiscal"
         ],
-        "summary": "RFC Status & LCO Validation",
+        "summary": "RFC Status and LCO Validation",
         "description": "**Credits:** 1 per call.\n\nValidates the structure and current status of a Mexican RFC (Registro Federal de Contribuyentes) against the SAT registry. Returns the taxpayer type (individual or legal entity), registration status, and the official SAT message.\n\nUse this endpoint to confirm that the RFC your customer provided is real, well-formed, and currently active with SAT before extending credit, issuing invoices, or signing contracts.\n\n**Risk Level Matrix (`riskLevel`):**\n- `NONE` (envelope `type: SUCCESS`): RFC exists in the SAT padrón and is authorized to issue / receive invoices (`isBillable: true`). Safe for automated approval.\n- `LOW` (envelope `type: RFC_NOT_INVOICEABLE`): RFC exists in the SAT padrón but is **restricted** for invoicing — typically a legal entity that has not completed its fiscal-status onboarding or has been suspended. The taxpayer is real, just not currently invoiceable.\n- `CRITICAL` (envelope `type: RFC_NOT_FOUND`): RFC is **not registered** in the SAT padrón. Either it was never issued, or the value provided is a typo or fabricated. Do not extend credit, issue invoices, or accept as a counterparty without further verification.\n\n`MEDIUM` and `HIGH` are not produced by this endpoint — the SAT padrón only distinguishes the three outcomes above.",
         "requestBody": {
           "required": true,
