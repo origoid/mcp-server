@@ -1254,7 +1254,7 @@
           "RENAPO"
         ],
         "summary": "CURP Official Document (PDF)",
-        "description": "**Credits:** 1 per call.\n\nRetrieves the official RENAPO CURP document (\"Constancia de la CURP\") as a PDF for a given CURP, along with the key identity fields parsed from it. Use it when you need the citizen's official, printable CURP certificate — not just the validated data (for that, use `curp-validations` or `curp-lookups`).\n\nThe PDF is returned **inline as base64** inside `data.document.content`. A standard CURP certificate is small (well under the inline size limit), so no separate download step is required.\n\nThis is a **synchronous** call: one request returns the document. (An asynchronous + webhook delivery mode may be added later for sources with long fetch times; it is not part of this contract today.)\n\n> **Spec ahead of implementation.** This endpoint is documented as the agreed contract; the live service is still being built, so shapes (especially edge-case envelope types) may change when the real implementation lands.",
+        "description": "**Credits:** 2 per call.\n\nRetrieves the official RENAPO CURP document (\"Constancia de la CURP\") as a PDF, together with the full validated record and the CURP's RENAPO status — the **same status matrix as `curp-validations`** (active, homonymy, deceased, apocryphal, judicial suspension, inactive). Use it when you need the citizen's official, printable certificate, not just the validated data.\n\n**Document availability:** RENAPO only issues a printable certificate for **active** CURPs (status `AN` / `AH`). For records in a *baja* state (deceased, apocryphal, judicially suspended, or never activated) the response still returns the person's data and the reason, but `data.document` is `null`.\n\nThe PDF is returned **inline as base64** in `data.document.content`. This is a **synchronous** call.\n\n**Why it differs from `curp-validations`:** this endpoint actually fetches the document from RENAPO, so it is heavier and expected to be far lower-volume. It is therefore priced at **2 credits** and rate-limited more tightly than the high-volume `curp-validations`.\n\n> **Spec ahead of implementation.** Documented as the agreed contract; the live service is still being built, so shapes (especially which *baja* states yield a document) may change when the real implementation lands.",
         "requestBody": {
           "required": true,
           "content": {
@@ -1290,7 +1290,7 @@
               "application/json": {
                 "examples": {
                   "Success": {
-                    "summary": "Success — document retrieved",
+                    "summary": "Success — active CURP, document issued",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
@@ -1328,19 +1328,210 @@
                         }
                       },
                       "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-111111111111",
-                      "processedAt": "2026-06-01T09:58:01-06:00",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
                       "billable": true
                     }
                   },
-                  "CURP Not Found": {
-                    "summary": "CURP not registered at RENAPO",
+                  "Homonymy": {
+                    "summary": "CURP_HOMONYMY — active with homonymy alert, document issued",
+                    "value": {
+                      "status": "OK",
+                      "type": "CURP_HOMONYMY",
+                      "message": "CURP found with homonymy alert; document issued",
+                      "data": {
+                        "personalInfo": {
+                          "curp": "TEST900101HDFRRN09",
+                          "givenNames": "JUAN",
+                          "firstSurname": "PEREZ",
+                          "secondSurname": "LOPEZ",
+                          "gender": "H",
+                          "dateOfBirth": "1990-01-01",
+                          "birthState": "DISTRITO FEDERAL",
+                          "birthStateCode": "DF",
+                          "nationality": "MEXICO"
+                        },
+                        "documentDetails": {
+                          "curpStatus": "AH",
+                          "probatoryDocumentCode": 1
+                        },
+                        "registrationDetails": {
+                          "state": "DISTRITO FEDERAL",
+                          "stateCode": "09",
+                          "municipality": "CUAUHTEMOC",
+                          "municipalityCode": "015",
+                          "year": "1990",
+                          "foreignNumber": ""
+                        },
+                        "document": {
+                          "format": "PDF",
+                          "encoding": "base64",
+                          "content": "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9...TRUNCATED_BASE64...",
+                          "sizeBytes": 48213,
+                          "issuedAt": "2026-06-01T09:58:00-06:00"
+                        }
+                      },
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-222222222222",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Deceased": {
+                    "summary": "CURP_DECEASED — baja, no document issued",
+                    "value": {
+                      "status": "OK",
+                      "type": "CURP_DECEASED",
+                      "message": "CURP flagged as deceased; no certificate is issued for a deactivated record",
+                      "data": {
+                        "personalInfo": {
+                          "curp": "TEST900101HDFRRN09",
+                          "givenNames": "JUAN",
+                          "firstSurname": "PEREZ",
+                          "secondSurname": "LOPEZ",
+                          "gender": "H",
+                          "dateOfBirth": "1990-01-01",
+                          "birthState": "DISTRITO FEDERAL",
+                          "birthStateCode": "DF",
+                          "nationality": "MEXICO"
+                        },
+                        "documentDetails": {
+                          "curpStatus": "BD",
+                          "probatoryDocumentCode": 1
+                        },
+                        "registrationDetails": {
+                          "state": "DISTRITO FEDERAL",
+                          "stateCode": "09",
+                          "municipality": "CUAUHTEMOC",
+                          "municipalityCode": "015",
+                          "year": "1990",
+                          "foreignNumber": ""
+                        },
+                        "document": null
+                      },
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-333333333333",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Apocryphal": {
+                    "summary": "CURP_APOCRYPHAL — baja, no document issued",
+                    "value": {
+                      "status": "OK",
+                      "type": "CURP_APOCRYPHAL",
+                      "message": "CURP deactivated due to apocryphal document; no certificate is issued",
+                      "data": {
+                        "personalInfo": {
+                          "curp": "TEST900101HDFRRN09",
+                          "givenNames": "JUAN",
+                          "firstSurname": "PEREZ",
+                          "secondSurname": "LOPEZ",
+                          "gender": "H",
+                          "dateOfBirth": "1990-01-01",
+                          "birthState": "DISTRITO FEDERAL",
+                          "birthStateCode": "DF",
+                          "nationality": "MEXICO"
+                        },
+                        "documentDetails": {
+                          "curpStatus": "BAP",
+                          "probatoryDocumentCode": 1
+                        },
+                        "registrationDetails": {
+                          "state": "DISTRITO FEDERAL",
+                          "stateCode": "09",
+                          "municipality": "CUAUHTEMOC",
+                          "municipalityCode": "015",
+                          "year": "1990",
+                          "foreignNumber": ""
+                        },
+                        "document": null
+                      },
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-444444444444",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Judicial": {
+                    "summary": "CURP_JUDICIAL_SUSPENSION — baja, no document issued",
+                    "value": {
+                      "status": "OK",
+                      "type": "CURP_JUDICIAL_SUSPENSION",
+                      "message": "CURP suspended by judicial order; no certificate is issued",
+                      "data": {
+                        "personalInfo": {
+                          "curp": "TEST900101HDFRRN09",
+                          "givenNames": "JUAN",
+                          "firstSurname": "PEREZ",
+                          "secondSurname": "LOPEZ",
+                          "gender": "H",
+                          "dateOfBirth": "1990-01-01",
+                          "birthState": "DISTRITO FEDERAL",
+                          "birthStateCode": "DF",
+                          "nationality": "MEXICO"
+                        },
+                        "documentDetails": {
+                          "curpStatus": "BJD",
+                          "probatoryDocumentCode": 1
+                        },
+                        "registrationDetails": {
+                          "state": "DISTRITO FEDERAL",
+                          "stateCode": "09",
+                          "municipality": "CUAUHTEMOC",
+                          "municipalityCode": "015",
+                          "year": "1990",
+                          "foreignNumber": ""
+                        },
+                        "document": null
+                      },
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-555555555555",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Inactive": {
+                    "summary": "CURP_INACTIVE — never activated, no document issued",
+                    "value": {
+                      "status": "OK",
+                      "type": "CURP_INACTIVE",
+                      "message": "CURP exists in RENAPO but was never activated; no certificate is issued",
+                      "data": {
+                        "personalInfo": {
+                          "curp": "TEST900101HDFRRN09",
+                          "givenNames": "JUAN",
+                          "firstSurname": "PEREZ",
+                          "secondSurname": "LOPEZ",
+                          "gender": "H",
+                          "dateOfBirth": "1990-01-01",
+                          "birthState": "DISTRITO FEDERAL",
+                          "birthStateCode": "DF",
+                          "nationality": "MEXICO"
+                        },
+                        "documentDetails": {
+                          "curpStatus": "BSU",
+                          "probatoryDocumentCode": 1
+                        },
+                        "registrationDetails": {
+                          "state": "DISTRITO FEDERAL",
+                          "stateCode": "09",
+                          "municipality": "CUAUHTEMOC",
+                          "municipalityCode": "015",
+                          "year": "1990",
+                          "foreignNumber": ""
+                        },
+                        "document": null
+                      },
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-666666666666",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Not Found": {
+                    "summary": "CURP_NOT_FOUND",
                     "value": {
                       "status": "ERROR",
                       "type": "CURP_NOT_FOUND",
-                      "message": "No CURP record was found at RENAPO for the provided key",
+                      "message": "CURP not found",
                       "data": null,
-                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-222222222222",
-                      "processedAt": "2026-06-01T09:59:00-06:00",
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-777777777777",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
                       "billable": true
                     }
                   },
@@ -1363,7 +1554,7 @@
                           "message": "curp must be a valid 18-character CURP"
                         }
                       ],
-                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-333333333333",
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-888888888888",
                       "processedAt": "2026-06-01T10:00:00-06:00",
                       "billable": false
                     }
@@ -1373,10 +1564,10 @@
                     "value": {
                       "status": "ERROR",
                       "type": "SERVICE_UNAVAILABLE",
-                      "message": "The RENAPO document service is currently unavailable",
+                      "message": "The RENAPO document service is currently unavailable. Please retry.",
                       "data": null,
-                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-444444444444",
-                      "processedAt": "2026-06-01T10:01:00-06:00",
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-999999999999",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
                       "billable": false
                     }
                   },
@@ -1387,8 +1578,8 @@
                       "type": "INTERNAL_ERROR",
                       "message": "Unexpected internal error",
                       "data": null,
-                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-555555555555",
-                      "processedAt": "2026-06-01T10:02:00-06:00",
+                      "transactionId": "a1b2c3d4-e5f6-7a8b-9c0d-aaaaaaaaaaaa",
+                      "processedAt": "2026-06-01T10:00:00-06:00",
                       "billable": false
                     }
                   }
