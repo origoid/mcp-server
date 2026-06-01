@@ -3703,6 +3703,7 @@
                       "data": {
                         "matchFound": false,
                         "riskLevel": "NONE",
+                        "totalMatchesFound": 0,
                         "matches": []
                       },
                       "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-234567890123",
@@ -3719,6 +3720,7 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "LOW",
+                        "totalMatchesFound": 1,
                         "matches": [
                           {
                             "listType": "SAT_69_RETORNO_INVERSIONES",
@@ -3752,6 +3754,7 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "MEDIUM",
+                        "totalMatchesFound": 2,
                         "matches": [
                           {
                             "listType": "SAT_69_FIRMES",
@@ -3795,6 +3798,7 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "HIGH",
+                        "totalMatchesFound": 1,
                         "matches": [
                           {
                             "listType": "SAT_69_NO_LOCALIZADOS",
@@ -3825,6 +3829,7 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "CRITICAL",
+                        "totalMatchesFound": 1,
                         "matches": [
                           {
                             "listType": "SAT_69_SENTENCIAS",
@@ -4092,6 +4097,7 @@
                       "data": {
                         "matchFound": false,
                         "riskLevel": "NONE",
+                        "totalMatchesFound": 0,
                         "matches": []
                       },
                       "transactionId": "c3d4e5f6-a7b8-9c0d-1e2f-234567890123",
@@ -4108,6 +4114,7 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "LOW",
+                        "totalMatchesFound": 1,
                         "matches": [
                           {
                             "listType": "SAT_69B",
@@ -4139,6 +4146,7 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "HIGH",
+                        "totalMatchesFound": 1,
                         "matches": [
                           {
                             "listType": "SAT_69B",
@@ -4170,6 +4178,7 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "CRITICAL",
+                        "totalMatchesFound": 1,
                         "matches": [
                           {
                             "listType": "SAT_69B",
@@ -4201,6 +4210,7 @@
                       "data": {
                         "matchFound": true,
                         "riskLevel": "CRITICAL",
+                        "totalMatchesFound": 2,
                         "matches": [
                           {
                             "listType": "SAT_69B",
