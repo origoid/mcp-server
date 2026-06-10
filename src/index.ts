@@ -168,6 +168,23 @@ server.registerTool(
 );
 
 server.registerTool(
+  "extract_curp_document",
+  {
+    title: "Download the official CURP document (PDF)",
+    description:
+      "Retrieve the official RENAPO CURP document for an 18-character CURP. Returns registration data plus `files` with the PDF as inline base64 (kind `document`). Optional `generateRfc` adds the RFC derived from the CURP. Possible types: SUCCESS, CURP_DECEASED, CURP_HOMONYMY, CURP_APOCRYPHAL, CURP_JUDICIAL_SUSPENSION, CURP_INACTIVE, CURP_NOT_FOUND.",
+    inputSchema: {
+      curp: z.string().describe("18-character CURP."),
+      generateRfc: z
+        .boolean()
+        .optional()
+        .describe("Also generate the RFC derived from the CURP."),
+    },
+  },
+  (args) => wrap(() => client().renapo.extractCurpDocument(clean(args)))(),
+);
+
+server.registerTool(
   "validate_rfc",
   {
     title: "Validate an RFC against SAT",
@@ -177,7 +194,7 @@ server.registerTool(
       rfc: z.string().describe("12 or 13-char RFC, e.g. PEZJ811011KI1"),
     },
   },
-  ({rfc}) => wrap(() => client().sat.validateRfc(clean({rfc})))(),
+  ({rfc}) => wrap(() => client().fiscal.validateRfc(clean({rfc})))(),
 );
 
 server.registerTool(
@@ -195,7 +212,7 @@ server.registerTool(
         .describe("Base64-encoded CSF PDF. Use INSTEAD OF rfc+cif."),
     },
   },
-  (args) => wrap(() => client().sat.extractCsf(clean(args)))(),
+  (args) => wrap(() => client().fiscal.extractCsf(clean(args)))(),
 );
 
 server.registerTool(
@@ -215,7 +232,52 @@ server.registerTool(
       document: z.string().optional(),
     },
   },
-  (args) => wrap(() => client().sat.validateCfdi(clean(args)))(),
+  (args) => wrap(() => client().fiscal.validateCfdi(clean(args)))(),
+);
+
+server.registerTool(
+  "validate_cep",
+  {
+    title: "Validate a SPEI transfer and fetch its CEP (Banxico)",
+    description:
+      "Validate a SPEI transfer against Banxico and retrieve its CEP (Comprobante Electrónico de Pago). Identify the transfer with `trackingKey` OR `referenceNumber`, plus `operationDate`, bank codes, account and `amount`. For settled payments the CEP XML comes in `files` (inline base64); set `includePdf` to also get the PDF. Non-settled outcomes (returned, cancelled, settled-without-CEP) return an empty `files` array.",
+    inputSchema: {
+      trackingKey: z
+        .string()
+        .optional()
+        .describe("Clave de rastreo assigned by the ordering bank."),
+      referenceNumber: z
+        .string()
+        .optional()
+        .describe("Reference number of the transfer. Use instead of `trackingKey`."),
+      operationDate: z.string().optional().describe("Operation date, ISO `YYYY-MM-DD`."),
+      senderBankCode: z
+        .string()
+        .optional()
+        .describe("Banxico institution code (5 digits) of the ordering bank."),
+      receiverBankCode: z
+        .string()
+        .optional()
+        .describe("Banxico institution code (5 digits) of the beneficiary bank."),
+      beneficiaryAccount: z
+        .string()
+        .optional()
+        .describe("Beneficiary account: 18-digit CLABE or 16-digit card number."),
+      orderingAccount: z
+        .string()
+        .optional()
+        .describe("Ordering (sender) account: 18-digit CLABE or 16-digit card number."),
+      amount: z
+        .string()
+        .optional()
+        .describe('Transfer amount as a decimal string in MXN, e.g. "1500.00".'),
+      includePdf: z
+        .boolean()
+        .optional()
+        .describe("Also include the CEP PDF in `files`."),
+    },
+  },
+  (args) => wrap(() => client().banking.validateCep(clean(args)))(),
 );
 
 server.registerTool(
@@ -228,7 +290,7 @@ server.registerTool(
       curp: z.string(),
     },
   },
-  ({curp}) => wrap(() => client().imss.lookupNss(clean({curp})))(),
+  ({curp}) => wrap(() => client().socialSecurity.lookupImssNss(clean({curp})))(),
 );
 
 server.registerTool(
@@ -242,7 +304,20 @@ server.registerTool(
       nss: z.string().describe("11-digit NSS."),
     },
   },
-  (args) => wrap(() => client().imss.getEmploymentStatus(clean(args)))(),
+  (args) => wrap(() => client().socialSecurity.getImssEmploymentStatus(clean(args)))(),
+);
+
+server.registerTool(
+  "get_issste_record",
+  {
+    title: "Get the full ISSSTE record for a government worker",
+    description:
+      "Retrieve the complete ISSSTE record (affiliation, employment, contribution history, pensions, FOVISSSTE) for a CURP. `files` returns the record PDF (kind `document`) and, when the record contains a usable face photo, the face (kind `face`) as inline base64.",
+    inputSchema: {
+      curp: z.string().describe("CURP of the government worker."),
+    },
+  },
+  ({curp}) => wrap(() => client().socialSecurity.getIssteRecord(clean({curp})))(),
 );
 
 server.registerTool(
