@@ -2835,13 +2835,13 @@
                         },
                         "addressNormalized": {
                           "geocodingStatus": "VERIFIED",
-                          "street": "CALLE EL CAPULE",
+                          "street": "Calle El Capule",
                           "exteriorNumber": "392",
                           "interiorNumber": null,
-                          "neighborhood": "FRACCIONAMIENTO JARDINES DE LA SIERRA",
+                          "neighborhood": "Fraccionamiento Jardines de la Sierra",
                           "zipCode": "80019",
-                          "municipality": "CULIACÁN",
-                          "state": "SINALOA",
+                          "municipality": "Culiacán",
+                          "state": "Sinaloa",
                           "country": "Mexico"
                         },
                         "electoralGeography": {
@@ -2916,13 +2916,13 @@
                         },
                         "addressNormalized": {
                           "geocodingStatus": "VERIFIED",
-                          "street": "AVENIDA LAGO ALBERTO",
+                          "street": "Avenida Lago Alberto",
                           "exteriorNumber": "320",
-                          "interiorNumber": "TORRE CENTRAL 503",
-                          "neighborhood": "ANÁHUAC",
+                          "interiorNumber": "Torre Central 503",
+                          "neighborhood": "Anáhuac",
                           "zipCode": "11320",
-                          "municipality": "MIGUEL HIDALGO",
-                          "state": "CIUDAD DE MÉXICO",
+                          "municipality": "Miguel Hidalgo",
+                          "state": "Ciudad de México",
                           "country": "Mexico"
                         },
                         "electoralGeography": {
@@ -2987,19 +2987,19 @@
                           "electorKey": "OROSAN83090630H100"
                         },
                         "address": {
-                          "addressLine1": "CZARAGOZA 3",
+                          "addressLine1": "C ZARAGOZA 3",
                           "addressLine2": "LOC NAOLINCO 91400",
                           "addressLine3": "NAOLINCO, VER"
                         },
                         "addressNormalized": {
                           "geocodingStatus": "VERIFIED",
-                          "street": "CALLE ZARAGOZA",
+                          "street": "Calle Zaragoza",
                           "exteriorNumber": "3",
                           "interiorNumber": null,
-                          "neighborhood": "CENTRO",
+                          "neighborhood": "Centro",
                           "zipCode": "91400",
-                          "municipality": "NAOLINCO",
-                          "state": "VERACRUZ",
+                          "municipality": "Naolinco",
+                          "state": "Veracruz de Ignacio de la Llave",
                           "country": "Mexico"
                         },
                         "electoralGeography": {
