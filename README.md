@@ -111,11 +111,14 @@ The server speaks MCP over stdio (standard transport).
 | `issue_token` | `POST /auth/token` |
 | `validate_curp` | `POST /mex/renapo/v1/curp-validations` |
 | `lookup_curp` | `POST /mex/renapo/v1/curp-lookups` |
+| `extract_curp_document` | `POST /mex/renapo/v1/curp-documents` |
 | `validate_rfc` | `POST /mex/fiscal/v1/rfc-validations` |
 | `extract_csf` | `POST /mex/fiscal/v1/csf-extractions` |
 | `validate_cfdi` | `POST /mex/fiscal/v1/cfdi-validations` |
+| `validate_cep` | `POST /mex/banking/v1/cep-validations` |
 | `lookup_nss` | `POST /mex/social-security/v1/imss-nss-lookups` |
 | `get_employment_status` | `POST /mex/social-security/v1/imss-employment-status` |
+| `get_issste_record` | `POST /mex/social-security/v1/issste-records` |
 | `validate_voter_list` | `POST /mex/id/v1/voter-list-validations` |
 | `extract_voter_id_data` | `POST /mex/id/v1/voter-id-extractions` |
 | `extract_qr_data` | `POST /mex/id/v1/qr-extractions` |

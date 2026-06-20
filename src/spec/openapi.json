@@ -2780,7 +2780,7 @@
           "INE"
         ],
         "summary": "ID Data Extraction (OCR & Geocoding)",
-        "description": "**Credits:** 1 per call.\n\nPerforms OCR on the front and back of a Mexican voter ID (INE / IFE) and returns the structured data printed on the credential: full name, CURP, voter key (CIC / OCR), address, photograph metadata, the document model variant (D, E, F, G, H — current and recent INE designs), and the MRZ read from the back when present.\n\nWhat sets this endpoint apart is **integrated address normalization + geocoding**: the address printed on the INE is rarely clean — abbreviations, missing colonia, inconsistent casing. We normalize and enrich it automatically. You get back not only the raw address text, but also:\n\n- **`addressNormalized`**: corrected casing, expanded abbreviations (`AV.` → `AVENIDA`, `CALZ.` → `CALZADA`), validated postal code against the SEPOMEX directory, matched neighborhood / municipality / state from the official catalog, and `latitude` / `longitude` when the address resolves with confidence.\n- **`electoralGeography`**: derived electoral district, federal entity, and polling section — useful for cross-checking with `validateVoterList`.\n- **Document model detection** (E, G, H) and per-model security feature validation.\n- **MRZ + QR cross-validation**: when the back contains MRZ and QR, we read both and confirm they agree with the printed fields. Mismatches are flagged.\n\nUse this endpoint to digitize voter ID capture without manual transcription, and to obtain a geo-enriched address record in a single call — eliminating a separate geocoding step in your KYC flow.",
+        "description": "**Credits:** 1 per call.\n\nPerforms OCR on the front and back of a Mexican voter ID (INE / IFE) and returns the structured data printed on the credential: full name, CURP, voter key (CIC / OCR), address, photograph metadata, the document model variant (D, E, F, G, H — current and recent INE designs), and the MRZ read from the back when present.\n\nWhat sets this endpoint apart is **integrated address normalization + geocoding**: the address printed on the INE is rarely clean — abbreviations, missing colonia, inconsistent casing. We normalize and enrich it automatically. You get back not only the raw address text, but also:\n\n- **`addressNormalized`**: the printed INE address, normalized and enriched (corrected casing, expanded abbreviations, validated postal code, and neighborhood / municipality / state matched from the official catalog). The `geocodingStatus` field reports the match confidence: `VERIFIED` (house- or street-level match), `PARTIAL` (locality or postal-code match), or `UNVERIFIED` (no confident match).\n- **`electoralGeography`**: derived electoral district, federal entity, and polling section — useful for cross-checking with `validateVoterList`.\n- **Document model detection** (E, G, H) and per-model security feature validation.\n- **MRZ + QR cross-validation**: when the back contains MRZ and QR, we read both and confirm they agree with the printed fields. Mismatches are flagged.\n\nUse this endpoint to digitize voter ID capture without manual transcription, and to obtain a geo-enriched address record in a single call — eliminating a separate geocoding step in your KYC flow.",
         "requestBody": {
           "required": true,
           "content": {
@@ -2833,7 +2833,17 @@
                           "addressLine2": "FRACC JARDINES DE LA SIERRA 80019",
                           "addressLine3": "CULIACAN, SIN."
                         },
-                        "addressNormalized": null,
+                        "addressNormalized": {
+                          "geocodingStatus": "VERIFIED",
+                          "street": "CALLE EL CAPULE",
+                          "exteriorNumber": "392",
+                          "interiorNumber": null,
+                          "neighborhood": "FRACCIONAMIENTO JARDINES DE LA SIERRA",
+                          "zipCode": "80019",
+                          "municipality": "CULIACÁN",
+                          "state": "SINALOA",
+                          "country": "Mexico"
+                        },
                         "electoralGeography": {
                           "state": "25",
                           "municipality": "006",
@@ -2904,7 +2914,17 @@
                           "addressLine2": "COL ANAHUAC 11320",
                           "addressLine3": "MIGUEL HIDALGO, CDMX"
                         },
-                        "addressNormalized": null,
+                        "addressNormalized": {
+                          "geocodingStatus": "VERIFIED",
+                          "street": "AVENIDA LAGO ALBERTO",
+                          "exteriorNumber": "320",
+                          "interiorNumber": "TORRE CENTRAL 503",
+                          "neighborhood": "ANÁHUAC",
+                          "zipCode": "11320",
+                          "municipality": "MIGUEL HIDALGO",
+                          "state": "CIUDAD DE MÉXICO",
+                          "country": "Mexico"
+                        },
                         "electoralGeography": {
                           "state": "09",
                           "municipality": "016",
@@ -2971,7 +2991,17 @@
                           "addressLine2": "LOC NAOLINCO 91400",
                           "addressLine3": "NAOLINCO, VER"
                         },
-                        "addressNormalized": null,
+                        "addressNormalized": {
+                          "geocodingStatus": "VERIFIED",
+                          "street": "CALLE ZARAGOZA",
+                          "exteriorNumber": "3",
+                          "interiorNumber": null,
+                          "neighborhood": "CENTRO",
+                          "zipCode": "91400",
+                          "municipality": "NAOLINCO",
+                          "state": "VERACRUZ",
+                          "country": "Mexico"
+                        },
                         "electoralGeography": {
                           "state": null,
                           "municipality": null,
@@ -4054,6 +4084,7 @@
     },
     "/global/biometrics/v1/liveness-checks": {
       "post": {
+        "x-hidden": true,
         "tags": [
           "Biometrics"
         ],
