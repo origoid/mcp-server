@@ -295,6 +295,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -331,7 +332,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
-                          "rfc": "PELJ900101XXX",
+                          "rfc": "PELJ900101AB7",
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -360,7 +361,7 @@
                     }
                   },
                   "Deceased": {
-                    "summary": "Deceased (Baja Defunción)",
+                    "summary": "Deceased",
                     "value": {
                       "status": "OK",
                       "type": "CURP_DECEASED",
@@ -368,6 +369,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -396,7 +398,7 @@
                     }
                   },
                   "Homonymy": {
-                    "summary": "Homonymy (Alta Homonimia)",
+                    "summary": "Homonymy",
                     "value": {
                       "status": "OK",
                       "type": "CURP_HOMONYMY",
@@ -404,6 +406,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -432,7 +435,7 @@
                     }
                   },
                   "Apocryphal": {
-                    "summary": "Apocryphal (Baja Doc. Falso)",
+                    "summary": "Apocryphal",
                     "value": {
                       "status": "OK",
                       "type": "CURP_APOCRYPHAL",
@@ -440,6 +443,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -468,7 +472,7 @@
                     }
                   },
                   "Judicial": {
-                    "summary": "Judicial (Baja Judicial)",
+                    "summary": "Judicial",
                     "value": {
                       "status": "OK",
                       "type": "CURP_JUDICIAL_SUSPENSION",
@@ -476,6 +480,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -504,7 +509,7 @@
                     }
                   },
                   "Inactive": {
-                    "summary": "Inactive (Baja Sin Uso)",
+                    "summary": "Inactive",
                     "value": {
                       "status": "OK",
                       "type": "CURP_INACTIVE",
@@ -512,6 +517,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -794,6 +800,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -830,7 +837,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
-                          "rfc": "PELJ900101XXX",
+                          "rfc": "PELJ900101AB7",
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -859,7 +866,7 @@
                     }
                   },
                   "Deceased": {
-                    "summary": "Deceased (Baja Defunción)",
+                    "summary": "Deceased",
                     "value": {
                       "status": "OK",
                       "type": "CURP_DECEASED",
@@ -867,6 +874,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -895,7 +903,7 @@
                     }
                   },
                   "Homonymy": {
-                    "summary": "Homonymy (Alta Homonimia)",
+                    "summary": "Homonymy",
                     "value": {
                       "status": "OK",
                       "type": "CURP_HOMONYMY",
@@ -903,6 +911,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -931,7 +940,7 @@
                     }
                   },
                   "Apocryphal": {
-                    "summary": "Apocryphal (Baja Doc. Falso)",
+                    "summary": "Apocryphal",
                     "value": {
                       "status": "OK",
                       "type": "CURP_APOCRYPHAL",
@@ -939,6 +948,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -967,7 +977,7 @@
                     }
                   },
                   "Judicial": {
-                    "summary": "Judicial (Baja Judicial)",
+                    "summary": "Judicial",
                     "value": {
                       "status": "OK",
                       "type": "CURP_JUDICIAL_SUSPENSION",
@@ -975,6 +985,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -1003,7 +1014,7 @@
                     }
                   },
                   "Inactive": {
-                    "summary": "Inactive (Baja Sin Uso)",
+                    "summary": "Inactive",
                     "value": {
                       "status": "OK",
                       "type": "CURP_INACTIVE",
@@ -1011,6 +1022,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -1254,7 +1266,7 @@
           "RENAPO"
         ],
         "summary": "CURP Official Document (PDF)",
-        "description": "**Credits:** 2 per call.\n\nRetrieves the official RENAPO CURP document (\"Constancia de la CURP\") as a PDF, together with the full validated record and the CURP's RENAPO status — the **same status matrix as `curp-validations`** (active, homonymy, deceased, apocryphal, judicial suspension, inactive). Use it when you need the citizen's official, printable certificate, not just the validated data.\n\nThe PDF is returned **inline as base64** in `data.document.content`, alongside the parsed identity fields. This is a **synchronous** call.\n\nOptionally pass `generateRfc: true` to also receive the deterministic `personalInfo.rfc` (computed from the CURP, no SAT call) — identical to `curp-validations`.\n\n**Why it differs from `curp-validations`:** this endpoint retrieves the actual document from RENAPO, so a response takes a little longer to return. It is priced at **2 credits** and has a lower rate limit than the high-volume `curp-validations`.",
+        "description": "**Credits:** 2 per call.\n\nRetrieves the official RENAPO CURP document (\"Constancia de la CURP\") as a PDF, together with the full validated record and the CURP's RENAPO status — the **same status matrix as `curp-validations`** (active, homonymy, deceased, apocryphal, judicial suspension, inactive). Use it when you need the citizen's official, printable certificate, not just the validated data.\n\nThe PDF is returned **inline as base64** in `data.files[0].content`, alongside the parsed identity fields. This is a **synchronous** call.\n\nOptionally pass `generateRfc: true` to also receive the deterministic `personalInfo.rfc` (computed from the CURP, no SAT call) — identical to `curp-validations`.\n\n**Why it differs from `curp-validations`:** this endpoint retrieves the actual document from RENAPO, so a response takes a little longer to return. It is priced at **2 credits** and has a lower rate limit than the high-volume `curp-validations`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -1310,7 +1322,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
-                          "rfc": "TEST900101XXX",
+                          "rfc": "TEST900101AB7",
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -1355,6 +1367,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -1399,6 +1412,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -1443,6 +1457,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -1487,6 +1502,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -1531,6 +1547,7 @@
                       "data": {
                         "personalInfo": {
                           "curp": "TEST900101HDFRRN09",
+                          "rfc": null,
                           "givenNames": "JUAN",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
@@ -2862,7 +2879,7 @@
                           "citizenIdentifier": "079288742",
                           "barCode": "119195412",
                           "qr": "http://qr.ife.org.mx/121807928874203119195412/20140626/S/006176",
-                          "mrz": "IDMEX1191954121<<12180792887427902192M2412311MEX<03<<10110<1MIRANDAARAUJO<<RAQUEL27demarz"
+                          "mrz": "IDMEX1191954121<<12180792887427902192M2412311MEX<03<<10110<1MIRANDAARAUJO<<RAQUEL"
                         },
                         "mrzValidation": {
                           "dateOfBirth": true,
@@ -2964,8 +2981,8 @@
                         ]
                       },
                       "billable": true,
-                      "transactionId": "550e8400-e29b-41d4-a716-446655440000",
-                      "processedAt": "2026-03-15T19:23:00-06:00"
+                      "transactionId": "5f3e2a1b-8c7d-4e6f-9a0b-1c2d3e4f5a6b",
+                      "processedAt": "2026-03-15T19:24:12-06:00"
                     }
                   },
                   "Success G": {
@@ -3045,8 +3062,8 @@
                         ]
                       },
                       "billable": true,
-                      "transactionId": "550e8400-e29b-41d4-a716-446655440000",
-                      "processedAt": "2026-03-15T19:23:00-06:00"
+                      "transactionId": "7a1b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c5d",
+                      "processedAt": "2026-03-15T19:25:47-06:00"
                     }
                   },
                   "Unreadable": {
@@ -3215,31 +3232,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/mex/id/v1/voter-id-extractions \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"front\": \"string\"}'"
+            "source": "curl -X POST https://api.origoid.com/mex/id/v1/voter-id-extractions \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"front\": \"<base64 image (JPG or PNG)>\"}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/mex/id/v1/voter-id-extractions\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"front\": \"string\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/id/v1/voter-id-extractions\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"front\": \"<base64 image (JPG or PNG)>\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/id/v1/voter-id-extractions\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"front\": \"string\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/id/v1/voter-id-extractions\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"front\": \"<base64 image (JPG or PNG)>\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"front\\\": \\\"string\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/id/v1/voter-id-extractions\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"front\\\": \\\"<base64 image (JPG or PNG)>\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/id/v1/voter-id-extractions\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"front\": \"string\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/id/v1/voter-id-extractions');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"front\": \"<base64 image (JPG or PNG)>\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/id/v1/voter-id-extractions');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"front\": \"string\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/id/v1/voter-id-extractions\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"front\": \"<base64 image (JPG or PNG)>\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/id/v1/voter-id-extractions\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"front\\\": \\\"string\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/id/v1/voter-id-extractions\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"front\\\": \\\"<base64 image (JPG or PNG)>\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/id/v1/voter-id-extractions\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -3288,9 +3305,9 @@
                         "personalInfo": {
                           "givenNames": "MARIA FERNANDA",
                           "firstSurname": "LOPEZ",
-                          "secondSurname": "GARCIA",
+                          "secondSurname": "GODINEZ",
                           "gender": "M",
-                          "curp": "LOGF950312MDFPRR08"
+                          "curp": "LOGF950312MDFRPL03"
                         },
                         "electoralGeography": {
                           "stateCode": "09",
@@ -3338,7 +3355,7 @@
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
                           "gender": "H",
-                          "curp": "PELJ900101HDFRPN09"
+                          "curp": "PELJ900101HDFRZN02"
                         },
                         "electoralGeography": {
                           "stateCode": "09",
@@ -3354,8 +3371,8 @@
                           "emissionNumber": "1"
                         },
                         "security": {
-                          "cic": "123456789",
-                          "ocr": "1234567890123"
+                          "cic": "458201673",
+                          "ocr": "4582016739210"
                         },
                         "files": [
                           {
@@ -3532,31 +3549,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/mex/id/v1/qr-extractions \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"back\": \"string\"}'"
+            "source": "curl -X POST https://api.origoid.com/mex/id/v1/qr-extractions \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"back\": \"<base64 image (JPG or PNG)>\"}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/mex/id/v1/qr-extractions\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"back\": \"string\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/id/v1/qr-extractions\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"back\": \"<base64 image (JPG or PNG)>\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/id/v1/qr-extractions\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"back\": \"string\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/id/v1/qr-extractions\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"back\": \"<base64 image (JPG or PNG)>\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"back\\\": \\\"string\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/id/v1/qr-extractions\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"back\\\": \\\"<base64 image (JPG or PNG)>\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/id/v1/qr-extractions\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"back\": \"string\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/id/v1/qr-extractions');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"back\": \"<base64 image (JPG or PNG)>\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/id/v1/qr-extractions');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"back\": \"string\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/id/v1/qr-extractions\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"back\": \"<base64 image (JPG or PNG)>\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/id/v1/qr-extractions\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"back\\\": \\\"string\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/id/v1/qr-extractions\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"back\\\": \\\"<base64 image (JPG or PNG)>\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/id/v1/qr-extractions\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -4053,31 +4070,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/global/biometrics/v1/face-matches \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"face\": \"string\", \"front\": \"string\"}'"
+            "source": "curl -X POST https://api.origoid.com/global/biometrics/v1/face-matches \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"face\": \"<base64 image (JPG or PNG)>\", \"front\": \"<base64 image (JPG or PNG)>\"}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/global/biometrics/v1/face-matches\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"face\": \"string\",\n    \"front\": \"string\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/global/biometrics/v1/face-matches\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"face\": \"<base64 image (JPG or PNG)>\",\n    \"front\": \"<base64 image (JPG or PNG)>\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/global/biometrics/v1/face-matches\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"face\": \"string\",\n        \"front\": \"string\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/global/biometrics/v1/face-matches\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"face\": \"<base64 image (JPG or PNG)>\",\n        \"front\": \"<base64 image (JPG or PNG)>\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"face\\\": \\\"string\\\", \\\"front\\\": \\\"string\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/global/biometrics/v1/face-matches\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"face\\\": \\\"<base64 image (JPG or PNG)>\\\", \\\"front\\\": \\\"<base64 image (JPG or PNG)>\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/global/biometrics/v1/face-matches\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"face\": \"string\", \"front\": \"string\"}';\n\n$ch = curl_init('https://api.origoid.com/global/biometrics/v1/face-matches');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"face\": \"<base64 image (JPG or PNG)>\", \"front\": \"<base64 image (JPG or PNG)>\"}';\n\n$ch = curl_init('https://api.origoid.com/global/biometrics/v1/face-matches');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"face\": \"string\", \"front\": \"string\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/global/biometrics/v1/face-matches\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"face\": \"<base64 image (JPG or PNG)>\", \"front\": \"<base64 image (JPG or PNG)>\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/global/biometrics/v1/face-matches\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"face\\\": \\\"string\\\", \\\"front\\\": \\\"string\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/global/biometrics/v1/face-matches\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"face\\\": \\\"<base64 image (JPG or PNG)>\\\", \\\"front\\\": \\\"<base64 image (JPG or PNG)>\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/global/biometrics/v1/face-matches\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -4359,31 +4376,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/global/biometrics/v1/liveness-checks \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"selfie\": \"string\"}'"
+            "source": "curl -X POST https://api.origoid.com/global/biometrics/v1/liveness-checks \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"selfie\": \"<base64 image (JPG or PNG)>\"}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/global/biometrics/v1/liveness-checks\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"selfie\": \"string\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/global/biometrics/v1/liveness-checks\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"selfie\": \"<base64 image (JPG or PNG)>\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/global/biometrics/v1/liveness-checks\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"selfie\": \"string\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/global/biometrics/v1/liveness-checks\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"selfie\": \"<base64 image (JPG or PNG)>\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"selfie\\\": \\\"string\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/global/biometrics/v1/liveness-checks\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"selfie\\\": \\\"<base64 image (JPG or PNG)>\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/global/biometrics/v1/liveness-checks\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"selfie\": \"string\"}';\n\n$ch = curl_init('https://api.origoid.com/global/biometrics/v1/liveness-checks');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"selfie\": \"<base64 image (JPG or PNG)>\"}';\n\n$ch = curl_init('https://api.origoid.com/global/biometrics/v1/liveness-checks');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"selfie\": \"string\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/global/biometrics/v1/liveness-checks\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"selfie\": \"<base64 image (JPG or PNG)>\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/global/biometrics/v1/liveness-checks\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"selfie\\\": \\\"string\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/global/biometrics/v1/liveness-checks\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"selfie\\\": \\\"<base64 image (JPG or PNG)>\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/global/biometrics/v1/liveness-checks\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -5368,7 +5385,7 @@
                         "matches": [
                           {
                             "listType": "OFAC_SDN",
-                            "entityName": "GARCIA HERNANDEZ, Jose",
+                            "entityName": "MEDINA HERNANDEZ, Jose",
                             "recordType": "INDIVIDUAL",
                             "similarityScore": 100,
                             "registeredAddress": "Sinaloa, Mexico",
@@ -5393,7 +5410,7 @@
                           },
                           {
                             "listType": "OFAC_SSI",
-                            "entityName": "GARCIA, Jose Manuel",
+                            "entityName": "MEDINA, Jose Manuel",
                             "recordType": "INDIVIDUAL",
                             "similarityScore": 96,
                             "registeredAddress": "Moscow, Russian Federation",
@@ -5416,13 +5433,13 @@
                           },
                           {
                             "listType": "OFAC_UN",
-                            "entityName": "JOSE GARCIA RAMIREZ",
+                            "entityName": "JOSE MEDINA RAMIREZ",
                             "recordType": "INDIVIDUAL",
                             "similarityScore": 93,
                             "registeredAddress": "Caracas, Venezuela",
                             "matchedOn": {
                               "type": "alias",
-                              "value": "JOSE A. GARCIA",
+                              "value": "JOSE A. MEDINA",
                               "identifiersMatched": [
                                 "name"
                               ]
@@ -5432,7 +5449,7 @@
                                 "UN-1267"
                               ],
                               "aliases": [
-                                "JOSE A. GARCIA"
+                                "JOSE A. MEDINA"
                               ],
                               "nationality": "VEN",
                               "dateOfBirth": "1968-03-02",
@@ -6702,7 +6719,7 @@
                         "documentType": "PROOF_OF_ADDRESS",
                         "provider": "TOTALPLAY",
                         "personalInfo": {
-                          "fullName": "GARCIA MARTINEZ JUAN",
+                          "fullName": "SORIANO MARTINEZ JUAN",
                           "phoneNumber": "5512345678"
                         },
                         "address": {
@@ -6884,31 +6901,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/mex/documents/v1/proof-of-address-extractions \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"file\": \"string\"}'"
+            "source": "curl -X POST https://api.origoid.com/mex/documents/v1/proof-of-address-extractions \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"file\": \"<base64 file (PDF, JPG or PNG)>\"}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"file\": \"string\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"file\": \"<base64 file (PDF, JPG or PNG)>\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"file\": \"string\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"file\": \"<base64 file (PDF, JPG or PNG)>\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"file\\\": \\\"string\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"file\\\": \\\"<base64 file (PDF, JPG or PNG)>\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"file\": \"string\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/documents/v1/proof-of-address-extractions');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"file\": \"<base64 file (PDF, JPG or PNG)>\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/documents/v1/proof-of-address-extractions');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"file\": \"string\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"file\": \"<base64 file (PDF, JPG or PNG)>\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"file\\\": \\\"string\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"file\\\": \\\"<base64 file (PDF, JPG or PNG)>\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/documents/v1/proof-of-address-extractions\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -7195,7 +7212,7 @@
                   },
                   "cif": {
                     "type": "string",
-                    "description": "Official Tax Certificate Code (11 digits)."
+                    "description": "Official Tax Certificate Code (8 to 12 digits)."
                   }
                 },
                 "oneOf": [
@@ -7217,7 +7234,7 @@
                   "summary": "By RFC + CIF",
                   "value": {
                     "rfc": "PELJ900101AAA",
-                    "cif": "12345678901"
+                    "cif": "24010199999"
                   }
                 },
                 "by_document": {
@@ -7520,31 +7537,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/mex/fiscal/v1/csf-extractions \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"rfc\": \"PELJ900101AAA\", \"cif\": \"12345678901\"}'"
+            "source": "curl -X POST https://api.origoid.com/mex/fiscal/v1/csf-extractions \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"rfc\": \"PELJ900101AAA\", \"cif\": \"24010199999\"}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/mex/fiscal/v1/csf-extractions\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"rfc\": \"PELJ900101AAA\",\n    \"cif\": \"12345678901\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/fiscal/v1/csf-extractions\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"rfc\": \"PELJ900101AAA\",\n    \"cif\": \"24010199999\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/fiscal/v1/csf-extractions\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"rfc\": \"PELJ900101AAA\",\n        \"cif\": \"12345678901\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/fiscal/v1/csf-extractions\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"rfc\": \"PELJ900101AAA\",\n        \"cif\": \"24010199999\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"rfc\\\": \\\"PELJ900101AAA\\\", \\\"cif\\\": \\\"12345678901\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/fiscal/v1/csf-extractions\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"rfc\\\": \\\"PELJ900101AAA\\\", \\\"cif\\\": \\\"24010199999\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/fiscal/v1/csf-extractions\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"rfc\": \"PELJ900101AAA\", \"cif\": \"12345678901\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/fiscal/v1/csf-extractions');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"rfc\": \"PELJ900101AAA\", \"cif\": \"24010199999\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/fiscal/v1/csf-extractions');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"rfc\": \"PELJ900101AAA\", \"cif\": \"12345678901\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/fiscal/v1/csf-extractions\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"rfc\": \"PELJ900101AAA\", \"cif\": \"24010199999\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/fiscal/v1/csf-extractions\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"rfc\\\": \\\"PELJ900101AAA\\\", \\\"cif\\\": \\\"12345678901\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/fiscal/v1/csf-extractions\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"rfc\\\": \\\"PELJ900101AAA\\\", \\\"cif\\\": \\\"24010199999\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/fiscal/v1/csf-extractions\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -7568,19 +7585,19 @@
                     "example": "7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B",
                     "description": "CFDI Folio Fiscal (UUID format 8-4-4-4-12). Required when sending direct identifiers."
                   },
-                  "rfcEmisor": {
+                  "rfcIssuer": {
                     "type": "string",
-                    "example": "PEZJ811011KI1",
+                    "example": "PEZJ900514H2A",
                     "description": "RFC of the issuer (12 or 13 chars). Required when sending direct identifiers."
                   },
-                  "rfcReceptor": {
+                  "rfcReceiver": {
                     "type": "string",
-                    "example": "EMP170623KI3",
+                    "example": "EMP210908DT4",
                     "description": "RFC of the receiver (12 or 13 chars). Required when sending direct identifiers."
                   },
                   "total": {
                     "type": "string",
-                    "example": "999999.99",
+                    "example": "18750.00",
                     "description": "Total CFDI amount as decimal string (no currency symbol). Required when sending direct identifiers."
                   },
                   "document": {
@@ -7592,8 +7609,8 @@
                   {
                     "required": [
                       "uuid",
-                      "rfcEmisor",
-                      "rfcReceptor",
+                      "rfcIssuer",
+                      "rfcReceiver",
                       "total"
                     ]
                   },
@@ -7622,18 +7639,18 @@
                       "data": {
                         "uuid": "7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B",
                         "issuer": {
-                          "rfc": "PEZJ811011KI1",
-                          "name": "JUAN ALONSO PEREZ ZAPATA"
+                          "rfc": "PEZJ900514H2A",
+                          "name": "JUAN PEREZ ZUNIGA"
                         },
                         "receiver": {
-                          "rfc": "EMP170623KI3",
+                          "rfc": "EMP210908DT4",
                           "name": "EMPRESA, S.A. DE C.V."
                         },
                         "issueDate": "2020-05-18T16:04:42-06:00",
                         "certificationDate": "2020-05-18T16:18:54-06:00",
                         "pacRfc": "SAT970701NN3",
                         "total": {
-                          "amount": "999999.99",
+                          "amount": "18750.00",
                           "currency": "MXN"
                         },
                         "effect": "INCOME",
@@ -7655,11 +7672,11 @@
                       "data": {
                         "uuid": "A1B2C3D4-E5F6-7890-ABCD-EF1234567890",
                         "issuer": {
-                          "rfc": "PEZJ811011KI1",
-                          "name": "JUAN ALONSO PEREZ ZAPATA"
+                          "rfc": "PEZJ900514H2A",
+                          "name": "JUAN PEREZ ZUNIGA"
                         },
                         "receiver": {
-                          "rfc": "EMP170623KI3",
+                          "rfc": "EMP210908DT4",
                           "name": "EMPRESA, S.A. DE C.V."
                         },
                         "issueDate": "2024-03-10T09:15:00-06:00",
@@ -7692,6 +7709,18 @@
                       "billable": true
                     }
                   },
+                  "Document not trusted": {
+                    "summary": "Document not trusted",
+                    "value": {
+                      "status": "OK",
+                      "type": "DOCUMENT_NOT_TRUSTED",
+                      "message": "Document QR points to an unofficial host",
+                      "data": null,
+                      "transactionId": "9a4c1e77-2b3d-4f8a-bc1e-6d5f0a2b3c4d",
+                      "processedAt": "2026-06-26T16:34:30-06:00",
+                      "billable": true
+                    }
+                  },
                   "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
@@ -7703,12 +7732,12 @@
                         {
                           "field": "body",
                           "code": "MISSING_SEARCH_CRITERIA",
-                          "message": "must provide either 'document' or all of uuid, rfcEmisor, rfcReceptor and total"
+                          "message": "must provide either 'document' or all of uuid, rfcIssuer, rfcReceiver and total"
                         },
                         {
                           "field": "body",
                           "code": "MISSING_DEPENDENT_FIELD",
-                          "message": "direct-identifier mode requires uuid, rfcEmisor, rfcReceptor and total (missing: rfcEmisor, rfcReceptor, total)"
+                          "message": "direct-identifier mode requires uuid, rfcIssuer, rfcReceiver and total (missing: rfcIssuer, rfcReceiver, total)"
                         },
                         {
                           "field": "uuid",
@@ -7716,14 +7745,14 @@
                           "message": "uuid must be a UUID in 8-4-4-4-12 hex format"
                         },
                         {
-                          "field": "rfcEmisor",
+                          "field": "rfcIssuer",
                           "code": "INVALID_FORMAT",
-                          "message": "rfcEmisor must be 12 or 13 alphanumeric characters (SAT format)"
+                          "message": "rfcIssuer must be 12 or 13 alphanumeric characters (SAT format)"
                         },
                         {
-                          "field": "rfcReceptor",
+                          "field": "rfcReceiver",
                           "code": "INVALID_FORMAT",
-                          "message": "rfcReceptor must be 12 or 13 alphanumeric characters (SAT format)"
+                          "message": "rfcReceiver must be 12 or 13 alphanumeric characters (SAT format)"
                         },
                         {
                           "field": "total",
@@ -7851,31 +7880,31 @@
         "x-codeSamples": [
           {
             "lang": "cURL",
-            "source": "curl -X POST https://api.origoid.com/mex/fiscal/v1/cfdi-validations \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\", \"rfcEmisor\": \"PEZJ811011KI1\", \"rfcReceptor\": \"EMP170623KI3\", \"total\": \"999999.99\"}'"
+            "source": "curl -X POST https://api.origoid.com/mex/fiscal/v1/cfdi-validations \\\n  -H \"x-api-key: YOUR_API_KEY\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\", \"rfcIssuer\": \"PEZJ900514H2A\", \"rfcReceiver\": \"EMP210908DT4\", \"total\": \"18750.00\"}'"
           },
           {
             "lang": "JavaScript",
-            "source": "const response = await fetch(\"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\",\n    \"rfcEmisor\": \"PEZJ811011KI1\",\n    \"rfcReceptor\": \"EMP170623KI3\",\n    \"total\": \"999999.99\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
+            "source": "const response = await fetch(\"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\", {\n  method: \"POST\",\n  headers: {\n    \"x-api-key\": process.env.ORIGOID_API_KEY,\n    \"content-type\": \"application/json\",\n  },\n  body: JSON.stringify({\n    \"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\",\n    \"rfcIssuer\": \"PEZJ900514H2A\",\n    \"rfcReceiver\": \"EMP210908DT4\",\n    \"total\": \"18750.00\"\n  }),\n});\n\nif (!response.ok) {\n  throw new Error(`HTTP ${response.status}`);\n}\n\nconst result = await response.json();\nconsole.log(result);"
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\",\n        \"rfcEmisor\": \"PEZJ811011KI1\",\n        \"rfcReceptor\": \"EMP170623KI3\",\n        \"total\": \"999999.99\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\",\n        \"rfcIssuer\": \"PEZJ900514H2A\",\n        \"rfcReceiver\": \"EMP210908DT4\",\n        \"total\": \"18750.00\"\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
-            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"uuid\\\": \\\"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\\\", \\\"rfcEmisor\\\": \\\"PEZJ811011KI1\\\", \\\"rfcReceptor\\\": \\\"EMP170623KI3\\\", \\\"total\\\": \\\"999999.99\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
+            "source": "import java.net.URI;\nimport java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.time.Duration;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String payload = \"{\\\"uuid\\\": \\\"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\\\", \\\"rfcIssuer\\\": \\\"PEZJ900514H2A\\\", \\\"rfcReceiver\\\": \\\"EMP210908DT4\\\", \\\"total\\\": \\\"18750.00\\\"}\";\n\n        HttpClient client = HttpClient.newBuilder()\n            .connectTimeout(Duration.ofSeconds(10))\n            .build();\n\n        HttpRequest request = HttpRequest.newBuilder()\n            .uri(URI.create(\"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\"))\n            .header(\"x-api-key\", System.getenv(\"ORIGOID_API_KEY\"))\n            .header(\"content-type\", \"application/json\")\n            .timeout(Duration.ofSeconds(30))\n            .POST(HttpRequest.BodyPublishers.ofString(payload))\n            .build();\n\n        HttpResponse<String> response = client.send(\n            request, HttpResponse.BodyHandlers.ofString()\n        );\n\n        System.out.println(response.statusCode());\n        System.out.println(response.body());\n    }\n}"
           },
           {
             "lang": "PHP",
-            "source": "<?php\n$payload = '{\"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\", \"rfcEmisor\": \"PEZJ811011KI1\", \"rfcReceptor\": \"EMP170623KI3\", \"total\": \"999999.99\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/fiscal/v1/cfdi-validations');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
+            "source": "<?php\n$payload = '{\"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\", \"rfcIssuer\": \"PEZJ900514H2A\", \"rfcReceiver\": \"EMP210908DT4\", \"total\": \"18750.00\"}';\n\n$ch = curl_init('https://api.origoid.com/mex/fiscal/v1/cfdi-validations');\ncurl_setopt_array($ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => $payload,\n    CURLOPT_RETURNTRANSFER => true,\n    CURLOPT_TIMEOUT => 30,\n    CURLOPT_HTTPHEADER => [\n        'x-api-key: ' . getenv('ORIGOID_API_KEY'),\n        'content-type: application/json',\n    ],\n]);\n\n$response = curl_exec($ch);\n$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);\ncurl_close($ch);\n\nif ($status >= 400) {\n    throw new Exception(\"HTTP $status\");\n}\n\n$result = json_decode($response, true);\nprint_r($result);"
           },
           {
             "lang": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\", \"rfcEmisor\": \"PEZJ811011KI1\", \"rfcReceptor\": \"EMP170623KI3\", \"total\": \"999999.99\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
+            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n\t\"time\"\n)\n\nfunc main() {\n\tpayload := []byte(`{\"uuid\": \"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\", \"rfcIssuer\": \"PEZJ900514H2A\", \"rfcReceiver\": \"EMP210908DT4\", \"total\": \"18750.00\"}`)\n\treq, err := http.NewRequest(\"POST\", \"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\", bytes.NewBuffer(payload))\n\tif err != nil { log.Fatal(err) }\n\treq.Header.Set(\"x-api-key\", os.Getenv(\"ORIGOID_API_KEY\"))\n\treq.Header.Set(\"content-type\", \"application/json\")\n\n\tclient := &http.Client{Timeout: 30 * time.Second}\n\tresp, err := client.Do(req)\n\tif err != nil { log.Fatal(err) }\n\tdefer resp.Body.Close()\n\n\tvar result map[string]any\n\tif err := json.NewDecoder(resp.Body).Decode(&result); err != nil {\n\t\tlog.Fatal(err)\n\t}\n\tfmt.Println(result)\n}"
           },
           {
             "lang": "C#",
-            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"uuid\\\": \\\"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\\\", \\\"rfcEmisor\\\": \\\"PEZJ811011KI1\\\", \\\"rfcReceptor\\\": \\\"EMP170623KI3\\\", \\\"total\\\": \\\"999999.99\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
+            "source": "using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nclass Program\n{\n    static async Task Main()\n    {\n        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };\n        client.DefaultRequestHeaders.Add(\"x-api-key\",\n            Environment.GetEnvironmentVariable(\"ORIGOID_API_KEY\"));\n\n        var payload = \"{\\\"uuid\\\": \\\"7C8BD4EA-AE86-4CB5-88B8-C6E61E988A8B\\\", \\\"rfcIssuer\\\": \\\"PEZJ900514H2A\\\", \\\"rfcReceiver\\\": \\\"EMP210908DT4\\\", \\\"total\\\": \\\"18750.00\\\"}\";\n        var content = new StringContent(payload, Encoding.UTF8, \"application/json\");\n\n        var response = await client.PostAsync(\"https://api.origoid.com/mex/fiscal/v1/cfdi-validations\", content);\n        response.EnsureSuccessStatusCode();\n\n        var body = await response.Content.ReadAsStringAsync();\n        Console.WriteLine(body);\n    }\n}"
           }
         ]
       }
@@ -8027,7 +8056,7 @@
                           }
                         ]
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepsuccess001",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000001",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": true
                     }
@@ -8092,7 +8121,7 @@
                           }
                         ]
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepsuccess002",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000002",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": true
                     }
@@ -8144,7 +8173,7 @@
                         },
                         "files": []
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepsettled001",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000003",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": true
                     }
@@ -8196,7 +8225,7 @@
                         },
                         "files": []
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepreturned01",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000004",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": true
                     }
@@ -8248,7 +8277,7 @@
                         },
                         "files": []
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepcancel0001",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000005",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": true
                     }
@@ -8300,7 +8329,7 @@
                         },
                         "files": []
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-ceppayfound01",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000006",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": true
                     }
@@ -8311,7 +8340,7 @@
                       "type": "CEP_NOT_FOUND",
                       "message": "No CEP was found at Banxico matching the provided transfer details",
                       "data": null,
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepnotfound01",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000007",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": true
                     }
@@ -8359,7 +8388,7 @@
                           "message": "body exceeds the maximum allowed size"
                         }
                       ],
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepinvalid001",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000008",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": false
                     }
@@ -8370,7 +8399,7 @@
                       "type": "SERVICE_UNAVAILABLE",
                       "message": "Banxico's CEP service is temporarily unavailable. Please retry shortly.",
                       "data": null,
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepservice001",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a00000000009",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": false
                     }
@@ -8381,7 +8410,7 @@
                       "type": "INTERNAL_ERROR",
                       "message": "Unexpected internal error",
                       "data": null,
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-cepinternal01",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a0000000000a",
                       "processedAt": "2026-06-01T14:23:06-06:00",
                       "billable": false
                     }
@@ -8694,7 +8723,7 @@
                           }
                         ]
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-success00000",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a0000000000b",
                       "processedAt": "2026-06-02T10:00:00-06:00",
                       "billable": true
                     }
@@ -8799,7 +8828,7 @@
                           }
                         ]
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-inactive0000",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a0000000000c",
                       "processedAt": "2026-06-02T10:00:00-06:00",
                       "billable": true
                     }
@@ -8925,7 +8954,7 @@
                           }
                         ]
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-deceased000",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a0000000000d",
                       "processedAt": "2026-06-02T10:00:00-06:00",
                       "billable": true
                     }
@@ -9061,7 +9090,7 @@
                           }
                         ]
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-pensioner00",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a0000000000e",
                       "processedAt": "2026-06-02T10:00:00-06:00",
                       "billable": true
                     }
@@ -9185,7 +9214,7 @@
                           }
                         ]
                       },
-                      "transactionId": "c1d2e3f4-a5b6-7c8d-9e0f-scholar00000",
+                      "transactionId": "0a1b2c3d-4e5f-4a6b-8c9d-a0000000000f",
                       "processedAt": "2026-06-02T10:00:00-06:00",
                       "billable": true
                     }
