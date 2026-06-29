@@ -7388,6 +7388,18 @@
                       "billable": true
                     }
                   },
+                  "Document not trusted": {
+                    "summary": "Document not trusted",
+                    "value": {
+                      "status": "OK",
+                      "type": "DOCUMENT_NOT_TRUSTED",
+                      "message": "Document QR points to an unofficial host",
+                      "data": null,
+                      "transactionId": "9a4c1e77-2b3d-4f8a-bc1e-6d5f0a2b3c4d",
+                      "processedAt": "2026-06-26T16:34:30-06:00",
+                      "billable": true
+                    }
+                  },
                   "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
@@ -7706,18 +7718,6 @@
                       "data": null,
                       "transactionId": "1a542dc6-dfcf-440c-8903-7840bad1f9a8",
                       "processedAt": "2026-04-26T10:00:00-06:00",
-                      "billable": true
-                    }
-                  },
-                  "Document not trusted": {
-                    "summary": "Document not trusted",
-                    "value": {
-                      "status": "OK",
-                      "type": "DOCUMENT_NOT_TRUSTED",
-                      "message": "Document QR points to an unofficial host",
-                      "data": null,
-                      "transactionId": "9a4c1e77-2b3d-4f8a-bc1e-6d5f0a2b3c4d",
-                      "processedAt": "2026-06-26T16:34:30-06:00",
                       "billable": true
                     }
                   },
