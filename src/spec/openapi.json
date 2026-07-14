@@ -704,7 +704,7 @@
           },
           {
             "lang": "Python",
-            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/renapo/v1/curp-validations\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"curp\": \"TEST900101HDFRRN09\",\n        \"generateRfc\": true\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
+            "source": "import os\nimport requests\n\nresponse = requests.post(\n    \"https://api.origoid.com/mex/renapo/v1/curp-validations\",\n    headers={\n        \"x-api-key\": os.environ[\"ORIGOID_API_KEY\"],\n        \"content-type\": \"application/json\",\n    },\n    json={\n        \"curp\": \"TEST900101HDFRRN09\",\n        \"generateRfc\": True\n    },\n    timeout=30,\n)\nresponse.raise_for_status()\nresult = response.json()\nprint(result)"
           },
           {
             "lang": "Java",
@@ -2797,7 +2797,7 @@
           "INE"
         ],
         "summary": "ID Data Extraction (OCR & Geocoding)",
-        "description": "**Credits:** 1 per call.\n\nPerforms OCR on the front and back of a Mexican voter ID (INE / IFE) and returns the structured data printed on the credential: full name, CURP, voter key (CIC / OCR), address, photograph metadata, the document model variant (D, E, F, G, H — current and recent INE designs), and the MRZ read from the back when present.\n\nWhat sets this endpoint apart is **integrated address normalization + geocoding**: the address printed on the INE is rarely clean — abbreviations, missing colonia, inconsistent casing. We normalize and enrich it automatically. You get back not only the raw address text, but also:\n\n- **`addressNormalized`**: the printed INE address, normalized and enriched (corrected casing, expanded abbreviations, validated postal code, and neighborhood / municipality / state matched from the official catalog). The `geocodingStatus` field reports the match confidence: `VERIFIED` (house- or street-level match), `PARTIAL` (locality or postal-code match), or `UNVERIFIED` (no confident match).\n- **`electoralGeography`**: derived electoral district, federal entity, and polling section — useful for cross-checking with `validateVoterList`.\n- **Document model detection** (E, G, H) and per-model security feature validation.\n- **MRZ + QR cross-validation**: when the back contains MRZ and QR, we read both and confirm they agree with the printed fields. Mismatches are flagged.\n\nUse this endpoint to digitize voter ID capture without manual transcription, and to obtain a geo-enriched address record in a single call — eliminating a separate geocoding step in your KYC flow.",
+        "description": "**Credits:** 1 per call.\n\nPerforms OCR on the front and back of a Mexican voter ID (INE / IFE) and returns the structured data printed on the credential: full name, CURP, voter key (CIC / OCR), address, photograph metadata, the document model variant (D, E, F, G, H, I — current and recent INE designs), and the MRZ read from the back when present.\n\nWhat sets this endpoint apart is **integrated address normalization + geocoding**: the address printed on the INE is rarely clean — abbreviations, missing colonia, inconsistent casing. We normalize and enrich it automatically. You get back not only the raw address text, but also:\n\n- **`addressNormalized`**: the printed INE address, normalized and enriched (corrected casing, expanded abbreviations, validated postal code, and neighborhood / municipality / state matched from the official catalog). The `geocodingStatus` field reports the match confidence: `VERIFIED` (house- or street-level match), `PARTIAL` (locality or postal-code match), or `UNVERIFIED` (no confident match).\n- **`electoralGeography`**: derived electoral district, federal entity, and polling section — useful for cross-checking with `validateVoterList`.\n- **Document model detection** (D, E, F, G, H, I) and per-model security feature validation.\n- **MRZ + QR cross-validation**: when the back contains MRZ and QR, we read both and confirm they agree with the printed fields. Mismatches are flagged.\n\nUse this endpoint to digitize voter ID capture without manual transcription, and to obtain a geo-enriched address record in a single call — eliminating a separate geocoding step in your KYC flow.",
         "requestBody": {
           "required": true,
           "content": {
@@ -2841,7 +2841,9 @@
                           "firstSurname": "MIRANDA",
                           "secondSurname": "ARAUJO",
                           "dateOfBirth": "1979-02-19",
-                          "gender": "M",
+                          "sex": "M",
+                          "gender": null,
+                          "selfIdentification": null,
                           "curp": "MXAR790219MSLRRQ00",
                           "electorKey": "MRARRQ79021925M800"
                         },
@@ -2883,7 +2885,7 @@
                         },
                         "mrzValidation": {
                           "dateOfBirth": true,
-                          "gender": true,
+                          "sex": true,
                           "validity": true,
                           "emission": true,
                           "cic": true,
@@ -2922,7 +2924,9 @@
                           "firstSurname": "GONZALEZ",
                           "secondSurname": "SILVA",
                           "dateOfBirth": "1988-07-18",
-                          "gender": "M",
+                          "sex": "M",
+                          "gender": null,
+                          "selfIdentification": null,
                           "curp": "GOSA880718MNLNLN07",
                           "electorKey": "GNSLAN88071819M500"
                         },
@@ -2964,7 +2968,7 @@
                         },
                         "mrzValidation": {
                           "dateOfBirth": true,
-                          "gender": true,
+                          "sex": true,
                           "validity": true,
                           "emission": true,
                           "cic": false,
@@ -2999,7 +3003,9 @@
                           "firstSurname": "ORTEGA",
                           "secondSurname": "OSORIO",
                           "dateOfBirth": "1983-09-06",
-                          "gender": "H",
+                          "sex": "H",
+                          "gender": null,
+                          "selfIdentification": null,
                           "curp": "OEOA830906HVZRSN07",
                           "electorKey": "OROSAN83090630H100"
                         },
@@ -3041,7 +3047,7 @@
                         },
                         "mrzValidation": {
                           "dateOfBirth": true,
-                          "gender": true,
+                          "sex": true,
                           "validity": true,
                           "emission": true,
                           "cic": false,
@@ -3064,6 +3070,89 @@
                       "billable": true,
                       "transactionId": "7a1b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c5d",
                       "processedAt": "2026-03-15T19:25:47-06:00"
+                    }
+                  },
+                  "Success I": {
+                    "summary": "Success: INE Type I (2024+, self-identification)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "Document processed successfully",
+                      "data": {
+                        "documentType": "INE",
+                        "model": "I",
+                        "personalInfo": {
+                          "givenNames": "ALEX",
+                          "firstSurname": "VARGAS",
+                          "secondSurname": "IBARRA",
+                          "dateOfBirth": "1994-11-23",
+                          "sex": "H",
+                          "gender": "NB",
+                          "selfIdentification": "INDÍGENA",
+                          "curp": "VAIA941123HDFRGX05",
+                          "electorKey": "VRGBRL94112309H300"
+                        },
+                        "address": {
+                          "addressLine1": "AV REFORMA 210",
+                          "addressLine2": "COL JUAREZ 06600",
+                          "addressLine3": "CUAUHTEMOC, CDMX"
+                        },
+                        "addressNormalized": {
+                          "geocodingStatus": "VERIFIED",
+                          "street": "Avenida Paseo de la Reforma",
+                          "exteriorNumber": "210",
+                          "interiorNumber": null,
+                          "neighborhood": "Juárez",
+                          "zipCode": "06600",
+                          "municipality": "Cuauhtémoc",
+                          "state": "Ciudad de México",
+                          "country": "Mexico"
+                        },
+                        "electoralGeography": {
+                          "state": null,
+                          "municipality": null,
+                          "section": "1487",
+                          "locality": null
+                        },
+                        "validity": {
+                          "registrationYear": "2024",
+                          "emissionNumber": "01",
+                          "emissionYear": "2024",
+                          "validUntilYear": "2034"
+                        },
+                        "security": {
+                          "cic": "418223057",
+                          "ocr": "1487022417538",
+                          "citizenIdentifier": "022417538",
+                          "barCode": null,
+                          "qr": "http://qr.ine.mx/148702241753801418223057/20240115/S/012844",
+                          "mrz": "IDMEX4182230571<<14870224175389411231H3412311MEX<01<<12844<7VARGAS<IBARRA<<ALEX"
+                        },
+                        "mrzValidation": {
+                          "dateOfBirth": true,
+                          "sex": true,
+                          "validity": true,
+                          "emission": true,
+                          "cic": true,
+                          "name": true
+                        },
+                        "qrValidation": {
+                          "cic": true,
+                          "ocr": true,
+                          "citizenIdentifier": true
+                        },
+                        "files": [
+                          {
+                            "kind": "face",
+                            "contentType": "image/jpeg",
+                            "sizeBytes": 8421,
+                            "content": "/9j/4AAQSkZJRgABAQEAYABgAAD...TRUNCATED_BASE64.../9k="
+                          }
+                        ]
+                      },
+                      "transactionId": "7c4a9e21-3b8f-4d6a-9e02-1f5c8a2b6d04",
+                      "processedAt": "2026-07-14T10:32:00-06:00",
+                      "billable": true
                     }
                   },
                   "Unreadable": {
