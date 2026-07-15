@@ -2864,8 +2864,10 @@
                           "country": "Mexico"
                         },
                         "electoralGeography": {
-                          "state": "25",
-                          "municipality": "006",
+                          "stateCode": "25",
+                          "stateName": "SINALOA",
+                          "municipalityCode": "006",
+                          "municipalityName": "CULIACAN",
                           "section": "1218",
                           "locality": "0001"
                         },
@@ -2947,8 +2949,10 @@
                           "country": "Mexico"
                         },
                         "electoralGeography": {
-                          "state": "09",
-                          "municipality": "016",
+                          "stateCode": "09",
+                          "stateName": "CIUDAD DE MÉXICO",
+                          "municipalityCode": "016",
+                          "municipalityName": "MIGUEL HIDALGO",
                           "section": "5156",
                           "locality": "0001"
                         },
@@ -3026,8 +3030,10 @@
                           "country": "Mexico"
                         },
                         "electoralGeography": {
-                          "state": null,
-                          "municipality": null,
+                          "stateCode": null,
+                          "stateName": null,
+                          "municipalityCode": null,
+                          "municipalityName": null,
                           "section": "2596",
                           "locality": null
                         },
@@ -3109,8 +3115,10 @@
                           "country": "Mexico"
                         },
                         "electoralGeography": {
-                          "state": null,
-                          "municipality": null,
+                          "stateCode": null,
+                          "stateName": null,
+                          "municipalityCode": null,
+                          "municipalityName": null,
                           "section": "1487",
                           "locality": null
                         },
@@ -3356,7 +3364,7 @@
           "INE"
         ],
         "summary": "INE QR Code Data Extraction",
-        "description": "**Credits:** 2 per call.\n\nDecrypts and parses the QR codes printed on Mexican voter IDs (INE models G and H). The two QRs on the back contain RSA-signed payloads with the holder's full record (name, CURP, voter key, address, signature). This endpoint decrypts both QRs and merges the result.\n\nUse this endpoint as a tamper-evidence check: if the QR decrypts successfully and matches the printed data, the credential is highly likely to be authentic.",
+        "description": "**Credits:** 2 per call.\n\nDecrypts and parses the QR codes printed on Mexican voter IDs (INE models G, H, I and J). The two QRs on the back contain RSA-signed payloads with the holder's full record (name, CURP, voter key, address, signature). This endpoint decrypts both QRs and merges the result.\n\nUse this endpoint as a tamper-evidence check: if the QR decrypts successfully and matches the printed data, the credential is highly likely to be authentic.\n\n**Models I and J (2026+)** additionally carry a self-identified `gender` (may be `NB`), `selfIdentification` (autoadscripción, e.g. `INDÍGENA`), `ethnicGroup` (indigenous people), and the printed `address`. These are `null` on models G/H. `sex` (from the CURP) and `dateOfBirth` are present on all models.",
         "requestBody": {
           "required": true,
           "content": {
@@ -3395,9 +3403,14 @@
                           "givenNames": "MARIA FERNANDA",
                           "firstSurname": "LOPEZ",
                           "secondSurname": "GODINEZ",
-                          "gender": "M",
+                          "dateOfBirth": "1995-03-12",
+                          "sex": "M",
+                          "gender": null,
+                          "selfIdentification": null,
+                          "ethnicGroup": null,
                           "curp": "LOGF950312MDFRPL03"
                         },
+                        "address": null,
                         "electoralGeography": {
                           "stateCode": "09",
                           "stateName": "CIUDAD DE MÉXICO",
@@ -3406,14 +3419,15 @@
                           "section": "1832"
                         },
                         "validity": {
-                          "issuedYear": "2020",
+                          "emissionYear": "2020",
                           "validUntilYear": "2030",
                           "emissionDate": "2020-08-15",
                           "emissionNumber": "1"
                         },
                         "security": {
                           "cic": "312456789",
-                          "ocr": "1832054321987"
+                          "ocr": "1832054321987",
+                          "qr": null
                         },
                         "files": [
                           {
@@ -3443,9 +3457,14 @@
                           "givenNames": "JUAN CARLOS",
                           "firstSurname": "PEREZ",
                           "secondSurname": "LOPEZ",
-                          "gender": "H",
+                          "dateOfBirth": "1990-01-01",
+                          "sex": "H",
+                          "gender": null,
+                          "selfIdentification": null,
+                          "ethnicGroup": null,
                           "curp": "PELJ900101HDFRZN02"
                         },
+                        "address": null,
                         "electoralGeography": {
                           "stateCode": "09",
                           "stateName": "CIUDAD DE MÉXICO",
@@ -3454,14 +3473,15 @@
                           "section": null
                         },
                         "validity": {
-                          "issuedYear": "2024",
+                          "emissionYear": "2024",
                           "validUntilYear": "2034",
                           "emissionDate": "2024-02-11",
                           "emissionNumber": "1"
                         },
                         "security": {
                           "cic": "458201673",
-                          "ocr": "4582016739210"
+                          "ocr": "4582016739210",
+                          "qr": null
                         },
                         "files": [
                           {
@@ -3475,6 +3495,63 @@
                       "billable": true,
                       "transactionId": "550e8400-e29b-41d4-a716-446655440000",
                       "processedAt": "2026-03-15T19:23:00-06:00"
+                    }
+                  },
+                  "Success I": {
+                    "summary": "Success: INE Type I (2026+, new generation)",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "Document processed successfully",
+                      "data": {
+                        "documentType": "INE",
+                        "model": "I",
+                        "personalInfo": {
+                          "givenNames": "DANIELA",
+                          "firstSurname": "NAVARRO",
+                          "secondSurname": "CAMPOS",
+                          "dateOfBirth": "1997-04-18",
+                          "sex": "M",
+                          "gender": "NB",
+                          "selfIdentification": "INDÍGENA",
+                          "ethnicGroup": "MAYA",
+                          "curp": "NACD970418MDFVMR05"
+                        },
+                        "address": {
+                          "addressLine1": "AV EJERCITO NACIONAL 500",
+                          "addressLine2": "COL POLANCO 11560",
+                          "addressLine3": "MIGUEL HIDALGO, CDMX"
+                        },
+                        "electoralGeography": {
+                          "stateCode": "09",
+                          "stateName": "CIUDAD DE MÉXICO",
+                          "municipalityCode": "016",
+                          "municipalityName": "MIGUEL HIDALGO",
+                          "section": "3844"
+                        },
+                        "validity": {
+                          "emissionYear": "2026",
+                          "validUntilYear": "2036",
+                          "emissionDate": "2026-07-10",
+                          "emissionNumber": "02"
+                        },
+                        "security": {
+                          "cic": "507318924",
+                          "ocr": "3844052731890",
+                          "qr": "http://qr.ine.mx/384405273189002507318924/20260710/P/038440"
+                        },
+                        "files": [
+                          {
+                            "kind": "face",
+                            "contentType": "image/png",
+                            "sizeBytes": 24680,
+                            "content": "iVBORw0KGgoAAAANSUhEUgAAAGAAAACACAIAAAB7vvvt..."
+                          }
+                        ]
+                      },
+                      "transactionId": "5d2e8a41-7c93-4b6f-a802-3e1f9c6d5b70",
+                      "processedAt": "2026-07-14T18:22:05-06:00",
+                      "billable": true
                     }
                   },
                   "Unreadable": {
