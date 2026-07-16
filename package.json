@@ -1,6 +1,6 @@
 {
   "name": "@origoid/mcp-server",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Official OrigoID Model Context Protocol server. Exposes every OrigoID API endpoint as an MCP tool — works with Claude Code/Desktop, Cursor, Windsurf, ChatGPT Desktop, Codex CLI, Gemini, and any MCP-compatible client.",
   "type": "module",
   "main": "./dist/index.js",
