@@ -54,7 +54,7 @@ function client() {
 
 const server = new McpServer({
   name: "@origoid/mcp-server",
-  version: "0.4.1",
+  version: "0.7.0",
 });
 
 /**
@@ -462,12 +462,17 @@ server.registerTool(
   {
     title: "Liveness detection on a selfie",
     description:
-      "Anti-spoof liveness check. Returns LIVE / NOT_LIVE with a confidence score.",
+      "Liveness check on a single selfie. Returns isLive (decision threshold 62), livenessScore (0-100), confidence (HIGH/MEDIUM/LOW) and selfieAnalysis (same object as match_faces). By default another person in frame returns MULTIPLE_FACES_DETECTED; set allowMultipleFaces to evaluate the largest face instead.",
     inputSchema: {
       selfie: z.string().describe("Base64 selfie image (PNG or JPG)."),
+      allowMultipleFaces: z
+        .boolean()
+        .optional()
+        .describe("Optional. false (default): another person in frame returns MULTIPLE_FACES_DETECTED. true: the largest face is evaluated and the others are ignored."),
     },
   },
-  ({selfie}) => wrap(() => client().biometrics.checkLiveness(clean({selfie})))(),
+  ({selfie, allowMultipleFaces}) =>
+    wrap(() => client().biometrics.checkLiveness(clean({selfie, allowMultipleFaces})))(),
 );
 
 server.registerTool(
