@@ -33,7 +33,7 @@
     },
     {
       "name": "Biometrics",
-      "description": "Facial biometric comparison against identity documents."
+      "description": "Facial biometrics: 1:1 face match against identity documents and liveness detection."
     },
     {
       "name": "Compliance",
@@ -1586,7 +1586,7 @@
                   "Not Found": {
                     "summary": "CURP_NOT_FOUND",
                     "value": {
-                      "status": "ERROR",
+                      "status": "OK",
                       "type": "CURP_NOT_FOUND",
                       "message": "CURP not found",
                       "data": null,
@@ -1843,13 +1843,13 @@
                   "Operation Limit": {
                     "summary": "Operation Limit",
                     "value": {
-                      "status": "ERROR",
+                      "status": "OK",
                       "type": "IMSS_OPERATION_LIMIT",
                       "message": "IMSS daily limit reached",
                       "data": null,
                       "transactionId": "53124f18-ef45-4628-8a92-169bc9a72965",
                       "processedAt": "2026-03-15T19:23:00-06:00",
-                      "billable": false
+                      "billable": true
                     }
                   },
                   "Service Unavailable": {
@@ -4058,7 +4058,7 @@
                     "value": {
                       "status": "ERROR",
                       "type": "INVALID_REQUEST",
-                      "message": "Request validation failed. This sample shows ALL possible validation codes; in production only those applicable to your request will be returned.",
+                      "message": "Validation failed",
                       "data": null,
                       "transactionId": "5c9e1f2a-3b4c-4d5e-6f7a-8b9c0d1e2f3a",
                       "processedAt": "2026-06-05T11:20:33.482-06:00",
@@ -4267,12 +4267,11 @@
     },
     "/global/biometrics/v1/liveness-checks": {
       "post": {
-        "x-hidden": true,
         "tags": [
           "Biometrics"
         ],
-        "summary": "Passive Liveness Detection",
-        "description": "**Credits:** 1 per call.\n\nAnalyzes a selfie to determine whether it depicts a real, live person in front of the camera (`isLive: true`) or a spoofing attempt (printed photo, screen replay, mask). Returns a liveness score, confidence level, and detected attack types when applicable.\n\nUse this endpoint at the start of a remote KYC flow to filter out automated bots, recycled images, and basic presentation attacks before invoking heavier downstream checks.",
+        "summary": "Liveness Detection",
+        "description": "**Credits:** 1 per call.\n\nDetermines whether a selfie shows a real, live person in front of the camera (`isLive: true`) or a spoofing attempt (`isLive: false`).\n\nReturns:\n\n- **`isLive`**: the decision. `livenessScore` (0–100) is the fused output of the anti-spoofing models; the decision threshold is **62**.\n- **`confidence`**: how far the score landed from the threshold — `HIGH` (25 points or more), `MEDIUM` (10 or more) or `LOW`.\n- **`selfieAnalysis`**: quality and attribute labels of the evaluated face (image quality, orientation, eyes open, glasses, face covered, actionable `issues[]`). Same object as `matchFaces`, so both endpoints share one integration.\n\n**Multiple people in frame.** By default a selfie with another person present returns `MULTIPLE_FACES_DETECTED`. Send `allowMultipleFaces: true` to evaluate the largest face in the image instead (the person holding the phone); `selfieAnalysis` describes that same face. Only faces of at least 25% of the main face's area count as another person — people in the background do not.\n\n**Decision rule.** Accept only `type: SUCCESS` with `isLive: true`. `NO_FACE_DETECTED`, `MULTIPLE_FACES_DETECTED` and `IMAGE_UNREADABLE` also return `isLive: false`, but nothing was evaluated — `data` always carries the full object so you can read `data.isLive` without branching on `type`. Detecting a spoofing attempt is a `SUCCESS`: the service did its job.\n\n**Images.** JPG or PNG. The image is downscaled internally; no client-side resizing is needed. For best results send at least 1600 px on the longest side at JPEG quality 80 or better. The result is a liveness decision only; it does not verify identity — pair it with `matchFaces` for that.\n\n`INVALID_REQUEST` returns every problem found in `errors[]` at once (cumulative), so you can fix them in one pass.\n\n**`selfieAnalysis` reference.** Describes the evaluated face. Labels are derived from the face-analysis provider as follows:\n\n| Field | Values | Rule |\n|---|---|---|\n| `imageQuality` | `excellent` · `good` · `poor` | `excellent`: brightness ≥ 75 and sharpness ≥ 75 · `good`: both ≥ 50 · `poor`: otherwise. In practice `poor` almost always means a dark image, not an out-of-focus one. |\n| `detectionConfidence` | `high` · `medium` · `low` | `high` ≥ 95 · `medium` ≥ 80 · `low` below 80. |\n| `orientation` | `sideways` · `looking_left` · `looking_right` · `looking_up` · `looking_down` · `tilted` · `front` | Evaluated in that order, first match wins: `sideways` abs(yaw) ≥ 25° · `looking_left` yaw ≥ 10° · `looking_right` yaw ≤ −10° · `looking_up` pitch ≥ 20° · `looking_down` pitch ≤ −20° · `tilted` abs(roll) ≥ 15° · otherwise `front`. |\n| `eyesOpen`, `mouthOpen`, `wearingGlasses`, `wearingSunglasses`, `faceCovered` | `true` · `false` · `null` | `null` when the attribute could not be determined. `mouthOpen` is informational and never produces an issue. |\n\n`issues[]` lists every condition detected on the face. All possible values:\n\n| Value | Condition |\n|---|---|\n| `poor_image_quality` | `imageQuality` is `poor` |\n| `not_facing_camera` | `orientation` is not `front` |\n| `eyes_closed` | `eyesOpen` is `false` |\n| `face_covered` | `faceCovered` is `true` — mask, scarf, hand, hair over the eyes, face partly out of frame |\n| `wearing_glasses` | `wearingGlasses` is `true` — informational, not a capture problem |\n| `wearing_sunglasses` | `wearingSunglasses` is `true` |\n| `low_detection_confidence` | `detectionConfidence` is `low` |\n\nIn production about 4 in 10 legitimate selfies carry at least one issue — treat `issues[]` as retry hints, not as rejection criteria.",
         "requestBody": {
           "required": true,
           "content": {
@@ -4286,6 +4285,11 @@
                   "selfie": {
                     "type": "string",
                     "description": "Selfie image of the subject in Base64 (PNG/JPG)."
+                  },
+                  "allowMultipleFaces": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Optional. When `false` (default), a selfie with another person in frame returns `MULTIPLE_FACES_DETECTED`. When `true`, the largest face in the image is evaluated and the others are ignored."
                   }
                 }
               }
@@ -4299,117 +4303,134 @@
               "application/json": {
                 "examples": {
                   "Success Live": {
-                    "summary": "Live (real person)",
+                    "summary": "Live person",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
                       "message": "Liveness check completed",
                       "data": {
                         "isLive": true,
-                        "livenessScore": 94,
+                        "livenessScore": 98,
                         "confidence": "HIGH",
-                        "attackTypes": []
+                        "selfieAnalysis": {
+                          "imageQuality": "excellent",
+                          "detectionConfidence": "high",
+                          "orientation": "front",
+                          "eyesOpen": true,
+                          "mouthOpen": false,
+                          "wearingGlasses": false,
+                          "wearingSunglasses": false,
+                          "faceCovered": false,
+                          "issues": []
+                        }
                       },
-                      "transactionId": "442133b3-5177-4033-a3bc-d643768d5449",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "transactionId": "f2da936b-4e13-47e9-8696-8f3526cf03fd",
+                      "processedAt": "2026-09-08T12:00:00-06:00",
                       "billable": true
                     }
                   },
-                  "Success Live Borderline": {
-                    "summary": "Live But Borderline",
+                  "Success Spoofing Detected": {
+                    "summary": "Spoofing attempt detected",
+                    "value": {
+                      "status": "OK",
+                      "type": "SUCCESS",
+                      "message": "Liveness check completed",
+                      "data": {
+                        "isLive": false,
+                        "livenessScore": 0,
+                        "confidence": "HIGH",
+                        "selfieAnalysis": {
+                          "imageQuality": "good",
+                          "detectionConfidence": "high",
+                          "orientation": "front",
+                          "eyesOpen": true,
+                          "mouthOpen": false,
+                          "wearingGlasses": false,
+                          "wearingSunglasses": false,
+                          "faceCovered": false,
+                          "issues": []
+                        }
+                      },
+                      "transactionId": "abeadc90-bd61-4e9a-9914-d9bbc10d4f2f",
+                      "processedAt": "2026-09-08T12:01:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Success Multiple Faces Allowed": {
+                    "summary": "`allowMultipleFaces: true` — largest face evaluated",
                     "value": {
                       "status": "OK",
                       "type": "SUCCESS",
                       "message": "Liveness check completed",
                       "data": {
                         "isLive": true,
-                        "livenessScore": 72,
-                        "confidence": "MEDIUM",
-                        "attackTypes": []
-                      },
-                      "transactionId": "5ca0534a-6a87-4658-b3f5-20553867b050",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
-                      "billable": true
-                    }
-                  },
-                  "Success Spoof Print": {
-                    "summary": "Print Attack Detected",
-                    "value": {
-                      "status": "OK",
-                      "type": "SUCCESS",
-                      "message": "Liveness check completed",
-                      "data": {
-                        "isLive": false,
-                        "livenessScore": 12,
+                        "livenessScore": 99,
                         "confidence": "HIGH",
-                        "attackTypes": [
-                          "PRINT_ATTACK"
-                        ]
+                        "selfieAnalysis": {
+                          "imageQuality": "excellent",
+                          "detectionConfidence": "high",
+                          "orientation": "front",
+                          "eyesOpen": true,
+                          "mouthOpen": false,
+                          "wearingGlasses": false,
+                          "wearingSunglasses": false,
+                          "faceCovered": false,
+                          "issues": []
+                        }
                       },
-                      "transactionId": "1a543956-64ba-447b-a8f4-f7db5f5e6c1f",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
-                      "billable": true
-                    }
-                  },
-                  "Success Spoof Screen": {
-                    "summary": "Screen Replay Detected",
-                    "value": {
-                      "status": "OK",
-                      "type": "SUCCESS",
-                      "message": "Liveness check completed",
-                      "data": {
-                        "isLive": false,
-                        "livenessScore": 8,
-                        "confidence": "HIGH",
-                        "attackTypes": [
-                          "SCREEN_REPLAY"
-                        ]
-                      },
-                      "transactionId": "31ea0f68-76c9-4c45-ac10-ea47df8c542e",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
-                      "billable": true
-                    }
-                  },
-                  "Success Spoof Mask": {
-                    "summary": "Mask Detected",
-                    "value": {
-                      "status": "OK",
-                      "type": "SUCCESS",
-                      "message": "Liveness check completed",
-                      "data": {
-                        "isLive": false,
-                        "livenessScore": 22,
-                        "confidence": "MEDIUM",
-                        "attackTypes": [
-                          "MASK_ATTACK"
-                        ]
-                      },
-                      "transactionId": "e638464d-6ce0-451f-ae3b-37122b733fbb",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "transactionId": "b686ca86-6c39-4089-8553-502a4b9f6401",
+                      "processedAt": "2026-09-08T12:02:00-06:00",
                       "billable": true
                     }
                   },
                   "No Face Detected": {
-                    "summary": "No Face Detected",
+                    "summary": "No face detected",
                     "value": {
                       "status": "OK",
                       "type": "NO_FACE_DETECTED",
                       "message": "No face detected in the image",
-                      "data": null,
-                      "transactionId": "a4eb8441-7bc8-4d73-9325-686030e04c98",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "data": {
+                        "isLive": false,
+                        "livenessScore": null,
+                        "confidence": null,
+                        "selfieAnalysis": null
+                      },
+                      "transactionId": "8136449e-5135-4669-9616-f27e652ea4a7",
+                      "processedAt": "2026-09-08T12:03:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Multiple Faces Detected": {
+                    "summary": "Another person in frame (send `allowMultipleFaces: true` to evaluate the largest face)",
+                    "value": {
+                      "status": "OK",
+                      "type": "MULTIPLE_FACES_DETECTED",
+                      "message": "Multiple faces detected in the image",
+                      "data": {
+                        "isLive": false,
+                        "livenessScore": null,
+                        "confidence": null,
+                        "selfieAnalysis": null
+                      },
+                      "transactionId": "0a96757c-73bc-4877-bab6-80fbd3ea5a66",
+                      "processedAt": "2026-09-08T12:04:00-06:00",
                       "billable": true
                     }
                   },
                   "Image Unreadable": {
-                    "summary": "Unreadable Image",
+                    "summary": "Face too small or image unusable",
                     "value": {
                       "status": "OK",
                       "type": "IMAGE_UNREADABLE",
                       "message": "Image is too blurry or obscured to analyze",
-                      "data": null,
-                      "transactionId": "ead5048b-c1f5-4be2-8ad7-de33a5457b31",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "data": {
+                        "isLive": false,
+                        "livenessScore": null,
+                        "confidence": null,
+                        "selfieAnalysis": null
+                      },
+                      "transactionId": "79081299-a197-4192-a415-16f2365d8b6b",
+                      "processedAt": "2026-09-08T12:05:00-06:00",
                       "billable": true
                     }
                   },
@@ -4420,14 +4441,54 @@
                       "type": "INVALID_REQUEST",
                       "message": "Validation failed",
                       "data": null,
-                      "transactionId": "4a30dbc2-626e-4521-9fea-47de620c25b2",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "transactionId": "7730454b-06ed-431b-bdb5-9737986b016b",
+                      "processedAt": "2026-09-08T12:06:00-06:00",
                       "billable": false,
                       "errors": [
                         {
+                          "field": "body",
+                          "code": "INVALID_TYPE",
+                          "message": "must be object"
+                        },
+                        {
                           "field": "selfie",
                           "code": "MISSING_REQUIRED_FIELD",
-                          "message": "The 'selfie' parameter is required with a valid base64 image"
+                          "message": "must have required property 'selfie'"
+                        },
+                        {
+                          "field": "selfie",
+                          "code": "INVALID_TYPE",
+                          "message": "must be string"
+                        },
+                        {
+                          "field": "allowMultipleFaces",
+                          "code": "INVALID_TYPE",
+                          "message": "must be boolean"
+                        },
+                        {
+                          "field": "selfie",
+                          "code": "INVALID_FORMAT",
+                          "message": "The 'selfie' parameter must be a valid base64 image or accessible s3:// URI"
+                        },
+                        {
+                          "field": "selfie",
+                          "code": "INVALID_FORMAT",
+                          "message": "The 'selfie' parameter must be a JPG or PNG image"
+                        },
+                        {
+                          "field": "selfie",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "selfie exceeds 12 MB base64 length"
+                        },
+                        {
+                          "field": "body",
+                          "code": "MALFORMED_JSON",
+                          "message": "Malformed JSON body"
+                        },
+                        {
+                          "field": "body",
+                          "code": "PAYLOAD_TOO_LARGE",
+                          "message": "Request body exceeds 28 MB"
                         }
                       ]
                     }
@@ -4439,8 +4500,8 @@
                       "type": "INTERNAL_ERROR",
                       "message": "Unexpected internal error",
                       "data": null,
-                      "transactionId": "04ecee5b-7628-41c6-9088-25bc4abec5d6",
-                      "processedAt": "2026-04-26T10:00:00-06:00",
+                      "transactionId": "99cac343-b39b-4557-876e-08878a6d0b05",
+                      "processedAt": "2026-09-08T12:07:00-06:00",
                       "billable": false
                     }
                   },
@@ -4451,14 +4512,26 @@
                       "type": "SERVICE_UNAVAILABLE",
                       "message": "The liveness verification service is currently unavailable",
                       "data": null,
-                      "transactionId": "d6b88f86-a452-4af7-a4e1-52acad05c2ab",
-                      "processedAt": "2026-05-21T10:00:00-06:00",
+                      "transactionId": "407d76c4-200b-4169-8668-da27d120191d",
+                      "processedAt": "2026-09-08T12:08:00-06:00",
                       "billable": false
                     }
                   }
                 },
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Envelope"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/LivenessData"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -9981,6 +10054,125 @@
               "issues": {
                 "type": "array",
                 "description": "Actionable retry hints. Subset of the catalog.",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "wearing_glasses",
+                    "wearing_sunglasses",
+                    "face_covered",
+                    "eyes_closed",
+                    "poor_image_quality",
+                    "not_facing_camera",
+                    "low_detection_confidence"
+                  ]
+                },
+                "example": []
+              }
+            }
+          }
+        }
+      },
+      "LivenessData": {
+        "type": "object",
+        "nullable": true,
+        "description": "Liveness result. Null for `INVALID_REQUEST`, `INTERNAL_ERROR` and `SERVICE_UNAVAILABLE`. On every `OK` outcome the object is present: when nothing could be evaluated (`NO_FACE_DETECTED`, `MULTIPLE_FACES_DETECTED`, `IMAGE_UNREADABLE`) `isLive` is `false` and the remaining fields are null.",
+        "properties": {
+          "isLive": {
+            "type": "boolean",
+            "description": "`true` when `livenessScore` reaches the decision threshold (62). Always present; `false` when the image was not evaluated.",
+            "example": true
+          },
+          "livenessScore": {
+            "type": "integer",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Fused anti-spoofing score, 0–100. Null when the image was not evaluated.",
+            "example": 98
+          },
+          "confidence": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ],
+            "description": "Distance of the score from the decision threshold: `HIGH` 25 points or more, `MEDIUM` 10 or more, `LOW` otherwise. Null when the image was not evaluated.",
+            "example": "HIGH"
+          },
+          "selfieAnalysis": {
+            "type": "object",
+            "nullable": true,
+            "description": "Quality/attribute labels of the evaluated face — the largest face when `allowMultipleFaces` is true. Same shape as `matchFaces`. Null when the image was not evaluated or when face analysis was unavailable.",
+            "properties": {
+              "imageQuality": {
+                "type": "string",
+                "enum": [
+                  "excellent",
+                  "good",
+                  "poor"
+                ],
+                "example": "excellent",
+                "description": "`excellent`: brightness ≥ 75 and sharpness ≥ 75 · `good`: both ≥ 50 · `poor`: otherwise (in practice, usually a dark image rather than an out-of-focus one)."
+              },
+              "detectionConfidence": {
+                "type": "string",
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "example": "high",
+                "description": "Provider confidence that the detection is a face: `high` ≥ 95 · `medium` ≥ 80 · `low` below 80."
+              },
+              "orientation": {
+                "type": "string",
+                "enum": [
+                  "front",
+                  "looking_left",
+                  "looking_right",
+                  "looking_up",
+                  "looking_down",
+                  "tilted",
+                  "sideways"
+                ],
+                "example": "front",
+                "description": "Evaluated in order, first match wins: `sideways` abs(yaw) ≥ 25° · `looking_left` yaw ≥ 10° · `looking_right` yaw ≤ −10° · `looking_up` pitch ≥ 20° · `looking_down` pitch ≤ −20° · `tilted` abs(roll) ≥ 15° · otherwise `front`."
+              },
+              "eyesOpen": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Null when the attribute could not be determined.",
+                "example": true
+              },
+              "mouthOpen": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Informational; never produces an issue. Null when the attribute could not be determined.",
+                "example": false
+              },
+              "wearingGlasses": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Null when the attribute could not be determined.",
+                "example": false
+              },
+              "wearingSunglasses": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Null when the attribute could not be determined.",
+                "example": false
+              },
+              "faceCovered": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Null when the attribute could not be determined.",
+                "example": false
+              },
+              "issues": {
+                "type": "array",
+                "description": "Every condition detected on the face; empty when none. All possible values: `poor_image_quality` (`imageQuality` is `poor`) · `not_facing_camera` (`orientation` is not `front`) · `eyes_closed` (`eyesOpen` is `false`) · `face_covered` (`faceCovered` is `true`) · `wearing_glasses` (`wearingGlasses` is `true`, informational) · `wearing_sunglasses` (`wearingSunglasses` is `true`) · `low_detection_confidence` (`detectionConfidence` is `low`). Retry hints, not rejection criteria.",
                 "items": {
                   "type": "string",
                   "enum": [
