@@ -2142,6 +2142,30 @@
                       "billable": true
                     }
                   },
+                  "Inconsistent Data": {
+                    "summary": "Inconsistent Data",
+                    "value": {
+                      "status": "OK",
+                      "type": "IMSS_INCONSISTENT_DATA",
+                      "message": "CURP exists but associated data is inconsistent at IMSS",
+                      "data": null,
+                      "transactionId": "734fc034-0b47-48a1-b3ab-c7ccbe5e3f80",
+                      "processedAt": "2026-03-15T19:24:00-06:00",
+                      "billable": true
+                    }
+                  },
+                  "Operation Limit": {
+                    "summary": "Operation Limit",
+                    "value": {
+                      "status": "OK",
+                      "type": "IMSS_OPERATION_LIMIT",
+                      "message": "IMSS daily limit reached",
+                      "data": null,
+                      "transactionId": "8e6e47de-50b4-47f7-a759-10b45d2d6d7b",
+                      "processedAt": "2026-03-15T19:24:00-06:00",
+                      "billable": true
+                    }
+                  },
                   "Service Unavailable": {
                     "summary": "Service Unavailable",
                     "value": {
