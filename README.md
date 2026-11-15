@@ -118,6 +118,8 @@ The server speaks MCP over stdio (standard transport).
 | `validate_cep` | `POST /mex/banking/v1/cep-validations` |
 | `lookup_nss` | `POST /mex/social-security/v1/imss-nss-lookups` |
 | `get_employment_status` | `POST /mex/social-security/v1/imss-employment-status` |
+| `create_contribution_weeks` | `POST /mex/social-security/v1/imss-contribution-weeks` |
+| `get_contribution_weeks_result` | `POST /mex/social-security/v1/imss-contribution-weeks-results` |
 | `get_issste_record` | `POST /mex/social-security/v1/issste-records` |
 | `validate_voter_list` | `POST /mex/id/v1/voter-list-validations` |
 | `extract_voter_id_data` | `POST /mex/id/v1/voter-id-extractions` |
@@ -153,6 +155,23 @@ client is responsible for injecting it via the `env` field in its
 configuration. The server never accepts the API key as a tool argument
 — that would expose it to the LLM context. Keep your key out of chat
 transcripts.
+
+## Webhook (contribution weeks)
+
+`create_contribution_weeks` is asynchronous: OrigoID delivers the result
+to a webhook. Set these in the same `env` block as `ORIGOID_API_KEY`:
+
+- `ORIGOID_WEBHOOK_URL` — public `http` or `https` URL that receives the
+  result.
+- `ORIGOID_WEBHOOK_HEADERS` (optional) — JSON object of header names and
+  values added to the webhook request, for example
+  `{"Authorization":"Bearer YOUR_WEBHOOK_TOKEN"}`.
+
+Like the API key, they are never tool arguments, so a token in the
+headers never reaches the LLM context. A resolved request costs 3
+credits; the `ACCEPTED` acknowledgement is free. `get_contribution_weeks_result`
+reads the result by `transactionId` for 24 hours, at no cost. See the
+[webhooks guide](https://origoid.com/en/webhooks.html).
 
 ## Cost
 

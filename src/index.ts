@@ -21,6 +21,11 @@
  * Auth: reads `ORIGOID_API_KEY` from the process environment. Optional —
  * the server boots without it but the API tools will return an error
  * envelope until the key is configured.
+ *
+ * Webhook: `create_contribution_weeks` is asynchronous and needs a webhook.
+ * It reads `ORIGOID_WEBHOOK_URL` and, optionally, `ORIGOID_WEBHOOK_HEADERS`
+ * (JSON object) from the environment — never from tool arguments, so a
+ * token in the webhook headers never reaches the LLM context.
  */
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -54,7 +59,7 @@ function client() {
 
 const server = new McpServer({
   name: "@origoid/mcp-server",
-  version: "0.8.0",
+  version: "0.9.0",
 });
 
 /**
@@ -105,6 +110,40 @@ function clean<T extends Record<string, unknown>>(obj: T): T {
   // Required fields are guaranteed present by the Zod input schema, so the
   // wider `T` cast is safe — we only strip optional/undefined keys here.
   return out as T;
+}
+
+/**
+ * Webhook for asynchronous requests, read from the MCP client configuration
+ * (same rule as the API key: never a tool argument). Throws inside `wrap`,
+ * so a missing or malformed setting returns an error envelope without
+ * calling the API — no credits are used.
+ */
+function webhookConfig(): {url: string; headers?: Record<string, string>} {
+  const url = process.env.ORIGOID_WEBHOOK_URL;
+  if (!url) {
+    throw new Error(
+      "ORIGOID_WEBHOOK_URL is not configured. Set it in your MCP client config (a public http or https URL that receives the result) and restart.",
+    );
+  }
+  const raw = process.env.ORIGOID_WEBHOOK_HEADERS;
+  if (!raw) return {url};
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    parsed = null;
+  }
+  const valid =
+    parsed !== null &&
+    typeof parsed === "object" &&
+    !Array.isArray(parsed) &&
+    Object.values(parsed as Record<string, unknown>).every((v) => typeof v === "string");
+  if (!valid) {
+    throw new Error(
+      'ORIGOID_WEBHOOK_HEADERS must be a JSON object of header names to string values, e.g. {"Authorization":"Bearer YOUR_WEBHOOK_TOKEN"}.',
+    );
+  }
+  return {url, headers: parsed as Record<string, string>};
 }
 
 // =====================================================================
@@ -305,6 +344,40 @@ server.registerTool(
     },
   },
   (args) => wrap(() => client().socialSecurity.getImssEmploymentStatus(clean(args)))(),
+);
+
+server.registerTool(
+  "create_contribution_weeks",
+  {
+    title: "Request the IMSS contribution weeks certificate",
+    description:
+      "Request a worker's official IMSS Certificate of Contributed Weeks (Constancia de Semanas Cotizadas) from their CURP: the official PDF, the full employment history parsed into JSON, and signals derived from that history (tenure, stability, salary evolution). Asynchronous: the immediate response is ACCEPTED with a `transactionId`, and the result is delivered to the webhook configured in ORIGOID_WEBHOOK_URL. Read it with `get_contribution_weeks_result` using that `transactionId`. Cost: 3 credits when the request resolves; the ACCEPTED acknowledgement is free. Immediate response types: ACCEPTED, INVALID_REQUEST, SERVICE_UNAVAILABLE, INTERNAL_ERROR.",
+    inputSchema: {
+      curp: z.string().describe("18-character CURP."),
+    },
+  },
+  ({curp}) =>
+    wrap(() =>
+      client().socialSecurity.createImssContributionWeeks(clean({curp, webhook: webhookConfig()})),
+    )(),
+);
+
+server.registerTool(
+  "get_contribution_weeks_result",
+  {
+    title: "Get the result of a contribution weeks request",
+    description:
+      "Read the result of a `create_contribution_weeks` request by its `transactionId`. Free (0 credits). Results are available for 24 hours after the request resolved. Types: RESULT_FOUND (`data` contains the original result envelope, with its own `transactionId` — the one that was charged), RESULT_PENDING (the request is still being processed: check again later instead of calling this tool in a loop), RESULT_EXPIRED (more than 24 hours have passed; the result is no longer available), INVALID_REQUEST (the `transactionId` does not exist or belongs to another client), SERVICE_UNAVAILABLE, INTERNAL_ERROR.",
+    inputSchema: {
+      transactionId: z
+        .string()
+        .describe("The `transactionId` returned by `create_contribution_weeks`."),
+    },
+  },
+  ({transactionId}) =>
+    wrap(() =>
+      client().socialSecurity.getImssContributionWeeksResult(clean({transactionId})),
+    )(),
 );
 
 server.registerTool(
