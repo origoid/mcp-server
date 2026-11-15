@@ -135,6 +135,17 @@ Each tool returns the full OrigoID envelope as a JSON string. The host
 LLM reads `status`, `type`, `data`, `errors[]`, and `transactionId` to
 present the result.
 
+## Guides
+
+Guides on origoid.com for the most common integrations:
+
+- [IMSS API overview](https://origoid.com/en/imss-api.html)
+- [IMSS employment verification](https://origoid.com/en/imss-employment-verification.html)
+- [IMSS contribution weeks](https://origoid.com/en/imss-contribution-weeks.html)
+- [Webhooks for IMSS queries](https://origoid.com/en/webhooks.html)
+- [CURP validation](https://origoid.com/en/curp-validation.html)
+- [INE voter ID validation](https://origoid.com/en/ine-validation.html)
+
 ## Authentication
 
 The server requires `ORIGOID_API_KEY` in its environment. The host MCP
