@@ -8901,6 +8901,18 @@
                       "billable": true
                     }
                   },
+                  "Document failed authenticity checks": {
+                    "summary": "Document failed authenticity checks",
+                    "value": {
+                      "status": "OK",
+                      "type": "DOCUMENT_NOT_TRUSTED",
+                      "message": "Document failed authenticity checks",
+                      "data": null,
+                      "transactionId": "e5454398-5177-45ea-bfbe-9d11e320f24e",
+                      "processedAt": "2026-11-23T22:00:00-06:00",
+                      "billable": true
+                    }
+                  },
                   "Validation Error": {
                     "summary": "Validation Error",
                     "value": {
