@@ -60,6 +60,15 @@ function indent(block: string, n: number): string {
   return block.split("\n").map((l) => (l.length ? pad + l : l)).join("\n");
 }
 
+function requiredAlternatives(schema: Schema | undefined): string[][] | undefined {
+  const union = schema?.oneOf ?? schema?.anyOf;
+  if (!schema?.properties || !Array.isArray(union) || union.length === 0) return undefined;
+  const onlyRequired = union.every(
+    (s) => !s.type && !s.properties && !s.enum && Array.isArray(s.required) && s.required.length > 0,
+  );
+  return onlyRequired ? union.map((s) => s.required as string[]) : undefined;
+}
+
 function pyTypeFromSchema(schema: Schema | undefined, classes: string[], nameHint: string): string {
   if (!schema) return "Any";
 
@@ -70,8 +79,10 @@ function pyTypeFromSchema(schema: Schema | undefined, classes: string[], nameHin
     return `Literal[${parts.join(", ")}]`;
   }
 
+  // An object whose alternatives only say which fields are required ("send
+  // rfc or name") is still one model, with those fields optional.
   const union = schema.oneOf ?? schema.anyOf;
-  if (Array.isArray(union) && union.length > 0) {
+  if (Array.isArray(union) && union.length > 0 && requiredAlternatives(schema) === undefined) {
     return `Union[${union.map((s, i) => pyTypeFromSchema(s, classes, `${nameHint}Variant${i + 1}`)).join(", ")}]`;
   }
 
@@ -112,38 +123,58 @@ function pyTypeFromSchema(schema: Schema | undefined, classes: string[], nameHin
   }
 }
 
-function pyTypeFromValue(value: unknown, classes: string[], nameHint: string): string {
-  if (value === null) return "Optional[Any]";
-  if (Array.isArray(value)) {
-    if (value.length === 0) return "List[Any]";
-    return `List[${pyTypeFromValue(value[0], classes, `${nameHint}Item`)}]`;
+/**
+ * Infer a Python type from the values a field takes across examples. A field
+ * that is null in one example and a string in another becomes `Optional[str]`;
+ * a field that is null in every example stays `Optional[Any]`.
+ */
+function pyTypeFromValues(values: unknown[], classes: string[], nameHint: string): string {
+  const present = values.filter((v) => v !== undefined);
+  const nonNull = present.filter((v) => v !== null);
+  if (nonNull.length === 0) return "Any";
+
+  if (nonNull.every((v) => Array.isArray(v))) {
+    const items = (nonNull as unknown[][]).flat();
+    if (items.length === 0) return "List[Any]";
+    return `List[${pyFieldType(items, classes, `${nameHint}Item`).type}]`;
   }
-  switch (typeof value) {
-    case "string":
-      return "str";
-    case "number":
-      return Number.isInteger(value) ? "int" : "float";
-    case "boolean":
-      return "bool";
-    case "object": {
-      const obj = value as Record<string, unknown>;
-      const keys = Object.keys(obj);
-      if (keys.length === 0) return "Dict[str, Any]";
-      const className = pascalCase(nameHint);
-      const fieldLines = keys.map((k) => {
-        const safe = PY_KEYWORDS.has(k) ? `${k}_` : k;
-        const v = obj[k];
-        let t = pyTypeFromValue(v, classes, pascalCase(k));
-        if (v === null) t = "Optional[Any] = None";
-        return `${safe}: ${t}`;
-      });
-      const cls = `class ${className}(BaseModel):\n${indent(fieldLines.join("\n"), 4)}\n`;
-      classes.push(cls);
-      return className;
+
+  if (nonNull.every((v) => typeof v === "object" && !Array.isArray(v))) {
+    const objs = nonNull as Array<Record<string, unknown>>;
+    const keys: string[] = [];
+    for (const o of objs) for (const k of Object.keys(o)) if (!keys.includes(k)) keys.push(k);
+    if (keys.length === 0) return "Dict[str, Any]";
+    const className = pascalCase(nameHint);
+    const fieldLines = keys.map((k) => {
+      const safe = PY_KEYWORDS.has(k) ? `${k}_` : k;
+      const vals = objs.map((o) => (k in o ? o[k] : undefined));
+      const field = pyFieldType(vals, classes, pascalCase(k));
+      return `${safe}: ${field.optional ? `Optional[${field.type}] = None` : field.type}`;
+    });
+    const cls = `class ${className}(BaseModel):\n${indent(fieldLines.join("\n"), 4)}\n`;
+    classes.push(cls);
+    return className;
+  }
+
+  const kinds = [...new Set(nonNull.map((v) => typeof v))];
+  if (kinds.length === 1) {
+    if (kinds[0] === "string") return "str";
+    if (kinds[0] === "boolean") return "bool";
+    if (kinds[0] === "number") {
+      return nonNull.every((v) => Number.isInteger(v)) ? "int" : "float";
     }
-    default:
-      return "Any";
   }
+  return "Any";
+}
+
+/** Type of a field plus whether it can be absent or null in the examples. */
+function pyFieldType(
+  values: unknown[],
+  classes: string[],
+  nameHint: string,
+): {type: string; optional: boolean} {
+  const optional = values.some((v) => v === null || v === undefined);
+  return {type: pyTypeFromValues(values, classes, nameHint), optional};
 }
 
 function collectResponseTypes(op: Op): string[] {
@@ -158,17 +189,18 @@ function collectResponseTypes(op: Op): string[] {
   return [...out].sort();
 }
 
-function findSuccessData(op: Op): unknown | undefined {
+function findDataSamples(op: Op): unknown[] {
+  const out: unknown[] = [];
   for (const resp of Object.values(op.responses ?? {})) {
     const examples = resp.content?.["application/json"]?.examples ?? {};
     for (const ex of Object.values(examples)) {
-      if (ex.value?.type === "SUCCESS" && ex.value && "data" in ex.value) {
+      if (ex.value && "data" in ex.value) {
         const data = (ex.value as Record<string, unknown>).data;
-        if (data !== null) return data;
+        if (data !== null && data !== undefined) out.push(data);
       }
     }
   }
-  return undefined;
+  return out;
 }
 
 export function generatePydanticModel(operationId: string, op: Op): string {
@@ -205,11 +237,14 @@ export function generatePydanticModel(operationId: string, op: Op): string {
     header.push("");
   }
 
-  // SUCCESS data shape
-  const successData = findSuccessData(op);
+  // Data shape, merged from every example that carries data
+  const dataSamples = findDataSamples(op);
   let dataType = "Optional[Any] = None";
-  if (successData !== undefined && typeof successData === "object") {
-    pyTypeFromValue(successData, classes, `${Base}Data`);
+  if (
+    dataSamples.length > 0 &&
+    dataSamples.every((v) => typeof v === "object" && !Array.isArray(v))
+  ) {
+    pyTypeFromValues(dataSamples, classes, `${Base}Data`);
     dataType = `Optional["${Base}Data"] = None`;
   }
 
@@ -223,8 +258,8 @@ export function generatePydanticModel(operationId: string, op: Op): string {
     `    type: ${typeAnnotation}\n` +
     `    message: str\n` +
     `    data: ${dataType}\n` +
-    `    transaction_id: str\n` +
-    `    processed_at: str\n` +
+    `    transactionId: str\n` +
+    `    processedAt: str\n` +
     `    billable: bool\n` +
     `    errors: Optional[List[ErrorDetail]] = None\n`,
   );

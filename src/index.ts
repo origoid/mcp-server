@@ -59,7 +59,7 @@ function client() {
 
 const server = new McpServer({
   name: "@origoid/mcp-server",
-  version: "0.9.0",
+  version: "0.9.1",
 });
 
 /**
@@ -864,7 +864,7 @@ server.registerTool(
   {
     title: "Generate self-contained TypeScript types for an endpoint",
     description:
-      "Produce a single .ts file with `Request`, `Type` (union of every possible result code), `Data` (shape of envelope.data on SUCCESS, inferred from the OpenAPI example), and `Envelope` interfaces. Self-contained — no SDK import required. Paste into your project and import.",
+      "Produce a single .ts file with `Request`, `Type` (union of every possible result code), `Data` (shape of envelope.data, merged from every documented example; a field typed `| null` is null in at least one of them), and `Envelope` interfaces. Self-contained — no SDK import required. Paste into your project and import.",
     inputSchema: {
       operationId: z
         .string()
@@ -891,7 +891,7 @@ server.registerTool(
   {
     title: "Generate self-contained Pydantic v2 models for an endpoint",
     description:
-      "Produce a single .py file with `Request`, `Type` (Literal of every possible result code), `Data` (shape of envelope.data on SUCCESS), `ErrorDetail`, and `Envelope` Pydantic v2 classes. Only runtime dep is `pydantic>=2`.",
+      "Produce a single .py file with `Request`, `Type` (Literal of every possible result code), `Data` (shape of envelope.data, merged from every documented example; a field that is null in any of them is Optional), `ErrorDetail`, and `Envelope` Pydantic v2 classes. Only runtime dep is `pydantic>=2`.",
     inputSchema: {
       operationId: z
         .string()

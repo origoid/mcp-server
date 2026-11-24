@@ -46,7 +46,7 @@ const EXPRESS_PACKAGE_JSON = `{
     "dev": "tsx watch src/server.ts"
   },
   "dependencies": {
-    "@origoid/sdk": "^0.1.0",
+    "@origoid/sdk": "^0.6.2",
     "dotenv": "^16.4.5",
     "express": "^5.1.0"
   },
@@ -119,6 +119,7 @@ app.post("/curp/validate", async (req, res) => {
       case "CURP_DECEASED":
       case "CURP_APOCRYPHAL":
       case "CURP_JUDICIAL_SUSPENSION":
+      case "CURP_INACTIVE":
         return res.status(409).json({ ok: false, reason: env.type, person: env.data });
       case "CURP_HOMONYMY":
         return res.status(200).json({ ok: true, person: env.data, warning: "homonymy" });
@@ -130,9 +131,19 @@ app.post("/curp/validate", async (req, res) => {
       case "INTERNAL_ERROR":
         return res.status(502).json({ ok: false, reason: "upstream" });
       default:
-        return res.status(500).json({ ok: false, reason: "unhandled_type", type: env.type });
+        // A result type this service does not know yet.
+        return res.status(502).json({ ok: false, reason: "unhandled_type", type: env.type });
     }
   } catch (err) {
+    // The SDK throws on HTTP 401 (UNAUTHORIZED) and 429 (RATE_LIMIT_EXCEEDED).
+    const status = (err as { statusCode?: number }).statusCode;
+    if (status === 401) {
+      console.error("OrigoID rejected the API key: check ORIGOID_API_KEY");
+      return res.status(502).json({ ok: false, reason: "origoid_unauthorized" });
+    }
+    if (status === 429) {
+      return res.status(429).json({ ok: false, reason: "rate_limited" });
+    }
     const message = err instanceof Error ? err.message : String(err);
     return res.status(502).json({ ok: false, reason: "sdk_error", message });
   }
@@ -204,7 +215,7 @@ description = "FastAPI + OrigoID CURP validator starter"
 requires-python = ">=3.10"
 dependencies = [
   "fastapi>=0.115",
-  "origoid>=0.1.0",
+  "origoid>=0.6.2",
   "python-dotenv>=1.0.0",
   "uvicorn[standard]>=0.32",
 ]
@@ -232,6 +243,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from origoid import AsyncOrigoID
+from origoid.core.api_error import ApiError
+from origoid.errors import TooManyRequestsError, UnauthorizedError
 
 load_dotenv()
 
@@ -255,13 +268,22 @@ class ValidateBody(BaseModel):
 
 @app.post("/curp/validate")
 async def validate_curp(body: ValidateBody):
-    env = await app.state.origoid.renapo.validate_curp(curp=body.curp.upper())
+    # The SDK raises on HTTP 401 (UNAUTHORIZED) and 429 (RATE_LIMIT_EXCEEDED).
+    try:
+        env = await app.state.origoid.renapo.validate_curp(curp=body.curp.upper())
+    except UnauthorizedError:
+        # OrigoID rejected the API key: check ORIGOID_API_KEY.
+        raise HTTPException(status_code=502, detail="origoid_unauthorized")
+    except TooManyRequestsError:
+        raise HTTPException(status_code=429, detail="rate_limited")
+    except ApiError:
+        raise HTTPException(status_code=502, detail="upstream")
 
     if env.status == "OK" and env.type == "SUCCESS":
         return {"ok": True, "person": env.data}
 
     match env.type:
-        case "CURP_DECEASED" | "CURP_APOCRYPHAL" | "CURP_JUDICIAL_SUSPENSION":
+        case "CURP_DECEASED" | "CURP_APOCRYPHAL" | "CURP_JUDICIAL_SUSPENSION" | "CURP_INACTIVE":
             raise HTTPException(status_code=409, detail={
                 "reason": env.type,
                 "person": env.data,
@@ -277,7 +299,8 @@ async def validate_curp(body: ValidateBody):
         case "SERVICE_UNAVAILABLE" | "INTERNAL_ERROR":
             raise HTTPException(status_code=502, detail="upstream")
         case _:
-            raise HTTPException(status_code=500, detail={
+            # A result type this service does not know yet.
+            raise HTTPException(status_code=502, detail={
                 "reason": "unhandled_type",
                 "type": env.type,
             })
@@ -340,7 +363,7 @@ const GO_MOD = `module example.com/origoid-cli-curp
 
 go 1.21
 
-require github.com/origoid/sdk-go v0.1.0
+require github.com/origoid/sdk-go v0.6.1
 `;
 
 const GO_MAIN = `// origoid-cli-curp validates a single CURP from the command line.
@@ -351,11 +374,13 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 
 	origoid "github.com/origoid/sdk-go"
 	"github.com/origoid/sdk-go/client"
+	"github.com/origoid/sdk-go/core"
 	"github.com/origoid/sdk-go/option"
 )
 
@@ -376,6 +401,16 @@ func main() {
 		Curp: os.Args[1],
 	})
 	if err != nil {
+		// The SDK returns an error on HTTP 401 (UNAUTHORIZED) and 429 (RATE_LIMIT_EXCEEDED).
+		var apiErr *core.APIError
+		if errors.As(err, &apiErr) && apiErr.StatusCode == 401 {
+			fmt.Fprintln(os.Stderr, "OrigoID rejected the API key: check ORIGOID_API_KEY")
+			os.Exit(5)
+		}
+		if errors.As(err, &apiErr) && apiErr.StatusCode == 429 {
+			fmt.Fprintln(os.Stderr, "rate limited: retry later")
+			os.Exit(6)
+		}
 		fmt.Fprintln(os.Stderr, "transport error:", err)
 		os.Exit(1)
 	}
@@ -383,7 +418,10 @@ func main() {
 	switch env.Type {
 	case "SUCCESS":
 		printJSON(env.Data)
-	case "CURP_DECEASED", "CURP_APOCRYPHAL", "CURP_JUDICIAL_SUSPENSION":
+	case "CURP_HOMONYMY":
+		fmt.Fprintln(os.Stderr, "warning: homonymy")
+		printJSON(env.Data)
+	case "CURP_DECEASED", "CURP_APOCRYPHAL", "CURP_JUDICIAL_SUSPENSION", "CURP_INACTIVE":
 		fmt.Fprintf(os.Stderr, "blocked: %s\\n", env.Type)
 		printJSON(env.Data)
 		os.Exit(3)
@@ -396,6 +434,9 @@ func main() {
 			fmt.Fprintf(os.Stderr, "  %s: %s\\n", e.Field, e.Message)
 		}
 		os.Exit(2)
+	case "SERVICE_UNAVAILABLE", "INTERNAL_ERROR":
+		fmt.Fprintln(os.Stderr, "service unavailable: retry later")
+		os.Exit(7)
 	default:
 		fmt.Fprintf(os.Stderr, "unhandled type %q: %s\\n", env.Type, env.Message)
 		os.Exit(1)
@@ -427,8 +468,9 @@ go build -o origoid-cli-curp
 ORIGOID_API_KEY=your_api_key ./origoid-cli-curp PELJ900101HDFRRN09
 \`\`\`
 
-Exit codes: \`0\` success, \`2\` bad input, \`3\` blocked CURP, \`4\` not
-found, \`1\` everything else.
+Exit codes: \`0\` success (a homonymy warning goes to stderr), \`2\` bad
+input, \`3\` blocked CURP, \`4\` not found, \`5\` API key rejected, \`6\` rate
+limited, \`7\` service unavailable, \`1\` everything else.
 
 ## Docs
 
