@@ -59,7 +59,7 @@ function client() {
 
 const server = new McpServer({
   name: "@origoid/mcp-server",
-  version: "0.9.1",
+  version: "0.9.2",
 });
 
 /**

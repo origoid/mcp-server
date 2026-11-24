@@ -89,7 +89,7 @@ const EXPRESS_SERVER_TS = `import "dotenv/config";
 import express from "express";
 import pkg from "@origoid/sdk";
 
-const { OrigoidApiClient } = pkg;
+const { OrigoidApiClient, OrigoidApiError } = pkg;
 
 if (!process.env.ORIGOID_API_KEY) {
   throw new Error("ORIGOID_API_KEY env var is required");
@@ -102,50 +102,29 @@ const origoid = new OrigoidApiClient({
 const app = express();
 app.use(express.json({ limit: "1mb" }));
 
+// Returns OrigoID's response unchanged: same HTTP status, same JSON body.
+// (The SDK parses \`processedAt\` into a Date, so it goes out in UTC: same
+// instant, different notation.)
 app.post("/curp/validate", async (req, res) => {
-  const curp = String(req.body?.curp ?? "").trim().toUpperCase();
-  if (curp.length !== 18) {
-    return res.status(400).json({ ok: false, reason: "curp_must_be_18_chars" });
-  }
+  const curp = String(req.body?.curp ?? "");
 
   try {
     const env = await origoid.renapo.validateCurp({ curp });
 
-    if (env.status === "OK" && env.type === "SUCCESS") {
-      return res.status(200).json({ ok: true, person: env.data });
-    }
-
-    switch (env.type) {
-      case "CURP_DECEASED":
-      case "CURP_APOCRYPHAL":
-      case "CURP_JUDICIAL_SUSPENSION":
-      case "CURP_INACTIVE":
-        return res.status(409).json({ ok: false, reason: env.type, person: env.data });
-      case "CURP_HOMONYMY":
-        return res.status(200).json({ ok: true, person: env.data, warning: "homonymy" });
-      case "CURP_NOT_FOUND":
-        return res.status(404).json({ ok: false, reason: "curp_not_found" });
-      case "INVALID_REQUEST":
-        return res.status(400).json({ ok: false, errors: env.errors ?? [] });
-      case "SERVICE_UNAVAILABLE":
-      case "INTERNAL_ERROR":
-        return res.status(502).json({ ok: false, reason: "upstream" });
-      default:
-        // A result type this service does not know yet.
-        return res.status(502).json({ ok: false, reason: "unhandled_type", type: env.type });
-    }
+    // \`env.type\` names the result: SUCCESS, CURP_DECEASED, CURP_NOT_FOUND,
+    // INVALID_REQUEST... What each one means for your flow is your call:
+    // decide here.
+    return res.json(env);
   } catch (err) {
-    // The SDK throws on HTTP 401 (UNAUTHORIZED) and 429 (RATE_LIMIT_EXCEEDED).
-    const status = (err as { statusCode?: number }).statusCode;
-    if (status === 401) {
-      console.error("OrigoID rejected the API key: check ORIGOID_API_KEY");
-      return res.status(502).json({ ok: false, reason: "origoid_unauthorized" });
+    // The SDK throws when the API answers with an HTTP error status
+    // (401 UNAUTHORIZED, 429 RATE_LIMIT_EXCEEDED). \`err.body\` is the
+    // envelope the API sent: pass it on with the same status.
+    if (err instanceof OrigoidApiError && err.statusCode) {
+      return res.status(err.statusCode).json(err.body);
     }
-    if (status === 429) {
-      return res.status(429).json({ ok: false, reason: "rate_limited" });
-    }
+    // No response from OrigoID (network error, timeout).
     const message = err instanceof Error ? err.message : String(err);
-    return res.status(502).json({ ok: false, reason: "sdk_error", message });
+    return res.status(502).json({ error: "origoid_unreachable", message });
   }
 });
 
@@ -156,8 +135,12 @@ app.listen(port, () => console.log(\`listening on http://localhost:\${port}\`));
 const EXPRESS_README = `# OrigoID Express + CURP validator
 
 Minimal Express 5 + TypeScript starter that validates a CURP via the
-official \`@origoid/sdk\`. Handles every documented \`type\` code
-(SUCCESS, CURP_DECEASED, CURP_NOT_FOUND, INVALID_REQUEST, etc).
+official \`@origoid/sdk\`.
+
+The endpoint returns OrigoID's response unchanged: same HTTP status, same
+JSON body. The \`type\` field names the result (SUCCESS, CURP_DECEASED,
+CURP_NOT_FOUND, INVALID_REQUEST, etc). What to do with each one is your
+decision: add it where the comment in \`src/server.ts\` says so.
 
 ## Run
 
@@ -188,7 +171,7 @@ RENAPO response.
 const expressCurp: Starter = {
   id: "express-curp",
   description:
-    "Express 5 + TypeScript + @origoid/sdk. POST /curp/validate handler covering every CURP result type with idiomatic HTTP status codes.",
+    "Express 5 + TypeScript + @origoid/sdk. POST /curp/validate returns the OrigoID response unchanged (same HTTP status and envelope); your code decides per result type.",
   files: [
     { path: "package.json", contents: EXPRESS_PACKAGE_JSON },
     { path: "tsconfig.json", contents: EXPRESS_TSCONFIG },
@@ -233,18 +216,23 @@ const FASTAPI_GITIGNORE = `__pycache__/
 
 const FASTAPI_MAIN_PY = `"""FastAPI + OrigoID CURP validator.
 
+Returns OrigoID's response unchanged: same HTTP status, same JSON body.
+
 Uses AsyncOrigoID so the FastAPI event loop is never blocked while waiting
 on the upstream API.
 """
 
 import os
 from contextlib import asynccontextmanager
+
+import httpx
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 from origoid import AsyncOrigoID
 from origoid.core.api_error import ApiError
-from origoid.errors import TooManyRequestsError, UnauthorizedError
 
 load_dotenv()
 
@@ -263,53 +251,42 @@ app = FastAPI(lifespan=lifespan)
 
 
 class ValidateBody(BaseModel):
-    curp: str = Field(min_length=18, max_length=18)
+    curp: str
 
 
 @app.post("/curp/validate")
 async def validate_curp(body: ValidateBody):
-    # The SDK raises on HTTP 401 (UNAUTHORIZED) and 429 (RATE_LIMIT_EXCEEDED).
     try:
-        env = await app.state.origoid.renapo.validate_curp(curp=body.curp.upper())
-    except UnauthorizedError:
-        # OrigoID rejected the API key: check ORIGOID_API_KEY.
-        raise HTTPException(status_code=502, detail="origoid_unauthorized")
-    except TooManyRequestsError:
-        raise HTTPException(status_code=429, detail="rate_limited")
-    except ApiError:
-        raise HTTPException(status_code=502, detail="upstream")
+        env = await app.state.origoid.renapo.validate_curp(curp=body.curp)
+    except ApiError as err:
+        # The SDK raises when the API answers with an HTTP error status
+        # (401 UNAUTHORIZED, 429 RATE_LIMIT_EXCEEDED). err.body is the
+        # envelope the API sent: pass it on with the same status.
+        return JSONResponse(
+            status_code=err.status_code or 502,
+            content=jsonable_encoder(err.body),
+        )
+    except httpx.HTTPError as err:
+        # No response from OrigoID (network error, timeout).
+        return JSONResponse(
+            status_code=502,
+            content={"error": "origoid_unreachable", "message": str(err)},
+        )
 
-    if env.status == "OK" and env.type == "SUCCESS":
-        return {"ok": True, "person": env.data}
-
-    match env.type:
-        case "CURP_DECEASED" | "CURP_APOCRYPHAL" | "CURP_JUDICIAL_SUSPENSION" | "CURP_INACTIVE":
-            raise HTTPException(status_code=409, detail={
-                "reason": env.type,
-                "person": env.data,
-            })
-        case "CURP_HOMONYMY":
-            return {"ok": True, "person": env.data, "warning": "homonymy"}
-        case "CURP_NOT_FOUND":
-            raise HTTPException(status_code=404, detail="curp_not_found")
-        case "INVALID_REQUEST":
-            raise HTTPException(status_code=400, detail={
-                "errors": [e.dict() for e in (env.errors or [])],
-            })
-        case "SERVICE_UNAVAILABLE" | "INTERNAL_ERROR":
-            raise HTTPException(status_code=502, detail="upstream")
-        case _:
-            # A result type this service does not know yet.
-            raise HTTPException(status_code=502, detail={
-                "reason": "unhandled_type",
-                "type": env.type,
-            })
+    # env.type names the result: SUCCESS, CURP_DECEASED, CURP_NOT_FOUND,
+    # INVALID_REQUEST... What each one means for your flow is your call:
+    # decide here.
+    return JSONResponse(content=jsonable_encoder(env))
 `;
 
 const FASTAPI_README = `# OrigoID FastAPI + CURP validator
 
-Minimal FastAPI starter using \`origoid\`'s async client. Handles every
-documented CURP result type.
+Minimal FastAPI starter using \`origoid\`'s async client.
+
+The endpoint returns OrigoID's response unchanged: same HTTP status, same
+JSON body. The \`type\` field names the result (SUCCESS, CURP_DECEASED,
+CURP_NOT_FOUND, INVALID_REQUEST, etc). What to do with each one is your
+decision: add it where the comment in \`main.py\` says so.
 
 ## Run
 
@@ -339,7 +316,7 @@ The example CURP is synthetic.
 const fastapiCurp: Starter = {
   id: "fastapi-curp",
   description:
-    "FastAPI + AsyncOrigoID + Pydantic. Async POST /curp/validate covering every CURP result type. Non-blocking under load.",
+    "FastAPI + AsyncOrigoID. Async POST /curp/validate returns the OrigoID response unchanged (same HTTP status and envelope); your code decides per result type. Non-blocking under load.",
   files: [
     { path: "pyproject.toml", contents: FASTAPI_PYPROJECT },
     { path: ".env.example", contents: FASTAPI_ENV_EXAMPLE },
@@ -366,21 +343,20 @@ go 1.21
 require github.com/origoid/sdk-go v0.6.1
 `;
 
-const GO_MAIN = `// origoid-cli-curp validates a single CURP from the command line.
+const GO_MAIN = `// origoid-cli-curp validates a single CURP from the command line and
+// prints OrigoID's response as it came.
 //
 //   ORIGOID_API_KEY=... go run . PELJ900101HDFRRN09
 package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
 
 	origoid "github.com/origoid/sdk-go"
 	"github.com/origoid/sdk-go/client"
-	"github.com/origoid/sdk-go/core"
 	"github.com/origoid/sdk-go/option"
 )
 
@@ -401,59 +377,35 @@ func main() {
 		Curp: os.Args[1],
 	})
 	if err != nil {
-		// The SDK returns an error on HTTP 401 (UNAUTHORIZED) and 429 (RATE_LIMIT_EXCEEDED).
-		var apiErr *core.APIError
-		if errors.As(err, &apiErr) && apiErr.StatusCode == 401 {
-			fmt.Fprintln(os.Stderr, "OrigoID rejected the API key: check ORIGOID_API_KEY")
-			os.Exit(5)
+		// The SDK returns an error when the API answers with an HTTP error
+		// status (401 UNAUTHORIZED, 429 RATE_LIMIT_EXCEEDED). Body is the
+		// envelope the API sent: print it as it came.
+		var unauthorized *origoid.UnauthorizedError
+		var rateLimited *origoid.TooManyRequestsError
+		switch {
+		case errors.As(err, &unauthorized):
+			fmt.Println(unauthorized.Body)
+			os.Exit(1)
+		case errors.As(err, &rateLimited):
+			fmt.Println(rateLimited.Body)
+			os.Exit(1)
 		}
-		if errors.As(err, &apiErr) && apiErr.StatusCode == 429 {
-			fmt.Fprintln(os.Stderr, "rate limited: retry later")
-			os.Exit(6)
-		}
-		fmt.Fprintln(os.Stderr, "transport error:", err)
-		os.Exit(1)
-	}
-
-	switch env.Type {
-	case "SUCCESS":
-		printJSON(env.Data)
-	case "CURP_HOMONYMY":
-		fmt.Fprintln(os.Stderr, "warning: homonymy")
-		printJSON(env.Data)
-	case "CURP_DECEASED", "CURP_APOCRYPHAL", "CURP_JUDICIAL_SUSPENSION", "CURP_INACTIVE":
-		fmt.Fprintf(os.Stderr, "blocked: %s\\n", env.Type)
-		printJSON(env.Data)
-		os.Exit(3)
-	case "CURP_NOT_FOUND":
-		fmt.Fprintln(os.Stderr, "no match")
-		os.Exit(4)
-	case "INVALID_REQUEST":
-		fmt.Fprintln(os.Stderr, "invalid request:")
-		for _, e := range env.Errors {
-			fmt.Fprintf(os.Stderr, "  %s: %s\\n", e.Field, e.Message)
-		}
+		// No response from OrigoID (network error, timeout).
+		fmt.Fprintln(os.Stderr, "no response from OrigoID:", err)
 		os.Exit(2)
-	case "SERVICE_UNAVAILABLE", "INTERNAL_ERROR":
-		fmt.Fprintln(os.Stderr, "service unavailable: retry later")
-		os.Exit(7)
-	default:
-		fmt.Fprintf(os.Stderr, "unhandled type %q: %s\\n", env.Type, env.Message)
-		os.Exit(1)
 	}
-}
 
-func printJSON(v any) {
-	b, _ := json.MarshalIndent(v, "", "  ")
-	fmt.Println(string(b))
+	// env.Type names the result: SUCCESS, CURP_DECEASED, CURP_NOT_FOUND,
+	// INVALID_REQUEST... What each one means for your flow is your call:
+	// decide here, or in the script that reads this output.
+	fmt.Println(env)
 }
 `;
 
 const GO_README = `# origoid-cli-curp
 
-Single-command Go CLI that validates a CURP through the OrigoID API.
-Exits non-zero on any non-success result so it composes well with shell
-scripts.
+Single-command Go CLI that validates a CURP through the OrigoID API and
+prints the response as it came, so it composes well with shell scripts.
 
 ## Build
 
@@ -468,9 +420,17 @@ go build -o origoid-cli-curp
 ORIGOID_API_KEY=your_api_key ./origoid-cli-curp PELJ900101HDFRRN09
 \`\`\`
 
-Exit codes: \`0\` success (a homonymy warning goes to stderr), \`2\` bad
-input, \`3\` blocked CURP, \`4\` not found, \`5\` API key rejected, \`6\` rate
-limited, \`7\` service unavailable, \`1\` everything else.
+The JSON on stdout is OrigoID's response, unchanged. Its \`type\` field
+names the result (SUCCESS, CURP_DECEASED, CURP_NOT_FOUND, etc); what to do
+with each one is your decision:
+
+\`\`\`bash
+./origoid-cli-curp PELJ900101HDFRRN09 | jq -r .type
+\`\`\`
+
+Exit codes: \`0\` the API answered (whatever the result), \`1\` the API
+answered with an HTTP error (key rejected, rate limited; the response is
+still printed), \`2\` bad usage or no response.
 
 ## Docs
 
@@ -481,7 +441,7 @@ limited, \`7\` service unavailable, \`1\` everything else.
 const goCliCurp: Starter = {
   id: "go-cli-curp",
   description:
-    "Standalone Go CLI that validates one CURP. Idiomatic exit codes per result type — composes with shell scripts.",
+    "Standalone Go CLI that validates one CURP and prints the OrigoID response unchanged; composes with shell scripts (pipe to jq and decide per result type).",
   files: [
     { path: "go.mod", contents: GO_MOD },
     { path: "main.go", contents: GO_MAIN },
