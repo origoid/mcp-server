@@ -128,6 +128,7 @@ The server speaks MCP over stdio (standard transport).
 | `search_sat_69b` | `POST /mex/compliance/v1/sat-69b-searches` |
 | `search_ofac` | `POST /global/compliance/v1/ofac-searches` |
 | `search_peps` | `POST /mex/compliance/v1/peps-searches` |
+| `search_professional_licenses` | `POST /mex/education/v1/professional-license-searches` |
 | `match_faces` | `POST /global/biometrics/v1/face-matches` |
 | `check_liveness` | `POST /global/biometrics/v1/liveness-checks` |
 | `validate_email` | `POST /global/email/v1/email-validations` |

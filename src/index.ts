@@ -59,7 +59,7 @@ function client() {
 
 const server = new McpServer({
   name: "@origoid/mcp-server",
-  version: "0.9.2",
+  version: "0.10.0",
 });
 
 /**
@@ -473,7 +473,7 @@ server.registerTool(
   {
     title: "Search OFAC sanctions lists",
     description:
-      "Search the official US OFAC sanctions lists (SDN, Non-SDN, FSE, NS-ISA, SSI, CAPTA, NS-PLC) for a name. Fuzzy matching with a configurable minimum similarity score.",
+      "Search the official US OFAC sanctions lists (SDN incl. SDGT and SDNTK; Non-SDN: SSI, NS-MBS, NS-CMIC, CAPTA, NS-PLC, FSE, NS-ISA) and the UN Security Council Consolidated List for a name, refreshed daily. Fuzzy matching with a configurable minimum similarity score.",
     inputSchema: {
       name: z.string(),
       minSimilarityScore: z
@@ -504,6 +504,33 @@ server.registerTool(
     },
   },
   (args) => wrap(() => client().compliance.searchPeps(clean(args)))(),
+);
+
+server.registerTool(
+  "search_professional_licenses",
+  {
+    title: "Search professional licenses (SEP cédula profesional)",
+    description:
+      "Search the SEP National Registry of Professionals for professional licenses (cédulas profesionales). Pass exactly ONE search form: `licenseNumber`, `curp`, or a name (`givenNames` + `firstSurname`, optional `secondSurname`). A name search matches the names exactly, ignoring accents and case. Returns up to 100 matches grouped by CURP, each with personal info, every license (degree, institution, education level, dates) and the highest education level; `totalMatchesFound` reports the total. A very common name without `secondSurname` can take minutes. 1 credit.",
+    inputSchema: {
+      licenseNumber: z
+        .string()
+        .optional()
+        .describe("Professional license number (cédula profesional), 1 to 9 digits."),
+      curp: z.string().optional().describe("CURP, 18 characters, uppercase."),
+      givenNames: z.string().optional().describe("Given names. Required for a name search."),
+      firstSurname: z.string().optional().describe("First surname. Required for a name search."),
+      secondSurname: z
+        .string()
+        .optional()
+        .describe("Second surname. Optional; narrows a name search."),
+    },
+  },
+  // Very common names can take up to ~5 minutes at the source — bump per-call SDK timeout.
+  (args) =>
+    wrap(() =>
+      client().education.searchProfessionalLicenses(clean(args), {timeoutInSeconds: 300}),
+    )(),
 );
 
 server.registerTool(
